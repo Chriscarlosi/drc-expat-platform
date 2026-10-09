@@ -1,0 +1,46 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  * { font-family: 'Inter', -apple-system, sans-serif; }
+  .hero { background: #0B132B; padding: 40px; border-radius: 16px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 25px rgba(11,19,43,0.15); }
+  .hero h1 { color: #fff; font-size: 26px; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
+  .hero p { color: #94A3B8; font-size: 15px; margin: 8px 0 0 0; max-width: 600px; line-height: 1.5; }
+  .hero a.btn-dash { display: inline-block; background: #2A9D8F; color: #fff; padding: 14px 32px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 15px; white-space: nowrap; transition: background 0.2s; box-shadow: 0 4px 14px rgba(42,157,143,0.3); }
+  .hero a.btn-dash:hover { background: #21867a; color: #fff; }
+  .app-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+  .app-card { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; padding: 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: transform 0.2s, box-shadow 0.2s; }
+  .app-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-color: #CBD5E1; }
+  .app-card h3 { font-size: 15px; font-weight: 700; color: #0F172A; margin: 0 0 16px 0; text-transform: uppercase; letter-spacing: 1px; }
+  .app-card a { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; color: #334155; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 500; transition: background 0.15s; margin-bottom: 4px; }
+  .app-card a:hover { background: #F1F5F9; color: #0B132B; }
+  .app-card a .actions { font-size: 12px; color: #94A3B8; }
+  .app-card a:hover .actions { color: #2A9D8F; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero">
+  <div>
+    <h1>🇨🇩 DRC Expat Compliance Platform</h1>
+    <p>Enterprise-grade compliance intelligence for DGM visas and Ministry of Labour permits. Real-time risk scoring, penalty mitigation, and immutable audit trails.</p>
+  </div>
+  <a href="{% url 'compliance:dashboard' %}" class="btn-dash">📊 Open Risk Dashboard →</a>
+</div>
+
+<div class="app-grid">
+  {% for app in app_list %}
+    <div class="app-card">
+      <h3>{{ app.name }}</h3>
+      {% for model in app.models %}
+        <a href="{{ model.admin_url }}">
+          <span>{{ model.name }}</span>
+          <span class="actions">Open →</span>
+        </a>
+      {% endfor %}
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

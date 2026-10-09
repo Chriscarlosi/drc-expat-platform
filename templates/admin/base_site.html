@@ -1,0 +1,14 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}{{ title }} | DRC Expat Compliance{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+  <a href="{% url 'admin:index' %}" style="color: #fff; font-weight: 800; letter-spacing: 1.5px; font-family: 'Inter', -apple-system, sans-serif; font-size: 18px; text-decoration: none;">
+    DRC EXPAT <span style="color: #64748B; font-weight: 400;">| COMPLIANCE</span>
+  </a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

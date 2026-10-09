@@ -1,0 +1,48 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block extrastyle %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  .mfa-wrap { max-width: 520px; margin: 60px auto; background: #fff; border-radius: 16px; padding: 40px; box-shadow: 0 10px 30px rgba(11,19,43,0.08); border: 1px solid #E2E8F0; font-family: 'Inter', sans-serif; }
+  .mfa-title { font-size: 24px; font-weight: 800; color: #0B132B; margin: 0 0 8px 0; letter-spacing: -0.5px; }
+  .mfa-sub { color: #64748B; font-size: 14px; margin-bottom: 24px; line-height: 1.5; }
+  .mfa-qr { text-align: center; margin: 24px 0; padding: 20px; background: #F8FAFC; border-radius: 12px; }
+  .mfa-qr img { border-radius: 8px; }
+  .mfa-secret { font-family: monospace; font-size: 13px; background: #F1F5F9; padding: 12px 16px; border-radius: 8px; margin: 12px 0; word-break: break-all; color: #0B132B; text-align: center; }
+  .mfa-input { width: 100%; padding: 14px 16px; font-size: 20px; text-align: center; letter-spacing: 8px; border: 2px solid #E2E8F0; border-radius: 10px; font-family: monospace; margin: 16px 0; box-sizing: border-box; }
+  .mfa-input:focus { outline: none; border-color: #2A9D8F; }
+  .mfa-btn { width: 100%; background: #2A9D8F; color: #fff; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 15px; border: none; cursor: pointer; }
+  .mfa-btn:hover { background: #21867a; }
+  .mfa-steps { background: #F8FAFC; padding: 16px 20px; border-radius: 10px; margin: 20px 0; font-size: 13px; color: #475569; line-height: 1.7; }
+  .mfa-steps strong { color: #0B132B; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="mfa-wrap">
+  <h1 class="mfa-title">🔐 Enable Two-Factor Authentication</h1>
+  <p class="mfa-sub">Enterprise security requires MFA on all compliance accounts. Scan the QR code below with your authenticator app (Google Authenticator, Microsoft Authenticator, or Authy).</p>
+
+  <div class="mfa-qr">
+    <img src="data:image/png;base64,{{ qr_code }}" alt="MFA QR Code" width="220" height="220">
+  </div>
+
+  <div class="mfa-secret">
+    <div style="font-size: 11px; color: #94A3B8; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px;">Manual entry key</div>
+    {{ secret }}
+  </div>
+
+  <div class="mfa-steps">
+    <strong>1.</strong> Open your authenticator app.<br>
+    <strong>2.</strong> Scan the QR code or paste the manual key.<br>
+    <strong>3.</strong> Enter the 6-digit code below to confirm.
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <input type="text" name="token" class="mfa-input" placeholder="000000" maxlength="6" pattern="[0-9]{6}" required autofocus>
+    <button type="submit" class="mfa-btn">Verify & Activate MFA</button>
+  </form>
+</div>
+{% endblock %}

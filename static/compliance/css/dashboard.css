@@ -1,0 +1,123 @@
+/* ═══════════════════════════════════════════════════════════════
+   DRC Expat Compliance — Enterprise Dashboard Stylesheet
+   ═══════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+* { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; box-sizing: border-box; }
+
+.dash-wrap { padding: 32px 40px; background: #F1F5F9; min-height: 100vh; }
+
+/* ─── Header ─────────────────────────────────────────────── */
+.dash-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; gap: 24px; }
+.dash-title { font-size: 30px; font-weight: 800; color: #0B132B; margin: 0; letter-spacing: -0.8px; }
+.dash-sub { color: #64748B; font-size: 14px; margin-top: 8px; font-weight: 500; }
+.back-link { color: #2A9D8F; font-size: 13px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 14px; }
+.back-link:hover { text-decoration: underline; }
+
+.btn-export {
+  display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 10px;
+  font-weight: 700; font-size: 13px; text-decoration: none; transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-export:hover { transform: translateY(-1px); }
+.btn-pdf { background: #E63946; color: #fff; box-shadow: 0 4px 12px rgba(230,57,70,0.25); }
+.btn-pdf:hover { box-shadow: 0 8px 20px rgba(230,57,70,0.35); color: #fff; }
+.btn-excel { background: #2A9D8F; color: #fff; box-shadow: 0 4px 12px rgba(42,157,143,0.25); }
+.btn-excel:hover { box-shadow: 0 8px 20px rgba(42,157,143,0.35); color: #fff; }
+
+/* ─── Score card ─────────────────────────────────────────── */
+.score-box {
+  text-align: right; background: #fff; padding: 22px 30px; border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid #E2E8F0; min-width: 200px;
+}
+.score-num { font-size: 58px; font-weight: 900; line-height: 1; letter-spacing: -3px; }
+.score-num span { font-size: 22px; font-weight: 600; letter-spacing: 0; }
+.score-label { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; margin-top: 8px; font-weight: 800; }
+
+/* ─── KPI grid ───────────────────────────────────────────── */
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 18px; margin-bottom: 28px; }
+.metric {
+  background: #fff; border-radius: 16px; padding: 22px 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid #E2E8F0;
+  border-left: 5px solid #1565C0; transition: transform 0.2s, box-shadow 0.2s;
+  position: relative; overflow: hidden;
+}
+.metric:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
+.metric-num { font-size: 34px; font-weight: 800; color: #0B132B; line-height: 1; letter-spacing: -1.5px; }
+.metric-label { font-size: 11px; color: #64748B; margin-top: 10px; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700; }
+.metric.danger { border-left-color: #E63946; }
+.metric.danger .metric-num { color: #E63946; }
+.metric.warn { border-left-color: #F4A261; }
+.metric.warn .metric-num { color: #F4A261; }
+.metric.success { border-left-color: #2A9D8F; }
+.metric.success .metric-num { color: #2A9D8F; }
+
+/* ─── Panels ─────────────────────────────────────────────── */
+.panels { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 22px; }
+.panel {
+  background: #fff; border-radius: 16px; padding: 26px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid #E2E8F0;
+}
+.panel h3 {
+  margin: 0 0 18px 0; font-size: 13px; color: #0B132B;
+  text-transform: uppercase; letter-spacing: 1.6px; font-weight: 800;
+  border-bottom: 2px solid #F1F5F9; padding-bottom: 14px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.panel h3 .count {
+  background: #F1F5F9; color: #475569; padding: 4px 12px; border-radius: 20px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0;
+}
+.panel table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.panel table th {
+  text-align: left; color: #94A3B8; font-weight: 700; padding: 8px 4px;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px;
+  border-bottom: 1px solid #F1F5F9;
+}
+.panel table td { padding: 12px 4px; border-top: 1px solid #F1F5F9; color: #334155; font-weight: 500; }
+.panel table tr:hover td { background: #F8FAFC; }
+
+.empty {
+  color: #94A3B8; font-style: italic; padding: 32px 0; text-align: center;
+  font-size: 13px; background: #F8FAFC; border-radius: 10px;
+}
+
+/* ─── Badges ─────────────────────────────────────────────── */
+.badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; }
+.badge.red { background: #FEE2E2; color: #991B1B; }
+.badge.orange { background: #FFEDD5; color: #9A3412; }
+.badge.green { background: #D1FAE5; color: #065F46; }
+.badge.gray { background: #F1F5F9; color: #475569; }
+
+.link { color: #0B132B; text-decoration: none; font-weight: 600; }
+.link:hover { color: #2A9D8F; text-decoration: underline; }
+
+/* ─── Charts ─────────────────────────────────────────────── */
+.chart-container { position: relative; height: 240px; margin-top: 8px; }
+
+/* ─── Activity feed ──────────────────────────────────────── */
+.feed { list-style: none; padding: 0; margin: 0; }
+.feed li {
+  padding: 12px 0; border-bottom: 1px solid #F1F5F9;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.feed li:last-child { border-bottom: none; }
+.feed-icon {
+  width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+  background: #F1F5F9; color: #475569;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+}
+.feed-body { flex: 1; min-width: 0; }
+.feed-title { font-size: 13px; color: #0B132B; font-weight: 600; margin-bottom: 2px; }
+.feed-meta { font-size: 11px; color: #94A3B8; font-weight: 500; }
+
+/* ─── Heatmap ────────────────────────────────────────────── */
+.heatmap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.hm-cell {
+  background: #F8FAFC; border-radius: 12px; padding: 18px;
+  border-left: 4px solid #2A9D8F; position: relative;
+}
+.hm-label { font-size: 10px; color: #64748B; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+.hm-value { font-size: 26px; font-weight: 800; color: #0B132B; line-height: 1; letter-spacing: -1px; }
+.hm-sub { font-size: 11px; color: #94A3B8; margin-top: 6px; }

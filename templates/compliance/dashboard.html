@@ -1,0 +1,212 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'compliance/css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dash-wrap">
+
+  <a href="{% url 'admin:index' %}" class="back-link">← Back to Admin</a>
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="dash-header">
+    <div>
+      <h1 class="dash-title">Risk & Penalty Mitigation Board</h1>
+      <div class="dash-sub">{{ today|date:"l, F j, Y" }} — Africa/Kinshasa (DRC)</div>
+      <div style="margin-top: 18px; display: flex; gap: 12px;">
+        <a href="{% url 'compliance:export_pdf' %}" class="btn-export btn-pdf">📄 Export PDF</a>
+        <a href="{% url 'compliance:export_excel' %}" class="btn-export btn-excel">📊 Export Excel</a>
+      </div>
+    </div>
+    <div class="score-box">
+      <div class="score-num" style="color: {{ risk_color }};">{{ compliance_score }}<span>/100</span></div>
+      <div class="score-label" style="color: {{ risk_color }};">{{ risk_label }} RISK</div>
+    </div>
+  </div>
+
+  <!-- ═══ KPI CARDS ═══ -->
+  <div class="metrics">
+    <div class="metric success"><div class="metric-num">{{ total_experts }}</div><div class="metric-label">Active Experts</div></div>
+    <div class="metric {% if passports_expiring_count %}warn{% endif %}"><div class="metric-num">{{ passports_expiring_count }}</div><div class="metric-label">Passports ≤ 90d</div></div>
+    <div class="metric {% if cartes_expiring_count %}warn{% endif %}"><div class="metric-num">{{ cartes_expiring_count }}</div><div class="metric-label">Cartes ≤ 90d</div></div>
+    <div class="metric {% if visas_expiring_count %}warn{% endif %}"><div class="metric-num">{{ visas_expiring_count }}</div><div class="metric-label">Visas ≤ 90d</div></div>
+    <div class="metric {% if t30_count %}danger{% endif %}"><div class="metric-num">{{ t30_count }}</div><div class="metric-label">Critical ≤ 30d</div></div>
+    <div class="metric {% if penalty_count %}danger{% endif %}"><div class="metric-num">${{ total_penalty_usd|floatformat:0 }}</div><div class="metric-label">Penalties ({{ penalty_count }})</div></div>
+  </div>
+
+  <!-- ═══ QUOTA + TREND ═══ -->
+  <div class="panels">
+    <div class="panel">
+      <h3>Expat Quota — DRC Order 33 (6.5% Cap)</h3>
+      {% if quota %}
+      <div style="display: grid; grid-template-columns: 180px 1fr; gap: 24px; align-items: center;">
+        <div style="position: relative; height: 160px;">
+          <canvas id="quotaChart"></canvas>
+          <div style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; pointer-events: none;">
+            <div style="font-size: 26px; font-weight: 800; color: #0B132B; letter-spacing: -1px;">{{ quota.sector_pct }}%</div>
+            <div style="font-size: 9px; color: #94A3B8; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 2px;">of {{ quota.sector_cap }}% cap</div>
+          </div>
+        </div>
+        <div>
+          <div style="margin-bottom: 14px;">
+            <div style="font-size: 11px; color: #64748B; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 4px;">Status</div>
+            {% if quota.sector_compliant %}
+              <span class="badge green">✓ COMPLIANT</span>
+            {% else %}
+              <span class="badge red">⚠ QUOTA BREACH</span>
+            {% endif %}
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div><div style="font-size: 10px; color: #94A3B8; text-transform: uppercase; font-weight: 700;">Expats</div><div style="font-size: 20px; font-weight: 800; color: #0B132B;">{{ quota.expatriate_count }}</div></div>
+            <div><div style="font-size: 10px; color: #94A3B8; text-transform: uppercase; font-weight: 700;">Congolese</div><div style="font-size: 20px; font-weight: 800; color: #0B132B;">{{ quota.congolese_count }}</div></div>
+            <div style="grid-column: 1 / -1;"><div style="font-size: 10px; color: #94A3B8; text-transform: uppercase; font-weight: 700;">Headroom</div><div style="font-size: 20px; font-weight: 800; color: #2A9D8F;">+{{ quota.sector_headroom }} more expats</div></div>
+          </div>
+        </div>
+      </div>
+      {% else %}<div class="empty">No company registered yet.</div>{% endif %}
+    </div>
+
+    <div class="panel">
+      <h3>Document Expiry Funnel — Next 90 Days</h3>
+      <div class="chart-container"><canvas id="trendChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ═══ DATA PANELS ═══ -->
+  <div class="panels">
+
+    <div class="panel">
+      <h3>🛂 Passports Expiring <span class="count">{{ passports_expiring_count }}</span></h3>
+      {% if passports_expiring %}
+      <table>
+        <thead><tr><th>Expert</th><th>Nationality</th><th>Expiry</th><th>Days</th></tr></thead>
+        <tbody>
+        {% for e in passports_expiring %}
+          <tr>
+            <td><a class="link" href="/admin/experts/expertprofile/{{ e.id }}/change/">{{ e.full_name }}</a></td>
+            <td>{{ e.nationality }}</td>
+            <td>{{ e.passport_expiry_date|date:"M j, Y" }}</td>
+            <td><span class="badge {% if e.passport_expiry_date|timeuntil %}{% if 'day' in e.passport_expiry_date|timeuntil %}orange{% else %}red{% endif %}{% endif %}">{{ e.passport_expiry_date|timeuntil }}</span></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% else %}<div class="empty">No passports expiring. ✅</div>{% endif %}
+    </div>
+
+    <div class="panel">
+      <h3>💼 Cartes de Travail Expiring <span class="count">{{ cartes_expiring_count }}</span></h3>
+      {% if cartes_expiring %}
+      <table>
+        <thead><tr><th>Expert</th><th>Permit #</th><th>Expiry</th><th>Days</th></tr></thead>
+        <tbody>
+        {% for c in cartes_expiring %}
+          <tr>
+            <td><a class="link" href="/admin/experts/expertprofile/{{ c.expert.id }}/change/">{{ c.expert.full_name }}</a></td>
+            <td>{{ c.permit_number }}</td>
+            <td>{{ c.expiry_date|date:"M j, Y" }}</td>
+            <td><span class="badge {% if c.days_until_expiry <= 30 %}red{% else %}orange{% endif %}">{{ c.days_until_expiry }}d</span></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% else %}<div class="empty">No work permits expiring. ✅</div>{% endif %}
+    </div>
+
+    <div class="panel">
+      <h3>📘 Visas Expiring <span class="count">{{ visas_expiring_count }}</span></h3>
+      {% if visas_expiring %}
+      <table>
+        <thead><tr><th>Expert</th><th>Type</th><th>Expiry</th><th>Days</th></tr></thead>
+        <tbody>
+        {% for v in visas_expiring %}
+          <tr>
+            <td><a class="link" href="/admin/experts/expertprofile/{{ v.expert.id }}/change/">{{ v.expert.full_name }}</a></td>
+            <td>{{ v.visa_model_label|default:"—" }}</td>
+            <td>{{ v.expiry_date|date:"M j, Y" }}</td>
+            <td><span class="badge {% if v.days_until_expiry <= 30 %}red{% else %}orange{% endif %}">{{ v.days_until_expiry }}d</span></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% else %}<div class="empty">No visas expiring. ✅</div>{% endif %}
+    </div>
+
+    <div class="panel">
+      <h3>💸 Active Penalty Accrual <span class="count">{{ penalty_count }}</span></h3>
+      {% if active_penalties %}
+      <table>
+        <thead><tr><th>Expert</th><th>Reason</th><th>Days</th><th>Amount</th></tr></thead>
+        <tbody>
+        {% for p in active_penalties %}
+          <tr>
+            <td><a class="link" href="/admin/compliance/penaltyledger/{{ p.id }}/change/">{{ p.expert.full_name }}</a></td>
+            <td>{{ p.get_reason_display }}</td>
+            <td>{{ p.days_accrued }}d</td>
+            <td><strong style="color:#E63946;">${{ p.total_amount_usd|floatformat:0 }}</strong></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <div style="margin-top: 14px; padding-top: 14px; border-top: 2px solid #F1F5F9; text-align: right; font-size: 15px; font-weight: 800; color: #0B132B;">
+        Total: <span style="color: #E63946;">${{ total_penalty_usd|floatformat:2 }}</span>
+      </div>
+      {% else %}<div class="empty">No active penalties. ✅</div>{% endif %}
+    </div>
+
+  </div>
+
+  <!-- ═══ ACTIVITY FEED + HEATMAP ═══ -->
+  <div class="panels">
+
+    <div class="panel">
+      <h3>⚡ Recent Activity <span class="count">live</span></h3>
+      {% if activity_feed %}
+      <ul class="feed">
+        {% for item in activity_feed %}
+        <li>
+          <div class="feed-icon">{% if item.action == 'create' %}+{% elif item.action == 'delete' %}×{% else %}↻{% endif %}</div>
+          <div class="feed-body">
+            <div class="feed-title">{{ item.actor }} — {{ item.action }} <strong>{{ item.model }}</strong>{% if item.object_repr %} · {{ item.object_repr|truncatechars:40 }}{% endif %}</div>
+            <div class="feed-meta">{{ item.timestamp|date:"M j, Y · H:i" }}</div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}<div class="empty">No activity yet.</div>{% endif %}
+    </div>
+
+    <div class="panel">
+      <h3>🔥 Workforce Distribution</h3>
+      <div class="heatmap">
+        {% for cat in cat_breakdown %}
+        <div class="hm-cell">
+          <div class="hm-label">{{ cat.label }}</div>
+          <div class="hm-value">{{ cat.expats }}<span style="font-size: 14px; color: #94A3B8; font-weight: 600;">/{{ cat.total }}</span></div>
+          <div class="hm-sub">{{ cat.congolese }} Congolese · {{ cat.expats }} expats</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ═══ CHART.JS + DATA ═══ -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+  window.__DASHBOARD_DATA__ = {
+    trend_labels: {{ trend_labels|safe }},
+    trend_passports: {{ trend_passports|safe }},
+    trend_cartes: {{ trend_cartes|safe }},
+    trend_visas: {{ trend_visas|safe }},
+    {% if quota %}quota_pct: "{{ quota.sector_pct }}", quota_cap: "{{ quota.sector_cap }}",{% endif %}
+  };
+</script>
+<script src="{% static 'compliance/js/dashboard.js' %}"></script>
+
+{% endblock %}
