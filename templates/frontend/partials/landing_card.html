@@ -1,0 +1,113 @@
+{% load i18n %}
+<!-- Premium Dashboard Preview Card -->
+<div class="relative w-full max-w-md mx-auto group">
+    <!-- Glow Effect -->
+    <div class="absolute -inset-1 bg-gradient-to-r from-amber-500 to-brand-500 rounded-3xl blur opacity-20 dark:opacity-40 transition duration-1000 group-hover:opacity-100 group-hover:duration-200"></div>
+
+    <div class="relative bg-white dark:bg-navy-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl overflow-hidden">
+
+        <!-- Header -->
+        <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-navy-950/50">
+            <div class="flex items-center gap-2">
+                <span class="text-sm font-black text-slate-800 dark:text-white tracking-tight">{% trans "Compliance Overview" %}</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400 border border-amber-200 dark:border-amber-500/30 uppercase tracking-wider">
+                    {% trans "Sample Data" %}
+                </span>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="p-6 grid grid-cols-1 gap-6">
+
+            <!-- Score Ring & Quota Bar -->
+            <div class="flex items-center gap-6">
+                <!-- SVG Score Ring -->
+                <div class="relative w-20 h-20 shrink-0">
+                    <svg class="w-full h-full -rotate-90 transform" viewBox="0 0 100 100">
+                        <circle class="text-slate-100 dark:text-slate-800 stroke-current" stroke-width="8" cx="50" cy="50" r="40" fill="transparent"></circle>
+                        <circle class="text-green-500 stroke-current transition-all duration-1000 ease-out" stroke-width="8" stroke-linecap="round" cx="50" cy="50" r="40" fill="transparent" stroke-dasharray="251.2" stroke-dashoffset="20"></circle>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center flex-col">
+                        <span class="text-xl font-black text-slate-900 dark:text-white leading-none">92</span>
+                        <span class="text-[9px] font-bold text-slate-400 uppercase">Score</span>
+                    </div>
+                </div>
+
+                <!-- Quota Bar -->
+                <div class="flex-1">
+                    <div class="flex justify-between items-end mb-2">
+                        <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{% trans "Expat Quota" %}</span>
+                        <span class="text-sm font-black text-green-500">4.2%</span>
+                    </div>
+                    <div class="relative w-full h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                        <div class="absolute top-0 left-0 h-full bg-green-500 rounded-full" style="width: 42%;"></div>
+                        <div class="absolute top-0 bottom-0 border-l-2 border-dashed border-red-500 z-10" style="left: 65%;" title="6.5% Cap"></div>
+                    </div>
+                    <div class="flex justify-between mt-1.5 text-[10px] text-slate-400 font-medium">
+                        <span>0%</span>
+                        <span class="text-red-400">6.5% {% trans "Cap" %}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 90-Day Expiry Timeline -->
+            <div>
+                <div class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">{% trans "90-Day Expiry Timeline" %}</div>
+                <div class="relative flex items-center justify-between w-full h-8">
+                    <div class="absolute top-1/2 left-0 w-full h-0.5 bg-slate-100 dark:bg-slate-800 -translate-y-1/2 z-0"></div>
+
+                    <div class="relative z-10 flex flex-col items-center group">
+                        <div class="w-3 h-3 rounded-full bg-red-500 ring-4 ring-white dark:ring-navy-900"></div>
+                    </div>
+                    <div class="relative z-10 flex flex-col items-center group">
+                        <div class="w-3 h-3 rounded-full bg-amber-500 ring-4 ring-white dark:ring-navy-900"></div>
+                    </div>
+                    <div class="relative z-10 flex flex-col items-center group">
+                        <div class="w-3 h-3 rounded-full bg-amber-300 ring-4 ring-white dark:ring-navy-900"></div>
+                    </div>
+                    <div class="relative z-10 flex flex-col items-center group">
+                        <div class="w-3 h-3 rounded-full bg-green-500 ring-4 ring-white dark:ring-navy-900"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Feed -->
+            <div class="bg-slate-100 dark:bg-navy-950/80 rounded-xl p-4 border border-slate-200 dark:border-slate-800">
+                <div class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">{% trans "Recent Activity" %}</div>
+                <div class="space-y-3">
+                    <!-- Item 1 -->
+                    <div class="flex items-start gap-3">
+                        <div class="w-6 h-6 rounded-full bg-amber-200 dark:bg-amber-900/50 flex items-center justify-center shrink-0 mt-0.5">
+                            <svg class="w-3.5 h-3.5 text-amber-700 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-slate-800 dark:text-slate-200">{% trans "Passport expires in 32 days" %}</div>
+                            <div class="text-[10px] text-slate-500 dark:text-slate-400">{% trans "John Doe · 2 hours ago" %}</div>
+                        </div>
+                    </div>
+                    <!-- Item 2 -->
+                    <div class="flex items-start gap-3">
+                        <div class="w-6 h-6 rounded-full bg-green-200 dark:bg-green-900/50 flex items-center justify-center shrink-0 mt-0.5">
+                            <svg class="w-3.5 h-3.5 text-green-700 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-slate-800 dark:text-slate-200">{% trans "Prolongation approved" %}</div>
+                            <div class="text-[10px] text-slate-500 dark:text-slate-400">{% trans "Jane Smith · 5 hours ago" %}</div>
+                        </div>
+                    </div>
+                    <!-- Item 3 -->
+                    <div class="flex items-start gap-3">
+                        <div class="w-6 h-6 rounded-full bg-blue-200 dark:bg-blue-900/50 flex items-center justify-center shrink-0 mt-0.5">
+                            <svg class="w-3.5 h-3.5 text-blue-700 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-slate-800 dark:text-slate-200">{% trans "Audit log verified" %}</div>
+                            <div class="text-[10px] text-slate-500 dark:text-slate-400">{% trans "System · Yesterday" %}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

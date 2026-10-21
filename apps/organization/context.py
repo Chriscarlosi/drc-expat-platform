@@ -1,7 +1,5 @@
 """
-Tenant context — stores the current tenant for the active request/task.
-
-Uses contextvars (not threading.local) for async-safety.
+Tenant context — stores the current tenant + scope for the active request.
 """
 
 from __future__ import annotations
@@ -10,32 +8,78 @@ import contextvars
 from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .models import Company
-
+    from .models import Company, Department, Site
 
 _current_tenant: contextvars.ContextVar[Optional["Company"]] = contextvars.ContextVar(
     "current_tenant", default=None,
+)
+_current_department: contextvars.ContextVar[Optional["Department"]] = contextvars.ContextVar(
+    "current_department", default=None,
+)
+_current_site: contextvars.ContextVar[Optional["Site"]] = contextvars.ContextVar(
+    "current_site", default=None,
+)
+_current_role: contextvars.ContextVar[Optional[str]] = contextvars.ContextVar(
+    "current_role", default=None,
 )
 _bypass_tenant_filter: contextvars.ContextVar[bool] = contextvars.ContextVar(
     "bypass_tenant_filter", default=False,
 )
 
 
-def set_current_tenant(company: Optional["Company"]) -> contextvars.Token:
-    """Set the tenant for the current request/task. Returns a token to reset."""
+# ─── Tenant ─────────────────────────────────────────────────
+def set_current_tenant(company) -> contextvars.Token:
     return _current_tenant.set(company)
 
 
-def get_current_tenant() -> Optional["Company"]:
-    """Return the currently active tenant, or None."""
+def get_current_tenant():
     return _current_tenant.get()
 
 
 def reset_tenant(token: contextvars.Token) -> None:
-    """Reset the tenant to its previous value."""
     _current_tenant.reset(token)
 
 
+# ─── Department scope ───────────────────────────────────────
+def set_current_department(dept) -> contextvars.Token:
+    return _current_department.set(dept)
+
+
+def get_current_department():
+    return _current_department.get()
+
+
+def reset_department(token: contextvars.Token) -> None:
+    _current_department.reset(token)
+
+
+# ─── Site scope ─────────────────────────────────────────────
+def set_current_site(site) -> contextvars.Token:
+    return _current_site.set(site)
+
+
+def get_current_site():
+    return _current_site.get()
+
+
+def reset_site(token: contextvars.Token) -> None:
+    _current_site.reset(token)
+
+
+# ─── Role ───────────────────────────────────────────────────
+def set_current_role(role: str) -> contextvars.Token:
+    return _current_role.set(role)
+
+
+def get_current_role():
+    return _current_role.get()
+
+
+def reset_role(token: contextvars.Token) -> None:
+    _current_role.reset(token)
+
+
+# ─── Bypass ─────────────────────────────────────────────────
 def set_bypass(value: bool) -> contextvars.Token:
     return _bypass_tenant_filter.set(value)
 

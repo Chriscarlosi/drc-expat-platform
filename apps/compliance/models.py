@@ -1,5 +1,5 @@
 """
-Risk & Penalty Mitigation — DGM fines, cost tracking, monthly invoicing.
+Risk & Penalty Mitigation — DGM fines, cost tracking, monthly invoicing, export audit.
 """
 
 import uuid
@@ -12,7 +12,7 @@ from apps.experts.models import ExpertProfile
 
 
 # ═══════════════════════════════════════════════════════════════
-# 1. PENALTY LEDGER
+# 1. PENALTY LEDGER — DGM overstay fines
 # ═══════════════════════════════════════════════════════════════
 
 class PenaltyLedger(models.Model):
@@ -57,9 +57,19 @@ class PenaltyLedger(models.Model):
     def total_amount_usd(self):
         return self.days_accrued * self.daily_rate_usd
 
+    @property
+    def days_overdue(self):
+        """Days since accrual started."""
+        end = self.accrual_end_date or timezone.now().date()
+        return max(0, (end - self.accrual_start_date).days)
+
+    @property
+    def is_critical(self):
+        return self.days_overdue >= 30
+
 
 # ═══════════════════════════════════════════════════════════════
-# 2. COST CATEGORIES
+# 2. COST CATEGORIES — configurable
 # ═══════════════════════════════════════════════════════════════
 
 class CostCategory(models.Model):
@@ -190,3 +200,38 @@ class MonthlyInvoice(models.Model):
     @property
     def period_label(self):
         return f"{self.period_month:02d}/{self.period_year}"
+
+
+# ═══════════════════════════════════════════════════════════════
+# 5. EXPORT LOG — audit trail for every PDF / Excel download
+# ═══════════════════════════════════════════════════════════════
+
+class ExportLog(models.Model):
+    """Audit trail of every compliance export (PDF / Excel)."""
+
+    class Format(models.TextChoices):
+        PDF = "PDF", "PDF"
+        EXCEL = "EXCEL", "Excel"
+        CSV = "CSV", "CSV"
+
+    user_id = models.IntegerField(null=True, blank=True)
+    user_repr = models.CharField(max_length=255, blank=True)
+    format = models.CharField(max_length=10, choices=Format.choices)
+    report_type = models.CharField(max_length=60, blank=True)
+    row_count = models.PositiveIntegerField(default=0)
+    filters = models.JSONField(default=dict, blank=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    user_agent = models.CharField(max_length=500, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "Export Log"
+        verbose_name_plural = "Export Logs"
+        indexes = [
+            models.Index(fields=["user_id", "created_at"]),
+            models.Index(fields=["format", "created_at"]),
+        ]
+
+    def __str__(self):
+        return f"{self.user_repr} — {self.format} @ {self.created_at:%Y-%m-%d %H:%M}"

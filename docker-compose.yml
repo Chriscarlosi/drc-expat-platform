@@ -1,33 +1,81 @@
-version: '3.9'
-
 services:
-  postgres:
+  db:
     image: postgres:16-alpine
-    container_name: drc_postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-drc_expat_db}
+      POSTGRES_USER: ${POSTGRES_USER:-drc_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-super_secure_password}
     ports:
       - "5432:5432"
     volumes:
       - drc_pg_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-drc_admin}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   redis:
     image: redis:7-alpine
-    container_name: drc_redis
     restart: unless-stopped
     ports:
       - "6379:6379"
     volumes:
       - drc_redis_data:/data
 
+  web:
+    build: .
+    restart: unless-stopped
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings_prod
+      - SECRET_KEY=${SECRET_KEY:-replace_me_in_production}
+      - DATABASE_URL=postgres://${POSTGRES_USER:-drc_admin}:${POSTGRES_PASSWORD:-super_secure_password}@db:5432/${POSTGRES_DB:-drc_expat_db}
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  celery:
+    build: .
+    restart: unless-stopped
+    command: celery -A config worker -l info
+    volumes:
+      - .:/app
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings_prod
+      - SECRET_KEY=${SECRET_KEY:-replace_me_in_production}
+      - DATABASE_URL=postgres://${POSTGRES_USER:-drc_admin}:${POSTGRES_PASSWORD:-super_secure_password}@db:5432/${POSTGRES_DB:-drc_expat_db}
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+
+  celery-beat:
+    build: .
+    restart: unless-stopped
+    command: celery -A config beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - .:/app
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings_prod
+      - SECRET_KEY=${SECRET_KEY:-replace_me_in_production}
+      - DATABASE_URL=postgres://${POSTGRES_USER:-drc_admin}:${POSTGRES_PASSWORD:-super_secure_password}@db:5432/${POSTGRES_DB:-drc_expat_db}
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+
 volumes:
   drc_pg_data:
   drc_redis_data:
+  static_volume:
+  media_volume:

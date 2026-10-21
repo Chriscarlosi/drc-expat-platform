@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from encrypted_model_fields.fields import EncryptedCharField
+import datetime
 
 from apps.experts.models import ExpertProfile
 
@@ -218,8 +219,27 @@ class VisaTypeCatalog(models.Model):
     name_fr = models.CharField(max_length=150)
     description_en = models.TextField(blank=True)
     description_fr = models.TextField(blank=True)
+
+    # Ticket 5 Rules
+    validity_months = models.PositiveIntegerField(null=True, blank=True,
+                                                  help_text="Standard validity in months (e.g., 24, 12, 60)")
+    allows_prolongation = models.BooleanField(default=False)
+    max_prolongations = models.PositiveIntegerField(default=0)
+    must_exit_on_expiry = models.BooleanField(default=False)
+
+    # Ticket A.1 & B.4: Verification & Source
+    is_verified = models.BooleanField(default=False, help_text="Has this rule been legally confirmed?")
+    source_reference = models.CharField(max_length=255, blank=True, help_text="Gazette or circular reference")
+    source_date = models.DateField(null=True, blank=True)
+
+    # Ticket B.3: Extension Length
+    extension_length_days = models.PositiveIntegerField(null=True, blank=True,
+                                                        help_text="Length of extension in days (for prolongation types)")
+
+    # Legacy fields
     min_validity_days = models.PositiveIntegerField(default=1)
     max_validity_days = models.PositiveIntegerField(default=365)
+
     allows_multiple_entries = models.BooleanField(default=False)
     requires_carte_de_travail = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -270,9 +290,34 @@ class VisaRecord(models.Model):
             models.Index(fields=["expert", "status"]),
             models.Index(fields=["expiry_date", "status"]),
         ]
+        # Ticket 1: DB CheckConstraints
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(expiry_date__gt=models.F('issue_date')),
+                name='visa_expiry_after_issue'
+            ),
+        ]
 
     def __str__(self):
         return f"{self.visa_type.code} — {self.expert.full_name}"
+
+    def clean(self):
+        from . import services  # Imported here to avoid circular import issues
+
+        # Ticket 6: Block standalone visa records for prolongation types
+        if self.visa_type and self.visa_type.category == VisaTypeCatalog.Category.PROLONGATION:
+            raise ValidationError("Prolongation types cannot be used to issue a standalone visa record.")
+
+        # Ticket 1: Enforce validity rules (uses services.py)
+        services.validate_visa_validity(self)
+
+        # Ticket 2: Carte de travail block (uses services.py)
+        services.validate_carte_de_travail(self)
+
+    def save(self, *args, **kwargs):
+        # Ticket 1: Trigger full_clean to run the validation in clean()
+        self.full_clean()
+        super().save(*args, **kwargs)
 
     @property
     def days_until_expiry(self):
@@ -282,35 +327,122 @@ class VisaRecord(models.Model):
     def is_expired(self):
         return self.days_until_expiry < 0
 
+    @property
+    def computed_status(self):
+        """Ticket 3: Computed status property."""
+        from . import services
+        return services.compute_visa_status(self)
+
 
 # ═══════════════════════════════════════════════════════════════
-# VISA PROLONGATION
+# VISA PROLONGATION (Ticket 6 - Option A Workflow)
 # ═══════════════════════════════════════════════════════════════
 
 class VisaProlongation(models.Model):
-    class ProlongationType(models.TextChoices):
-        VV2_PLUS = "VV2+", "VV2+ (2-month extension)"
-        PVV3_PLUS = "PVV3+", "PVV3+ (3-month priority extension)"
-        VV6 = "VV6", "VV6 (6-month extension)"
-        VSR_PLUS = "VSR+", "VSR+ (Regular stay extension)"
-        OTHER = "OTHER", "Other"
+    class Status(models.TextChoices):
+        REQUESTED = "REQUESTED", "Requested"
+        APPROVED = "APPROVED", "Approved"
+        REJECTED = "REJECTED", "Rejected"
 
     expert = models.ForeignKey(ExpertProfile, on_delete=models.PROTECT, related_name="visa_prolongations")
     parent_visa = models.ForeignKey(VisaRecord, on_delete=models.PROTECT, related_name="prolongations")
-    prolongation_type = models.CharField(max_length=20, choices=ProlongationType.choices)
-    prolongation_number = EncryptedCharField(max_length=50)
+    prolongation_type = models.ForeignKey(VisaTypeCatalog, on_delete=models.PROTECT,
+                                          related_name="prolongation_requests")
+    prolongation_number = EncryptedCharField(max_length=50, blank=True)  # Made blank=True for auto-numbering
     request_date = models.DateField()
-    approval_date = models.DateField(null=True, blank=True)
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.REQUESTED)
+
+    old_expiry_date = models.DateField(null=True, blank=True)
     new_expiry_date = models.DateField()
+
+    approved_by = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True,
+                                    related_name="approved_prolongations")
+    approval_date = models.DateField(null=True, blank=True)
+
     dgm_reference = models.CharField(max_length=100, blank=True)
     scan = models.FileField(upload_to="prolongations/", null=True, blank=True)
     notes = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    # NEW FIELD for Audit Tracking
+    submitted_by = models.ForeignKey(
+        'auth.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="submitted_prolongations",
+        help_text="The user who submitted this request."
+    )
+
     class Meta:
         verbose_name = "Visa Prolongation"
         verbose_name_plural = "Visa Prolongations"
         ordering = ["-request_date"]
+        # Ticket 10: Unique DGM reference and prolongation number
+        constraints = [
+            models.UniqueConstraint(fields=['dgm_reference'],
+                                    condition=models.Q(dgm_reference__isnull=False) & ~models.Q(dgm_reference=''),
+                                    name='unique_dgm_reference'),
+            models.UniqueConstraint(fields=['prolongation_number'], name='unique_prolongation_number'),
+        ]
 
     def __str__(self):
-        return f"{self.prolongation_type} for {self.expert.full_name}"
+        return f"{self.prolongation_type.code} for {self.expert.full_name}"
+
+    def clean(self):
+        # Ticket 8: Prolongation status flow and validations
+        if self.parent_visa and not self.parent_visa.visa_type.allows_prolongation:
+            raise ValidationError(f"Visa type {self.parent_visa.visa_type.code} does not allow prolongations.")
+
+        if self.parent_visa and self.parent_visa.visa_type.max_prolongations > 0:
+            existing_count = VisaProlongation.objects.filter(
+                parent_visa=self.parent_visa,
+                status=self.Status.APPROVED
+            ).count()
+            if existing_count >= self.parent_visa.visa_type.max_prolongations:
+                raise ValidationError(
+                    f"Maximum number of prolongations ({self.parent_visa.visa_type.max_prolongations}) reached for this visa.")
+
+    def save(self, *args, **kwargs):
+        # Ticket 10: Auto-generate prolongation number if missing
+        if not self.prolongation_number:
+            year = datetime.date.today().year
+            last_record = VisaProlongation.objects.filter(
+                prolongation_number__startswith=f"PROL-{year}-"
+            ).order_by('-id').first()
+
+            if last_record:
+                try:
+                    last_seq = int(last_record.prolongation_number.split('-')[-1])
+                    new_seq = last_seq + 1
+                except (ValueError, IndexError):
+                    new_seq = 1
+            else:
+                new_seq = 1
+
+            self.prolongation_number = f"PROL-{year}-{new_seq:04d}"
+
+        # Trigger full_clean to enforce Ticket 8 validations
+        self.full_clean()
+        super().save(*args, **kwargs)
+
+
+# ═══════════════════════════════════════════════════════════════
+# PROLONGATION DOCUMENT VERSIONING (Ticket 11)
+# ═══════════════════════════════════════════════════════════════
+
+class ProlongationDocument(models.Model):
+    """Ticket 11: Document versioning for prolongation scans."""
+    prolongation = models.ForeignKey(VisaProlongation, on_delete=models.CASCADE, related_name="documents")
+    version = models.PositiveIntegerField(default=1)
+    file = models.FileField(upload_to="prolongations/documents/")
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    uploaded_by = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True)
+    notes = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ["-version"]
+        unique_together = ("prolongation", "version")
+
+    def __str__(self):
+        return f"v{self.version} - {self.prolongation}"

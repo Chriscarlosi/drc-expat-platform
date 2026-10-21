@@ -1,0 +1,136 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static humanize %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'compliance/css/design-system.css' %}?v=6">
+<style>
+  .md-wrap { padding: 24px; max-width: 1600px; margin: 0 auto; }
+  .md-header { margin-bottom: 24px; }
+  .md-header h1 { font-size: 26px; font-weight: 800; color: var(--text-primary); margin: 6px 0 4px 0; letter-spacing: -0.8px; }
+  .md-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .md-kpi { padding: 20px; border-radius: 12px; background: var(--bg-secondary); border: 1px solid var(--border-default); border-left: 4px solid var(--brand-500); }
+  .md-kpi.danger { border-left-color: #dc2626; }
+  .md-kpi.warn { border-left-color: #f59e0b; }
+  .md-kpi.success { border-left-color: #16a34a; }
+  .md-kpi-num { font-size: 32px; font-weight: 800; color: var(--text-primary); line-height: 1; }
+  .md-kpi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-secondary); margin-top: 8px; font-weight: 700; }
+  .md-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 18px; }
+  .md-card { background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: 12px; padding: 22px; }
+  .md-card h3 { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-primary); margin: 0 0 16px 0; padding-bottom: 12px; border-bottom: 1px solid var(--border-default); }
+  .md-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .md-table th { text-align: left; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-muted); padding: 10px 8px; border-bottom: 1px solid var(--border-default); }
+  .md-table td { padding: 12px 8px; border-bottom: 1px solid var(--border-default); color: var(--text-secondary); }
+  .md-table tbody tr:hover td { background: var(--bg-hover); }
+  .md-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+  .md-badge.danger { background: #fee2e2; color: #991b1b; }
+  .md-badge.success { background: #dcfce7; color: #15803d; }
+  .md-badge.info { background: #dbeafe; color: #1e40af; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="md-wrap">
+
+  <div class="md-header">
+    <a href="/admin/" style="color: var(--brand-600); font-size: 13px; font-weight: 600; text-decoration: none;">
+      ← {% trans "Back to Admin" %}
+    </a>
+    <h1>🚑 {% trans "Medevac Readiness Dashboard" %}</h1>
+    <div style="color: var(--text-secondary); font-size: 13px;">
+      {{ today|date:"l, F j, Y" }}
+    </div>
+  </div>
+
+  <div class="md-kpis">
+    <div class="md-kpi success"><div class="md-kpi-num">{{ on_site_count }}</div><div class="md-kpi-label">{% trans "Personnel On Site" %}</div></div>
+    <div class="md-kpi {% if medevac_flights %}success{% else %}warn{% endif %}">
+      <div class="md-kpi-num">{{ medevac_flights|length }}</div>
+      <div class="md-kpi-label">{% trans "Medevac-Ready Flights" %}</div>
+    </div>
+    <div class="md-kpi {% if upcoming_flights %}info{% else %}warn{% endif %}">
+      <div class="md-kpi-num">{{ upcoming_flights|length }}</div>
+      <div class="md-kpi-label">{% trans "Flights Next 7 Days" %}</div>
+    </div>
+  </div>
+
+  <div class="md-grid">
+
+    <div class="md-card">
+      <h3>👥 {% trans "Personnel Currently On Site" %}</h3>
+      {% if on_site %}
+      <table class="md-table">
+        <thead><tr><th>{% trans "Expert" %}</th><th>{% trans "Nationality" %}</th><th>{% trans "Department" %}</th><th>{% trans "Site" %}</th></tr></thead>
+        <tbody>
+          {% for e in on_site %}
+          <tr>
+            <td><strong>{{ e.full_name }}</strong></td>
+            <td>{{ e.nationality }}</td>
+            <td>{{ e.department.name|default:"—" }}</td>
+            <td>{{ e.site.name|default:"—" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div style="padding: 30px; text-align: center; color: var(--text-muted); font-style: italic;">
+        {% trans "No personnel currently flagged as on-site." %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="md-card">
+      <h3>🚑 {% trans "Medevac-Ready Flights" %}</h3>
+      {% if medevac_flights %}
+      <table class="md-table">
+        <thead><tr><th>{% trans "Flights" %}</th><th>{% trans "Route" %}</th><th>{% trans "Aircraft" %}</th><th>{% trans "Departure" %}</th></tr></thead>
+        <tbody>
+          {% for f in medevac_flights %}
+          <tr>
+            <td><strong>{{ f.flight_number }}</strong></td>
+            <td>{{ f.route.origin_iata }} → {{ f.route.destination_iata }}</td>
+            <td>{{ f.aircraft.registration|default:"—" }}</td>
+            <td>{{ f.departure_datetime|date:"M j, H:i" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div style="padding: 30px; text-align: center; color: var(--text-muted); font-style: italic;">
+        {% trans "No flights currently flagged as medevac-ready." %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="md-card" style="grid-column: 1 / -1;">
+      <h3>✈️ {% trans "Upcoming Flights (Next 7 Days)" %}</h3>
+      {% if upcoming_flights %}
+      <table class="md-table">
+        <thead><tr><th>{% trans "Flights" %}</th><th>{% trans "Route" %}</th><th>{% trans "Operator" %}</th><th>{% trans "Departure" %}</th><th>{% trans "Status" %}</th><th>{% trans "Medevac" %}</th></tr></thead>
+        <tbody>
+          {% for f in upcoming_flights %}
+          <tr>
+            <td><strong>{{ f.flight_number }}</strong></td>
+            <td>{{ f.route.origin_iata }} → {{ f.route.destination_iata }}</td>
+            <td>{{ f.operator.code }}</td>
+            <td>{{ f.departure_datetime|date:"M j, H:i" }}</td>
+            <td>{{ f.get_status_display }}</td>
+            <td>
+              {% if f.medevac_ready %}<span class="md-badge success">✓</span>
+              {% else %}<span class="md-badge info">—</span>{% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div style="padding: 30px; text-align: center; color: var(--text-muted); font-style: italic;">
+        {% trans "No flights scheduled in the next 7 days." %}
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

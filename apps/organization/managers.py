@@ -30,22 +30,46 @@ class TenantQuerySet(models.QuerySet):
 
 class TenantManager(models.Manager.from_queryset(TenantQuerySet)):
     """
-    Manager that auto-scopes queries to the current tenant.
+    Manager that auto-scopes queries to the current tenant + role scope.
 
     Behaviour:
-        - If a tenant is set → filter by it.
-        - If bypass is enabled (superuser, explicit opt-in) → no filter.
-        - If no tenant is set and no bypass → return empty queryset.
-          (This fails safe: unexpected queries don't leak data.)
+        - Superuser (bypass) → no filter.
+        - No tenant → empty queryset (fail-safe).
+        - Department Manager → filter by department.
+        - Site Manager → filter by site.
+        - HR Manager / Admin / Owner → all records in the tenant.
     """
 
     def get_queryset(self) -> TenantQuerySet:
-        qs = super().get_queryset()
-        tenant = get_current_tenant()
+        from .context import (
+            get_current_tenant, get_current_department,
+            get_current_site, get_current_role, is_bypass_enabled,
+        )
+        from .models import UserCompanyMembership
 
+        qs = super().get_queryset()
+
+        if is_bypass_enabled():
+            return qs
+
+        tenant = get_current_tenant()
         if tenant is None:
-            if is_bypass_enabled():
-                return qs
             return qs.none()
 
-        return qs.filter(company=tenant)
+        qs = qs.filter(company=tenant)
+
+        role = get_current_role()
+        if role == UserCompanyMembership.Role.DEPARTMENT_MANAGER:
+            dept = get_current_department()
+            if dept is not None:
+                qs = qs.filter(department=dept)
+            else:
+                qs = qs.none()  # no scope assigned → safe empty
+        elif role == UserCompanyMembership.Role.SITE_MANAGER:
+            site = get_current_site()
+            if site is not None:
+                qs = qs.filter(site=site)
+            else:
+                qs = qs.none()
+
+        return qs

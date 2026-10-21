@@ -1,0 +1,98 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'compliance/css/design-system.css' %}?v=6">
+<style>
+  .rc-wrap { padding: 24px; max-width: 1800px; margin: 0 auto; }
+  .rc-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+  .rc-header h1 { font-size: 26px; font-weight: 800; color: var(--text-primary); margin: 6px 0 0 0; letter-spacing: -0.8px; }
+  .rc-nav { display: flex; gap: 10px; align-items: center; }
+  .rc-nav a { padding: 8px 16px; border-radius: 8px; background: var(--bg-secondary); border: 1px solid var(--border-default); color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 13px; transition: all 0.2s; }
+  .rc-nav a:hover { border-color: var(--brand-500); color: var(--brand-600); }
+  .rc-month { font-size: 18px; font-weight: 800; color: var(--text-primary); padding: 0 12px; }
+  .rc-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .rc-kpi { padding: 16px 20px; border-radius: 12px; background: var(--bg-secondary); border: 1px solid var(--border-default); border-left: 4px solid var(--brand-500); }
+  .rc-kpi-num { font-size: 28px; font-weight: 800; color: var(--text-primary); line-height: 1; }
+  .rc-kpi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-secondary); margin-top: 6px; font-weight: 700; }
+  .rc-kpi.onsite { border-left-color: #16a34a; }
+  .rc-kpi.offsite { border-left-color: #3b82f6; }
+  .rc-kpi.onsite .rc-kpi-num { color: #16a34a; }
+  .rc-kpi.offsite .rc-kpi-num { color: #3b82f6; }
+  .rc-calendar { background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: 12px; overflow: hidden; }
+  .rc-table { width: 100%; border-collapse: collapse; }
+  .rc-table th { background: var(--bg-tertiary); padding: 12px 10px; font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-secondary); font-weight: 800; text-align: center; border-bottom: 2px solid var(--border-default); }
+  .rc-table td { border: 1px solid var(--border-default); padding: 8px; vertical-align: top; width: 14.28%; height: 110px; }
+  .rc-table td.out { background: var(--bg-tertiary); opacity: 0.4; }
+  .rc-day { font-size: 12px; font-weight: 800; color: var(--text-primary); margin-bottom: 6px; }
+  .rc-day.today { color: var(--brand-600); background: var(--brand-50); display: inline-block; padding: 2px 8px; border-radius: 6px; }
+  .rc-expert { font-size: 11px; padding: 2px 6px; margin-bottom: 3px; border-radius: 4px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rc-expert.on { background: #dcfce7; color: #15803d; font-weight: 600; }
+  .rc-expert.off { background: #dbeafe; color: #1e40af; opacity: 0.6; }
+  @media (max-width: 900px) {
+    .rc-table td { height: auto; min-height: 80px; padding: 4px; }
+    .rc-expert { font-size: 9px; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="rc-wrap">
+
+  <div class="rc-header">
+    <div>
+      <a href="/admin/" style="color: var(--brand-600); font-size: 13px; font-weight: 600; text-decoration: none;">
+        ← {% trans "Back to Admin" %}
+      </a>
+      <h1>{% trans "Rotation Calendar" %}</h1>
+    </div>
+    <div class="rc-nav">
+      <a href="?year={{ prev_year }}&month={{ prev_month }}">← {% trans "Previous" %}</a>
+      <span class="rc-month">{{ month_name }}</span>
+      <a href="?year={{ next_year }}&month={{ next_month }}">{% trans "Next" %} →</a>
+    </div>
+  </div>
+
+  <div class="rc-kpis">
+    <div class="rc-kpi onsite"><div class="rc-kpi-num">{{ on_site_count }}</div><div class="rc-kpi-label">{% trans "On Site Today" %}</div></div>
+    <div class="rc-kpi offsite"><div class="rc-kpi-num">{{ off_site_count }}</div><div class="rc-kpi-label">{% trans "Off Rotation Today" %}</div></div>
+    <div class="rc-kpi"><div class="rc-kpi-num">{{ rotations|length }}</div><div class="rc-kpi-label">{% trans "Active Schedules" %}</div></div>
+  </div>
+
+  <div class="rc-calendar">
+    <table class="rc-table">
+      <thead>
+        <tr>
+          <th>{% trans "Monday" %}</th>
+          <th>{% trans "Tuesday" %}</th>
+          <th>{% trans "Wednesday" %}</th>
+          <th>{% trans "Thursday" %}</th>
+          <th>{% trans "Friday" %}</th>
+          <th>{% trans "Saturday" %}</th>
+          <th>{% trans "Sunday" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for week in grid %}
+        <tr>
+          {% for cell in week %}
+          <td class="{% if not cell.in_month %}out{% endif %}">
+            <div class="rc-day {% if cell.is_today %}today{% endif %}">{{ cell.date.day }}</div>
+            {% for s in cell.statuses %}
+              {% if s.on_site is True %}
+                <span class="rc-expert on" title="{{ s.name }}">{{ s.name }}</span>
+              {% elif s.on_site is False %}
+                <span class="rc-expert off" title="{{ s.name }}">{{ s.name }}</span>
+              {% endif %}
+            {% endfor %}
+          </td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+{% endblock %}

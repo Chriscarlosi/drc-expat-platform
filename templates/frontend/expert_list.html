@@ -1,0 +1,105 @@
+{% extends "frontend/base_app.html" %}
+{% load i18n humanize %}
+
+{% block title %}{% trans "Experts" %} — DRC Expat{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-slate-200 dark:border-slate-700 pb-6">
+        <div>
+            <div class="text-xs uppercase tracking-[0.2em] text-amber-600 font-black mb-2 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                {% trans "Personnel Management" %}
+            </div>
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                {% trans "Experts" %}
+            </h1>
+            <div class="text-slate-500 text-sm mt-2">
+                {% trans "Scope:" %} <strong class="text-slate-700 dark:text-slate-300">{{ scope_label }}</strong>
+            </div>
+        </div>
+        <div class="flex gap-3">
+            <!-- Assuming we build an Add Expert frontend view later -->
+            <a href="/admin/experts/expertprofile/add/" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-amber-500/30 transition-transform hover:-translate-y-0.5">
+                + {% trans "Add Expert (Admin)" %}
+            </a>
+        </div>
+    </div>
+
+    <!-- Filters & Search -->
+    <div class="flex flex-col sm:flex-row gap-4 bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <form method="get" class="flex-1 flex gap-4">
+            <div class="relative flex-1">
+                <svg class="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <input type="text" name="q" value="{{ request.GET.q }}" placeholder="{% trans 'Search by name, passport, or email...' %}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm rounded-xl pl-10 pr-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+            </div>
+            <select name="status" class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-700 dark:text-slate-300">
+                <option value="">{% trans "All Statuses" %}</option>
+                <option value="active" {% if request.GET.status == 'active' %}selected{% endif %}>{% trans "Active Only" %}</option>
+                <option value="inactive" {% if request.GET.status == 'inactive' %}selected{% endif %}>{% trans "Inactive Only" %}</option>
+            </select>
+            <button type="submit" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-2.5 rounded-xl font-bold text-sm">{% trans "Filter" %}</button>
+        </form>
+    </div>
+
+    <!-- Data Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 font-bold uppercase text-xs border-b border-slate-200 dark:border-slate-700">
+                    <tr>
+                        <th class="px-6 py-4">{% trans "Name" %}</th>
+                        <th class="px-6 py-4">{% trans "Nationality" %}</th>
+                        <th class="px-6 py-4">{% trans "Job Title" %}</th>
+                        <th class="px-6 py-4">{% trans "Passport Expiry" %}</th>
+                        <th class="px-6 py-4">{% trans "Status" %}</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                    {% for expert in experts %}
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors group">
+                        <td class="px-6 py-4">
+                            <a href="{% url 'frontend:expert_profile' expert.id %}" class="font-bold text-slate-900 dark:text-white hover:text-amber-600 transition-colors block">
+                                {{ expert.last_name }}, {{ expert.first_name }}
+                            </a>
+                            <div class="text-xs text-slate-500 mt-0.5">{{ expert.email }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-slate-600 dark:text-slate-400">
+                            {{ expert.nationality }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="font-medium text-slate-700 dark:text-slate-300">{{ expert.job_title }}</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% with days=expert.passport_expiry_date|timeuntil %}
+                            <div class="text-slate-600 dark:text-slate-400">{{ expert.passport_expiry_date|date:"M j, Y" }}</div>
+                            {% if expert.passport_expiry_date < today %}
+                                <span class="text-[10px] font-bold text-red-600 uppercase tracking-wider">Expired</span>
+                            {% elif expert.passport_expiry_date <= today|add:"90" %}
+                                <span class="text-[10px] font-bold text-amber-600 uppercase tracking-wider">Expiring Soon</span>
+                            {% endif %}
+                            {% endwith %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if expert.is_active %}
+                                <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold border border-green-200">Active</span>
+                            {% else %}
+                                <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200">Inactive</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-12 text-center text-slate-500">
+                            {% trans "No experts found." %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

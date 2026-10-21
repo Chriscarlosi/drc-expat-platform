@@ -133,3 +133,53 @@ class ExpertProfile(models.Model):
     @property
     def full_name(self) -> str:
         return f"{self.first_name} {self.last_name}"
+
+
+class Dependant(models.Model):
+    """Family members and dependants of an expatriate expert."""
+
+    class Relationship(models.TextChoices):
+        SPOUSE = "SPOUSE", "Spouse"
+        CHILD = "CHILD", "Child"
+        OTHER = "OTHER", "Other"
+
+    expert = models.ForeignKey(
+        ExpertProfile,
+        on_delete=models.CASCADE,
+        related_name='expert_family_members'
+    )  # <--- FIXED: Added the missing parenthesis here
+
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    relationship = models.CharField(
+        max_length=20,
+        choices=Relationship.choices,
+        default=Relationship.SPOUSE
+    )
+    date_of_birth = models.DateField()
+    nationality = models.CharField(max_length=100, blank=True)
+    passport_number = models.CharField(max_length=50, blank=True)
+    passport_expiry_date = models.DateField(null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['date_of_birth']
+        verbose_name = "Dependant"
+        verbose_name_plural = "Dependants"
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} ({self.get_relationship_display()})"
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
+    @property
+    def is_active(self):
+        # Simple logic: dependant is active if their passport isn't expired (if provided)
+        from django.utils import timezone
+        if self.passport_expiry_date and self.passport_expiry_date < timezone.now().date():
+            return False
+        return True

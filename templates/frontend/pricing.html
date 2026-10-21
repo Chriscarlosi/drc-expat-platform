@@ -1,0 +1,143 @@
+{% extends "frontend/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Pricing" %} — DRC Expat{% endblock %}
+
+{% block content %}
+
+<section class="bg-navy-900 text-white relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 25% 25%, #0D9488 0%, transparent 50%);"></div>
+  <div class="relative max-w-7xl mx-auto px-6 py-24">
+    <div class="max-w-3xl">
+      <div class="text-xs uppercase tracking-widest text-brand-400 font-black mb-4">{% trans "Pricing" %}</div>
+      <h1 class="text-4xl md:text-6xl font-black leading-[1.05] tracking-tight mb-6">
+        {% trans "Transparent. Scalable. No surprises." %}
+      </h1>
+      <p class="text-lg md:text-xl text-slate-300 leading-relaxed">
+        {% trans "Pricing scales with active experts under management. All modules included in every tier." %}
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+
+      <!-- PILOT -->
+      <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200">
+        <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-3">{% trans "Pilot" %}</div>
+        <div class="flex items-baseline gap-2 mb-2">
+          <span class="text-4xl font-black text-navy-900">$450</span>
+          <span class="text-slate-500 text-sm">/ {% trans "month" %}</span>
+        </div>
+        <div class="text-xs text-slate-500 mb-6">{% trans "Up to 30 experts" %}</div>
+        <ul class="space-y-2 text-sm text-slate-600 mb-8">
+          <li class="flex gap-2"><span class="text-brand-600">✓</span>{% trans "All 11 modules" %}</li>
+          <li class="flex gap-2"><span class="text-brand-600">✓</span>{% trans "30-day evaluation" %}</li>
+          <li class="flex gap-2"><span class="text-brand-600">✓</span>{% trans "Full data export" %}</li>
+          <li class="flex gap-2"><span class="text-brand-600">✓</span>{% trans "Email support" %}</li>
+        </ul>
+        <a href="/contact/" class="block text-center bg-white border-2 border-navy-900 text-navy-900 hover:bg-navy-900 hover:text-white py-3 rounded-lg font-bold text-sm transition">{% trans "Start Pilot" %}</a>
+      </div>
+
+      <!-- STANDARD -->
+      <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200">
+        <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-3">{% trans "Standard" %}</div>
+        <div class="flex items-baseline gap-2 mb-2">
+          <span class="text-4xl font-black text-navy-900">$1,200</span>
+          <span class="text-slate-500 text-sm">/ {% trans "month" %}</span>
+        </div>
+        <div class="text-xs text-slate-500 mb-6">{% trans "31 – 100 experts" %}</div>
+        <ul class="space-y-2 text-sm text-slate-600 mb-8">
+          <li class="flex gap-2"><span class="text-brand-600">✓</span>{% trans "Everything in Pilot" %}</li>
+          <li class="flex gap-2"><span class="text-brand-600">✓</span>{% trans "SMS notifications" %}</li>
+          <li class="flex gap-2"><span class="text-brand-600">✓</span>{% trans "Monthly invoicing" %}</li>
+          <li class="flex gap-2"><span class="text-brand-600">✓</span>{% trans "Priority support" %}</li>
+        </ul>
+        <a href="/contact/" class="block text-center bg-white border-2 border-navy-900 text-navy-900 hover:bg-navy-900 hover:text-white py-3 rounded-lg font-bold text-sm transition">{% trans "Get Started" %}</a>
+      </div>
+
+      <!-- PROFESSIONAL -->
+      <div class="bg-navy-900 rounded-2xl p-8 border-2 border-brand-500 relative">
+        <div class="absolute top-4 right-4 bg-brand-500 text-white text-xs font-black px-3 py-1 rounded-full">{% trans "MOST POPULAR" %}</div>
+        <div class="text-xs uppercase tracking-widest text-brand-400 font-black mb-3">{% trans "Professional" %}</div>
+        <div class="flex items-baseline gap-2 mb-2">
+          <span class="text-4xl font-black text-white">$2,400</span>
+          <span class="text-slate-400 text-sm">/ {% trans "month" %}</span>
+        </div>
+        <div class="text-xs text-slate-400 mb-6">{% trans "101 – 250 experts" %}</div>
+        <ul class="space-y-2 text-sm text-slate-300 mb-8">
+          <li class="flex gap-2"><span class="text-brand-400">✓</span>{% trans "Everything in Standard" %}</li>
+          <li class="flex gap-2"><span class="text-brand-400">✓</span>{% trans "SSO ready" %}</li>
+          <li class="flex gap-2"><span class="text-brand-400">✓</span>{% trans "Dedicated onboarding" %}</li>
+          <li class="flex gap-2"><span class="text-brand-400">✓</span>{% trans "24hr support SLA" %}</li>
+        </ul>
+        <a href="/contact/" class="block text-center bg-brand-600 hover:bg-brand-700 text-white py-3 rounded-lg font-bold text-sm transition">{% trans "Get Started" %}</a>
+      </div>
+
+      <!-- ENTERPRISE -->
+      <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200">
+        <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-3">{% trans "Enterprise" %}</div>
+        <div class="flex items-baseline gap-2 mb-2">
+          <span class="text-4xl font-black text-navy-900">$3,900</span>
+          <span class="text-slate-500 text-sm">/ {% trans "month" %}</span>
+        </div>
+        <div class="text-xs text-slate-500 mb-6">{% trans "251 – 500 experts" %}</div>
+        <ul class="space-y-2 text-sm text-slate-600 mb-8">
+          <li class="flex gap-2"><span class="text-brand-600">✓</span>{% trans "Everything in Professional" %}</li>
+          <li class="flex gap-2"><span class="text-brand-600">✓</span>{% trans "Dedicated tenant" %}</li>
+          <li class="flex gap-2"><span class="text-brand-600">✓</span>{% trans "Custom integrations" %}</li>
+          <li class="flex gap-2"><span class="text-brand-600">✓</span>{% trans "On-premise option" %}</li>
+        </ul>
+        <a href="/contact/" class="block text-center bg-white border-2 border-navy-900 text-navy-900 hover:bg-navy-900 hover:text-white py-3 rounded-lg font-bold text-sm transition">{% trans "Contact Sales" %}</a>
+      </div>
+
+    </div>
+
+    <!-- ONE-TIME FEES -->
+    <div class="max-w-3xl mx-auto">
+      <h3 class="text-2xl font-black text-navy-900 mb-6 text-center">{% trans "One-Time Fees" %}</h3>
+      <div class="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
+        <div class="divide-y divide-slate-200">
+          <div class="p-5 flex justify-between items-center">
+            <span class="text-slate-700">{% trans "Implementation & data migration (up to 300 experts)" %}</span>
+            <span class="font-black text-navy-900">$8,000</span>
+          </div>
+          <div class="p-5 flex justify-between items-center">
+            <span class="text-slate-700">{% trans "Additional experts beyond 300" %}</span>
+            <span class="font-black text-navy-900">$15 / {% trans "expert" %}</span>
+          </div>
+          <div class="p-5 flex justify-between items-center">
+            <span class="text-slate-700">{% trans "Custom integrations (SAP, Workday, custom HRMS)" %}</span>
+            <span class="font-black text-navy-900">$4,000 – $12,000</span>
+          </div>
+          <div class="p-5 flex justify-between items-center">
+            <span class="text-slate-700">{% trans "On-site training (Kinshasa or Doko)" %}</span>
+            <span class="font-black text-navy-900">$3,500 + {% trans "travel" %}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="max-w-3xl mx-auto mt-10 space-y-3 text-sm text-slate-500">
+      <div>{% trans "• All prices exclusive of VAT and applicable DRC taxes." %}</div>
+      <div>{% trans "• Annual payment attracts a 15% discount." %}</div>
+      <div>{% trans "• Source code escrow and full data export included at no cost." %}</div>
+      <div>{% trans "• Dedicated single-tenant instances priced separately (~40% uplift)." %}</div>
+    </div>
+
+  </div>
+</section>
+
+<section class="py-24 bg-navy-900">
+  <div class="max-w-4xl mx-auto px-6 text-center">
+    <h2 class="text-3xl md:text-4xl font-black text-white mb-6">{% trans "Questions before the pilot?" %}</h2>
+    <p class="text-slate-300 mb-8">{% trans "Talk to our team. We'll scope it in 30 minutes." %}</p>
+    <a href="/contact/" class="inline-block bg-brand-600 hover:bg-brand-700 text-white px-8 py-4 rounded-xl font-bold transition">{% trans "Book a Call" %} →</a>
+  </div>
+</section>
+
+{% endblock %}

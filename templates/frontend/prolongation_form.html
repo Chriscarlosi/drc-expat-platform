@@ -1,0 +1,471 @@
+{% extends "frontend/base_app.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Request Prolongation" %} — DRC Expat{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-8">
+
+    <!-- Header -->
+    <div class="mb-10 text-center">
+        <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+            {% trans "Visa Prolongation Request" %}
+        </h1>
+        <p class="text-slate-500 mt-2 text-lg">
+            {% trans "Submit a formal request to extend an existing visa. All prolongations are subject to DGM review." %}
+        </p>
+    </div>
+
+    <!-- Step Indicator -->
+    <div class="mb-12 relative max-w-3xl mx-auto">
+        <div class="absolute top-1/2 left-0 w-full h-1 bg-slate-200 dark:bg-slate-700 -z-10 -translate-y-1/2"></div>
+        <div class="absolute top-1/2 left-0 h-1 bg-amber-500 -z-10 -translate-y-1/2 transition-all duration-300" id="progress-bar" style="width: 0%;"></div>
+
+        <div class="flex justify-between">
+            <div class="flex flex-col items-center gap-2 step-indicator" data-step="1">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm bg-amber-500 text-white border-4 border-slate-50 dark:border-slate-900 transition-colors step-circle">1</div>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">{% trans "Visa Details" %}</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 step-indicator" data-step="2">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm bg-slate-200 dark:bg-slate-700 text-slate-500 border-4 border-slate-50 dark:border-slate-900 transition-colors step-circle">2</div>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500 step-label">{% trans "Timeline & Docs" %}</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 step-indicator" data-step="3">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm bg-slate-200 dark:bg-slate-700 text-slate-500 border-4 border-slate-50 dark:border-slate-900 transition-colors step-circle">3</div>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500 step-label">{% trans "Review & Submit" %}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-8">
+
+        <!-- Form Area -->
+        <div class="flex-1">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-visible relative min-h-[500px]">
+                <form method="post" enctype="multipart/form-data" id="prolongation-form" class="h-full">
+                    {% csrf_token %}
+
+                    <!-- STEP 1: Visa Details -->
+                    <div class="wizard-step px-8 py-10 md:px-12 absolute inset-0 transition-opacity duration-300 opacity-100 z-10" id="step-1">
+                        <h3 class="text-xl font-black text-slate-800 dark:text-white mb-6 border-b border-slate-100 dark:border-slate-700 pb-4">
+                            {% trans "1. Select Visa & Prolongation Type" %}
+                        </h3>
+
+                        <div class="space-y-6">
+                            <div class="flex flex-col">
+                                <label class="mb-2 font-bold text-slate-700 dark:text-slate-300 text-sm">{{ form.expert.label }} <span class="text-red-500">*</span></label>
+                                {{ form.expert }}
+                            </div>
+
+                            <div class="flex flex-col">
+                                <label class="mb-2 font-bold text-slate-700 dark:text-slate-300 text-sm">{{ form.parent_visa.label }} <span class="text-red-500">*</span></label>
+                                {{ form.parent_visa }}
+                                <span class="text-xs text-slate-500 mt-2 hidden" id="visa-helper"></span>
+                            </div>
+
+                            <div class="flex flex-col">
+                                <label class="mb-2 font-bold text-slate-700 dark:text-slate-300 text-sm">{{ form.prolongation_type.label }} <span class="text-red-500">*</span></label>
+                                {{ form.prolongation_type }}
+                            </div>
+
+                            <div class="flex flex-col">
+                                <label class="mb-2 font-bold text-slate-700 dark:text-slate-300 text-sm">{{ form.new_expiry_date.label }} <span class="text-red-500">*</span></label>
+                                {{ form.new_expiry_date }}
+                                <span class="text-xs text-amber-600 font-bold mt-2" id="expiry-preview">{% trans "Select visa and type to auto-calculate." %}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: Timeline & Docs -->
+                    <div class="wizard-step px-8 py-10 md:px-12 absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none z-0" id="step-2">
+                        <h3 class="text-xl font-black text-slate-800 dark:text-white mb-6 border-b border-slate-100 dark:border-slate-700 pb-4">
+                            {% trans "2. Timeline & Documents" %}
+                        </h3>
+
+                        <div class="space-y-6">
+                            <div class="flex flex-col">
+                                <label class="mb-2 font-bold text-slate-700 dark:text-slate-300 text-sm">{{ form.request_date.label }} <span class="text-red-500">*</span></label>
+                                {{ form.request_date }}
+                                {% if form.request_date.errors %}<span class="text-red-500 text-xs mt-1">{{ form.request_date.errors.0 }}</span>{% endif %}
+                            </div>
+
+                            <div class="flex flex-col">
+                                <label class="mb-2 font-bold text-slate-700 dark:text-slate-300 text-sm">{{ form.dgm_reference.label }}</label>
+                                {{ form.dgm_reference }}
+                                <span class="text-xs text-slate-500 mt-1">{% trans "Ensure this matches the physical DGM authorization letter." %}</span>
+                            </div>
+
+                            <!-- Premium Drag and Drop Uploader -->
+                            <div class="flex flex-col pt-2">
+                                <label class="mb-2 font-bold text-slate-700 dark:text-slate-300 text-sm">{{ form.scan.label }}</label>
+                                <div class="relative group cursor-pointer border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-2xl bg-slate-50 dark:bg-slate-900/50 hover:bg-amber-50 dark:hover:bg-amber-900/20 hover:border-amber-400 transition-colors flex flex-col items-center justify-center py-10 px-4" id="drop-zone">
+                                    <input type="file" name="{{ form.scan.name }}" id="{{ form.scan.id_for_label }}" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" accept=".pdf,.jpg,.jpeg,.png">
+                                    <div class="w-12 h-12 rounded-full bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                        <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                    </div>
+                                    <p class="text-sm font-bold text-slate-700 dark:text-slate-300" id="drop-text">{% trans "Click to upload or drag and drop" %}</p>
+                                    <p class="text-xs text-slate-500 mt-1">{% trans "PDF, JPG, or PNG (max. 10MB)" %}</p>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col">
+                                <label class="mb-2 font-bold text-slate-700 dark:text-slate-300 text-sm">{{ form.notes.label }}</label>
+                                {{ form.notes }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: Review -->
+                    <div class="wizard-step px-8 py-10 md:px-12 absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none z-0" id="step-3">
+                        <h3 class="text-xl font-black text-slate-800 dark:text-white mb-6 border-b border-slate-100 dark:border-slate-700 pb-4">
+                            {% trans "3. Review Request" %}
+                        </h3>
+
+                        <div class="bg-slate-50 dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 space-y-4 mb-6">
+                            <div class="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+                                <span class="text-sm text-slate-500">{% trans "Expert" %}</span>
+                                <span class="text-sm font-bold text-slate-900 dark:text-white" id="review-expert">—</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+                                <span class="text-sm text-slate-500">{% trans "Parent Visa" %}</span>
+                                <span class="text-sm font-bold text-slate-900 dark:text-white" id="review-visa">—</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+                                <span class="text-sm text-slate-500">{% trans "Prolongation Type" %}</span>
+                                <span class="text-sm font-bold text-slate-900 dark:text-white" id="review-type">—</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+                                <span class="text-sm text-slate-500">{% trans "New Expiry Date" %}</span>
+                                <span class="text-sm font-bold text-amber-600" id="review-expiry">—</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-slate-500">{% trans "Attached Document" %}</span>
+                                <span class="text-sm font-bold text-slate-900 dark:text-white truncate max-w-[200px]" id="review-file">{% trans "None" %}</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/50 rounded-xl p-4 flex gap-3 text-sm text-amber-800 dark:text-amber-200">
+                            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <p>{% trans "By clicking Submit, this request will be logged in the immutable audit trail and sent to the DGM compliance team for review." %}</p>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between items-center mt-6">
+                <button type="button" id="btn-prev" class="px-6 py-3 rounded-xl font-bold text-sm bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors invisible">
+                    ← {% trans "Back" %}
+                </button>
+
+                <div class="flex gap-3">
+                    <a href="{% url 'frontend:executive_dashboard' %}" class="px-6 py-3 rounded-xl font-bold text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors hidden md:block">
+                        {% trans "Cancel" %}
+                    </a>
+                    <button type="button" id="btn-next" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-8 py-3 rounded-xl font-bold text-sm shadow-lg hover:-translate-y-0.5 transition-all">
+                        {% trans "Continue" %} →
+                    </button>
+                    <button type="submit" form="prolongation-form" id="btn-submit" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white px-8 py-3 rounded-xl font-bold text-sm shadow-lg shadow-amber-500/30 hover:-translate-y-0.5 transition-all hidden">
+                        {% trans "Submit Prolongation" %}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar (Info) -->
+        <div class="w-full lg:w-80 shrink-0 hidden lg:block">
+            <div class="sticky top-8 space-y-6">
+                <div class="bg-slate-900 dark:bg-slate-950 rounded-2xl p-6 text-white shadow-xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500 rounded-bl-full opacity-10"></div>
+                    <h4 class="text-amber-400 font-bold text-xs uppercase tracking-widest mb-4 relative">
+                        {% if company %}{{ company.name }}{% else %}{% trans "Company" %}{% endif %} — {% trans "Notice" %}
+                    </h4>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-4 relative">
+                        {% trans "Ensure the parent visa is" %} <strong>{% trans "ACTIVE" %}</strong> {% trans "and has remaining validity. Requests must be filed at least" %}
+                        <strong>{{ notice_days|default:"30" }} {% trans "days" %}</strong>
+                        {% if not notice_verified %}<span class="text-red-400 font-bold">*</span>{% endif %}
+                        {% trans "before expiry." %}
+                    </p>
+                    {% if not notice_verified %}
+                    <div class="bg-slate-800 rounded-xl p-4 text-xs text-slate-400 border border-slate-700 relative">
+                        <span class="text-red-400 font-bold">*</span> {% trans "Pending legal confirmation." %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- Wizard Logic ---
+        let currentStep = 1;
+        const totalSteps = 3;
+        const btnNext = document.getElementById('btn-next');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnSubmit = document.getElementById('btn-submit');
+        const progressBar = document.getElementById('progress-bar');
+
+        function updateWizard() {
+            // Update Progress Bar
+            progressBar.style.width = ((currentStep - 1) / (totalSteps - 1)) * 100 + '%';
+
+            // Update Step Visibility
+            document.querySelectorAll('.wizard-step').forEach((el, index) => {
+                if (index + 1 === currentStep) {
+                    el.classList.remove('opacity-0', 'pointer-events-none', 'z-0');
+                    el.classList.add('opacity-100', 'z-10');
+                } else {
+                    el.classList.add('opacity-0', 'pointer-events-none', 'z-0');
+                    el.classList.remove('opacity-100', 'z-10');
+                }
+            });
+
+            // Update Step Indicators
+            document.querySelectorAll('.step-indicator').forEach((el) => {
+                const step = parseInt(el.dataset.step);
+                const circle = el.querySelector('.step-circle');
+                const label = el.querySelector('.step-label');
+
+                if (step < currentStep) {
+                    circle.classList.replace('bg-slate-200', 'bg-amber-500');
+                    circle.classList.replace('bg-slate-700', 'bg-amber-500');
+                    circle.classList.replace('text-slate-500', 'text-white');
+                    if(label) label.classList.replace('text-slate-500', 'text-slate-900');
+                } else if (step === currentStep) {
+                    circle.classList.replace('bg-slate-200', 'bg-amber-500');
+                    circle.classList.replace('bg-slate-700', 'bg-amber-500');
+                    circle.classList.replace('text-slate-500', 'text-white');
+                    if(label) label.classList.replace('text-slate-500', 'text-slate-900');
+                } else {
+                    circle.classList.replace('bg-amber-500', 'bg-slate-200');
+                    circle.classList.add('dark:bg-slate-700');
+                    circle.classList.replace('text-white', 'text-slate-500');
+                    if(label) label.classList.replace('text-slate-900', 'text-slate-500');
+                }
+            });
+
+            // Update Buttons
+            if (currentStep === 1) {
+                btnPrev.classList.add('invisible');
+            } else {
+                btnPrev.classList.remove('invisible');
+            }
+
+            if (currentStep === totalSteps) {
+                btnNext.classList.add('hidden');
+                btnSubmit.classList.remove('hidden');
+                populateReviewStep();
+            } else {
+                btnNext.classList.remove('hidden');
+                btnSubmit.classList.add('hidden');
+            }
+        }
+
+        btnNext.addEventListener('click', () => {
+            // Basic validation before moving forward
+            if (currentStep === 1) {
+                const expert = document.getElementById('id_expert').value;
+                const visa = document.getElementById('id_parent_visa').value;
+                if (!expert || !visa) {
+                    alert("{% trans 'Please select an Expert and a Parent Visa before continuing.' %}");
+                    return;
+                }
+            }
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateWizard();
+            }
+        });
+
+        btnPrev.addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                updateWizard();
+            }
+        });
+
+        // --- Tom Select & Live Calculation ---
+        const expertSelect = new TomSelect('#id_expert', { create: false, placeholder: "{% trans 'Select an Expert...' %}" });
+        const parentVisaSelect = new TomSelect('#id_parent_visa', { create: false, placeholder: "{% trans 'Select Parent Visa...' %}" });
+        const prolongationSelect = new TomSelect('#id_prolongation_type', { create: false, placeholder: "{% trans 'Select Prolongation Type...' %}" });
+        const newExpiryDateInput = document.getElementById('id_new_expiry_date');
+
+        const catalogRules = JSON.parse('{{ catalog_rules_json|safe }}');
+        let currentVisaExpiry = null;
+
+     expertSelect.on('change', function(value) {
+    parentVisaSelect.clear();
+    parentVisaSelect.clearOptions();
+    document.getElementById('expiry-preview').textContent = "{% trans 'Select visa and type to auto-calculate.' %}";
+
+    if (value) {
+        // Add a loading placeholder
+        parentVisaSelect.addOption({value: '', text: 'Loading...'});
+
+        fetch(`/visas/api/get-parent-visas/?expert_id=${value}`)
+            .then(response => {
+                if (!response.ok) throw new Error("Network response was not ok");
+                return response.json();
+            })
+            .then(data => {
+                parentVisaSelect.clearOptions(); // Clear the loading placeholder
+
+                if (data.visas.length === 0) {
+                    parentVisaSelect.addOption({value: '', text: 'No active visas found for this expert'});
+                } else {
+                    const options = data.visas.map(visa => ({
+                        value: visa.id,
+                        text: `${visa.visa_number} (${visa.visa_type__code}) - Expires: ${visa.expiry_date}`,
+                        expiry: visa.expiry_date
+                    }));
+                    parentVisaSelect.addOptions(options);
+                }
+            })
+            .catch(error => {
+                console.error("API Error:", error);
+                parentVisaSelect.clearOptions();
+                parentVisaSelect.addOption({value: '', text: 'Error loading visas. Check console.'});
+            });
+    }
+});
+
+        parentVisaSelect.on('change', function(value) {
+            if(value) {
+                const selectedOption = parentVisaSelect.options[value];
+                currentVisaExpiry = selectedOption.expiry;
+                calculateExpiry();
+            }
+        });
+
+        prolongationSelect.on('change', calculateExpiry);
+
+        function calculateExpiry() {
+            const visaId = parentVisaSelect.getValue();
+            const typeId = prolongationSelect.getValue();
+            const previewText = document.getElementById('expiry-preview');
+
+            if (visaId && typeId && currentVisaExpiry) {
+                const extensionDays = catalogRules[typeId];
+                if (extensionDays) {
+                    let date = new Date(currentVisaExpiry);
+                    date.setDate(date.getDate() + parseInt(extensionDays));
+                    const formattedDate = date.toISOString().split('T')[0];
+                    newExpiryDateInput.value = formattedDate;
+
+                    previewText.textContent = "✓ {% trans 'Calculated:' %} " + formattedDate;
+                    previewText.classList.replace('text-amber-600', 'text-green-600');
+                } else {
+                    previewText.textContent = "{% trans 'Selected prolongation type has no fixed duration. Please enter manually.' %}";
+                    previewText.classList.replace('text-green-600', 'text-amber-600');
+                }
+            } else {
+                previewText.textContent = "{% trans 'Select visa and type to auto-calculate.' %}";
+                previewText.classList.replace('text-green-600', 'text-amber-600');
+            }
+        }
+
+        // --- Premium Drag & Drop Uploader ---
+        const fileInput = document.getElementById('id_scan');
+        const dropText = document.getElementById('drop-text');
+
+        fileInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                const fileName = e.target.files[0].name;
+                dropText.innerHTML = `<span class="text-green-600 font-bold">✓ {% trans "Selected:" %}</span> ${fileName}`;
+            } else {
+                dropText.innerHTML = "{% trans 'Click to upload or drag and drop' %}";
+            }
+        });
+
+        // --- Populate Review Step ---
+        function populateReviewStep() {
+            document.getElementById('review-expert').textContent = expertSelect.options[expertSelect.getValue()]?.text || '—';
+            document.getElementById('review-visa').textContent = parentVisaSelect.options[parentVisaSelect.getValue()]?.text || '—';
+            document.getElementById('review-type').textContent = prolongationSelect.options[prolongationSelect.getValue()]?.text || '—';
+            document.getElementById('review-expiry').textContent = newExpiryDateInput.value || '—';
+
+            const fileText = fileInput.files.length > 0 ? fileInput.files[0].name : "{% trans 'None' %}";
+            document.getElementById('review-file').textContent = fileText;
+        }
+
+        // Initial state
+        updateWizard();
+    });
+</script>
+<style>
+    /* Tom Select Premium Override (Light Mode) */
+    .ts-wrapper.single .ts-control {
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        padding: 1rem;
+        font-size: 0.875rem;
+        color: #0f172a;
+        box-shadow: none;
+        transition: all 0.2s ease-in-out;
+    }
+    .ts-wrapper.single.focus .ts-control {
+        border-color: #f59e0b;
+        box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+    }
+
+    /* Tom Select Premium Override (Dark Mode) */
+    .dark .ts-wrapper.single .ts-control {
+        background-color: #1e293b; /* dark:bg-slate-800 */
+        border-color: #475569; /* dark:border-slate-600 */
+        color: #f8fafc;
+    }
+    .dark .ts-wrapper.single.focus .ts-control {
+        border-color: #f59e0b;
+        box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
+    }
+
+    /* Dropdown Menu Base */
+    .ts-dropdown {
+        border-radius: 0.75rem;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        color: #0f172a;
+    }
+    .ts-dropdown .option {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+    }
+    .ts-dropdown .option:hover {
+        background-color: #f1f5f9;
+    }
+    .ts-dropdown .option.active {
+        background-color: #e2e8f0;
+        color: #0f172a;
+    }
+
+    /* Dropdown Menu (Dark Mode) */
+    .dark .ts-dropdown {
+        background-color: #1e293b; /* dark:bg-slate-800 */
+        border-color: #475569;
+        color: #f8fafc;
+    }
+    .dark .ts-dropdown .option:hover {
+        background-color: #334155;
+    }
+    .dark .ts-dropdown .option.active {
+        background-color: #0f172a;
+        color: #f8fafc;
+    }
+
+    /* Hide default file input text visually */
+    input[type="file"] {
+        color: transparent;
+    }
+    input[type="file"]::file-selector-button {
+        display: none;
+    }
+</style>
+{% endblock %}

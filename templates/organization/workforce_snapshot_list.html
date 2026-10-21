@@ -1,0 +1,35 @@
+{% extends "frontend/base_app.html" %}
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-black text-slate-900 dark:text-white">Workforce Snapshots</h1>
+    <a href="{% url 'organization:workforce_snapshot_create' %}" class="bg-amber-500 text-white px-4 py-2 rounded-lg font-bold">+ Add Snapshot</a>
+</div>
+<div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <table class="w-full text-sm text-left">
+        <thead class="bg-slate-50 dark:bg-slate-900 text-slate-500 font-bold uppercase text-xs">
+            <tr>
+                <th class="px-6 py-4">Date</th>
+                <th class="px-6 py-4">Company</th>
+                <th class="px-6 py-4">Congolese</th>
+                <th class="px-6 py-4">Expats</th>
+                <th class="px-6 py-4">Total</th>
+                <th class="px-6 py-4">Created By</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+            {% for snap in snapshots %}
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50">
+                <td class="px-6 py-4 font-bold">{{ snap.snapshot_date }}</td>
+                <td class="px-6 py-4">{{ snap.company.name }}</td>
+                <td class="px-6 py-4">{{ snap.total_congolese_staff }}</td>
+                <td class="px-6 py-4">{{ snap.total_expat_staff }}</td>
+                <td class="px-6 py-4 font-black">{{ snap.total_workforce }}</td>
+                <td class="px-6 py-4 text-slate-500">{{ snap.created_by.username|default:"System" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="px-6 py-10 text-center text-slate-400 italic">No snapshots recorded yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

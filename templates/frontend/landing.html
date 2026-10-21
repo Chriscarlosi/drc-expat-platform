@@ -1,0 +1,304 @@
+{% extends "frontend/base.html" %}
+{% load i18n %}
+
+{% block title %}DRC Expat Compliance Platform — Visa, Permit & Charter Management{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- HERO                                                     -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section class="bg-navy-900 text-white relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 20% 20%, #0D9488 0%, transparent 50%), radial-gradient(circle at 80% 80%, #0D9488 0%, transparent 50%);"></div>
+  <div class="relative max-w-7xl mx-auto px-6 py-24 md:py-32">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+
+      <!-- Left: Text -->
+      <div>
+        <div class="inline-flex items-center gap-2 bg-navy-800 border border-navy-700 rounded-full px-4 py-1.5 mb-6">
+          <div class="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></div>
+          <span class="text-xs font-bold text-brand-400 uppercase tracking-widest">{% trans "Built for DRC Mining Operations" %}</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-black leading-[1.05] tracking-tight mb-6">
+          {% trans "Compliance without the chaos." %}<br/>
+          <span class="text-brand-400">{% trans "Visa, permit, and charter tracking built for the DRC." %}</span>
+        </h1>
+        <p class="text-lg md:text-xl text-slate-300 leading-relaxed mb-10 max-w-2xl">
+          {% trans "A unified platform that tracks the expatriate quota, DGM and Ministry of Labour deadlines, and generates government-ready flight manifests — all in one auditable system." %}
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="/admin/" class="bg-brand-600 hover:bg-brand-700 text-white px-8 py-4 rounded-xl font-bold text-base transition shadow-2xl shadow-brand-600/30">
+            {% trans "Login to Platform" %} →
+          </a>
+          <a href="#features" class="bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold text-base transition border border-white/20">
+            {% trans "See Features" %}
+          </a>
+        </div>
+        <div class="mt-12 flex flex-wrap gap-8 text-sm text-slate-400">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            {% trans "EN / FR Bilingual" %}
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            {{ visa_count }} {% trans "DRC Visa Codes Supported" %}
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            {% trans "Government-Ready Exports" %}
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            {% trans "Hash-Chained Audit Trail" %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Premium Dashboard Preview Mockup -->
+      <div class="hidden lg:block relative">
+        <div class="absolute -inset-4 bg-gradient-to-r from-brand-500 to-amber-500 rounded-3xl opacity-20 blur-2xl"></div>
+        {% include "frontend/partials/landing_card.html" %}
+          <!-- Mock Header -->
+          <div class="flex justify-between items-center border-b border-slate-700 pb-4 mb-4">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-red-500"></div>
+              <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+              <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            </div>
+            <div class="text-[10px] text-slate-400 font-bold tracking-widest">COMPLIANCE DASHBOARD</div>
+          </div>
+          <!-- Mock Content -->
+          <div class="space-y-4">
+            <div class="flex items-center justify-between bg-slate-900/50 p-4 rounded-xl border border-slate-700">
+              <div>
+                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Compliance Score</div>
+                <div class="text-3xl font-black text-white">92<span class="text-lg text-slate-500">/100</span></div>
+              </div>
+              <div class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-bold border border-green-500/30">LOW</div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700">
+                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Expat Quota</div>
+                <div class="text-xl font-black text-brand-400">4.2%</div>
+              </div>
+              <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700">
+                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Expiring (90d)</div>
+                <div class="text-xl font-black text-amber-400">12</div>
+              </div>
+            </div>
+            <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700">
+              <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-2">Recent Activity</div>
+              <div class="space-y-2">
+                <div class="h-2 bg-slate-700 rounded w-3/4"></div>
+                <div class="h-2 bg-slate-700 rounded w-1/2"></div>
+                <div class="h-2 bg-slate-700 rounded w-5/6"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- STATS (Factual, Verifiable)                              -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section class="bg-slate-50 py-16 border-b border-slate-200">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div>
+        <div class="text-4xl md:text-5xl font-black text-navy-900">{{ visa_count }}</div>
+        <div class="text-xs uppercase tracking-widest text-slate-500 font-bold mt-2">{% trans "DRC Visa Codes Supported" %}</div>
+      </div>
+      <div>
+        <div class="text-4xl md:text-5xl font-black text-navy-900">EN / FR</div>
+        <div class="text-xs uppercase tracking-widest text-slate-500 font-bold mt-2">{% trans "Bilingual Interface" %}</div>
+      </div>
+      <div>
+        <div class="text-4xl md:text-5xl font-black text-navy-900">T-90</div>
+        <div class="text-xs uppercase tracking-widest text-slate-500 font-bold mt-2">{% trans "Configurable Alert Tiers" %}</div>
+      </div>
+      <div>
+        <div class="text-4xl md:text-5xl font-black text-navy-900">SHA-256</div>
+        <div class="text-xs uppercase tracking-widest text-slate-500 font-bold mt-2">{% trans "Tamper-Evident Audit Log" %}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- FEATURES                                                 -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="features" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="max-w-3xl mb-16">
+      <div class="text-xs uppercase tracking-widest text-brand-600 font-black mb-3">{% trans "Features" %}</div>
+      <h2 class="text-3xl md:text-5xl font-black text-navy-900 leading-tight tracking-tight mb-6">
+        {% trans "Built around DRC regulations, not generic HR workflows." %}
+      </h2>
+      <p class="text-lg text-slate-600 leading-relaxed">
+        {% trans "Every feature exists because a mining HR team in Haut-Uélé needed it. No filler, no bloat." %}
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- Card 1 -->
+      <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200 hover:border-brand-500 hover:shadow-xl transition-all duration-200">
+        <div class="w-12 h-12 rounded-xl bg-brand-100 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        </div>
+        <h3 class="text-lg font-black text-navy-900 mb-3">{% trans "All" %} {{ visa_count }} {% trans "DRC Visa Codes" %}</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">{% trans "VV, VV2+, PVV3+, VV6, VSR+, VA, VVD, VET, VEO, DT, E-VVL, E-VETS, HOL-EX, VES — plus the full prolongation chain. Every code validated against its legal window." %}</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200 hover:border-brand-500 hover:shadow-xl transition-all duration-200">
+        <div class="w-12 h-12 rounded-xl bg-brand-100 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+        </div>
+        <h3 class="text-lg font-black text-navy-900 mb-3">{% trans "Expat Quota Tracking" %}</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">{% trans "Real-time expat percentage against configurable caps. Per-category tracking for Class I-V, Supervisor, and Management. Headroom calculated live." %}</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200 hover:border-brand-500 hover:shadow-xl transition-all duration-200">
+        <div class="w-12 h-12 rounded-xl bg-brand-100 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+        </div>
+        <h3 class="text-lg font-black text-navy-900 mb-3">{% trans "Cross-Ministry Validation" %}</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">{% trans "A Work Visa cannot be marked Active without a valid Carte de Travail. The exact dependency DGM and Ministry of Labour enforce — built into the database." %}</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200 hover:border-brand-500 hover:shadow-xl transition-all duration-200">
+        <div class="w-12 h-12 rounded-xl bg-brand-100 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+        </div>
+        <h3 class="text-lg font-black text-navy-900 mb-3">{% trans "DGM Manifest Generation" %}</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">{% trans "One-click government-ready PDF for every charter flight. Passenger roster, passports, nationalities, signature blocks — signed by pilot, HR, and DGM officer." %}</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200 hover:border-brand-500 hover:shadow-xl transition-all duration-200">
+        <div class="w-12 h-12 rounded-xl bg-brand-100 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+        </div>
+        <h3 class="text-lg font-black text-navy-900 mb-3">{% trans "Hash-Chained Audit Log" %}</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">{% trans "Every action SHA-256 hash-chained. Tamper-evident. When an inspector asks 'who uploaded this visa?', you have the answer in seconds." %}</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200 hover:border-brand-500 hover:shadow-xl transition-all duration-200">
+        <div class="w-12 h-12 rounded-xl bg-brand-100 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+        </div>
+        <h3 class="text-lg font-black text-navy-900 mb-3">{% trans "Rotation & Medevac Ready" %}</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">{% trans "4/4, 6/3, 8/4 rotation tracking with month-view calendar. Medevac dashboard shows everyone on site with evacuation routes in one click." %}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- WHO IT'S FOR                                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="modules" class="py-24 bg-navy-900 text-white">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="max-w-3xl mb-16">
+      <div class="text-xs uppercase tracking-widest text-brand-400 font-black mb-3">{% trans "Built For" %}</div>
+      <h2 class="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6">
+        {% trans "Every role, one platform." %}
+      </h2>
+      <p class="text-lg text-slate-300 leading-relaxed">
+        {% trans "Role-based access ensures everyone sees exactly what they need — and nothing else." %}
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="bg-navy-800 rounded-2xl p-8 border border-navy-700">
+        <div class="w-10 h-10 rounded-lg bg-brand-500/20 flex items-center justify-center mb-5">
+          <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+        </div>
+        <h3 class="text-xl font-black mb-3">{% trans "HR & Compliance" %}</h3>
+        <p class="text-slate-300 text-sm leading-relaxed">{% trans "Full company visibility. Track every expat, every document, every ministry deadline. Alerts fire before penalties accrue." %}</p>
+      </div>
+
+      <div class="bg-navy-800 rounded-2xl p-8 border border-navy-700">
+        <div class="w-10 h-10 rounded-lg bg-brand-500/20 flex items-center justify-center mb-5">
+          <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+        </div>
+        <h3 class="text-xl font-black mb-3">{% trans "Department Managers" %}</h3>
+        <p class="text-slate-300 text-sm leading-relaxed">{% trans "See only your team. Track rotation, approve travel, view documents — without exposure to other departments." %}</p>
+      </div>
+
+      <div class="bg-navy-800 rounded-2xl p-8 border border-navy-700">
+        <div class="w-10 h-10 rounded-lg bg-brand-500/20 flex items-center justify-center mb-5">
+          <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+        </div>
+        <h3 class="text-xl font-black mb-3">{% trans "General Manager" %}</h3>
+        <p class="text-slate-300 text-sm leading-relaxed">{% trans "Executive dashboard. Compliance score, quota, penalty exposure — the four numbers that matter, updated live." %}</p>
+      </div>
+
+      <div class="bg-navy-800 rounded-2xl p-8 border border-navy-700">
+        <div class="w-10 h-10 rounded-lg bg-brand-500/20 flex items-center justify-center mb-5">
+          <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+        </div>
+        <h3 class="text-xl font-black mb-3">{% trans "Operations & Logistics" %}</h3>
+        <p class="text-slate-300 text-sm leading-relaxed">{% trans "Charter flights, manifests, medevac readiness. Know who's where, when — critical for remote operations." %}</p>
+      </div>
+
+      <div class="bg-navy-800 rounded-2xl p-8 border border-navy-700">
+        <div class="w-10 h-10 rounded-lg bg-brand-500/20 flex items-center justify-center mb-5">
+          <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+        </div>
+        <h3 class="text-xl font-black mb-3">{% trans "IT & Security" %}</h3>
+        <p class="text-slate-300 text-sm leading-relaxed">
+          {% trans "REST API access" %} <span class="text-[10px] font-bold text-amber-500 uppercase tracking-wider">(Roadmap)</span>,
+          {% trans "SSO-ready" %} <span class="text-[10px] font-bold text-amber-500 uppercase tracking-wider">(Roadmap)</span>,
+          {% trans "on-premise option" %} <span class="text-[10px] font-bold text-amber-500 uppercase tracking-wider">(Roadmap)</span>.
+          {% trans "Hash-chained audit log available today." %}
+        </p>
+      </div>
+
+      <div class="bg-navy-800 rounded-2xl p-8 border border-navy-700">
+        <div class="w-10 h-10 rounded-lg bg-brand-500/20 flex items-center justify-center mb-5">
+          <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+        <h3 class="text-xl font-black mb-3">{% trans "Expatriates" %}</h3>
+        <p class="text-slate-300 text-sm leading-relaxed">{% trans "Personal dashboard. Visa countdown, passport expiry, yellow fever status — self-service, bilingual." %}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- CTA                                                      -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="contact" class="py-24 bg-white">
+  <div class="max-w-4xl mx-auto px-6 text-center">
+    <div class="w-16 h-16 rounded-2xl bg-brand-100 flex items-center justify-center mx-auto mb-6">
+      <svg class="w-8 h-8 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+    </div>
+    <h2 class="text-3xl md:text-5xl font-black text-navy-900 leading-tight tracking-tight mb-6">
+      {% trans "Ready to eliminate DGM fines and compliance surprises?" %}
+    </h2>
+    <p class="text-lg text-slate-600 mb-10 max-w-2xl mx-auto">
+      {% trans "Request a pilot call. We'll scope a 30-day pilot on up to 30 experts. Full access, no long-term commitment." %}
+    </p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="/admin/" class="bg-navy-900 hover:bg-navy-800 text-white px-8 py-4 rounded-xl font-bold text-base transition shadow-xl">
+        {% trans "Access Platform" %} →
+      </a>
+      <a href="mailto:compliance@drcexpat.cd?subject=Pilot%20Request" class="bg-white text-navy-900 px-8 py-4 rounded-xl font-bold text-base border-2 border-navy-900 hover:bg-slate-50 transition">
+        {% trans "Request a Pilot Call" %}
+      </a>
+    </div>
+    <p class="text-xs text-slate-400 mt-8 max-w-2xl mx-auto">
+      {% trans "Regulatory framework references are pending final confirmation. Cap values are configurable in the platform settings." %}
+    </p>
+  </div>
+</section>
+
+{% endblock %}

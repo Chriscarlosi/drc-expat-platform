@@ -1,0 +1,199 @@
+{% extends "frontend/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "My Portal" %} — {{ expert.full_name }}{% endblock %}
+
+{% block content %}
+
+<div class="bg-slate-50 min-h-screen">
+  <div class="max-w-3xl mx-auto px-4 py-8">
+
+    <!-- ═══ WELCOME ═══ -->
+    <div class="mb-6">
+      <div class="text-xs uppercase tracking-widest text-brand-600 font-black mb-1">
+        {% trans "My Portal" %}
+      </div>
+      <h1 class="text-3xl font-black text-navy-900 leading-tight tracking-tight">
+        {{ expert.full_name }}
+      </h1>
+      <div class="text-slate-500 text-sm mt-1">
+        {{ expert.get_job_category_display }} — {{ expert.employer_company }}
+      </div>
+    </div>
+
+    <!-- ═══ STATUS BANNER ═══ -->
+    <div class="bg-white rounded-2xl p-6 border border-slate-200 mb-5">
+      <div class="flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-2">
+            {% trans "My Status" %}
+          </div>
+          <div class="text-2xl font-black" style="color: {{ status_color }};">
+            {{ status_label }}
+          </div>
+        </div>
+        <div class="text-right text-xs text-slate-500">
+          {{ today|date:"F j, Y" }}
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ DOCUMENT COUNTDOWNS ═══ -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+
+      <!-- Passport -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200">
+        <div class="text-2xl mb-2">🛂</div>
+        <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-2">
+          {% trans "Passport" %}
+        </div>
+        {% if passport_days is not None %}
+          <div class="text-3xl font-black leading-none mb-2"
+               style="color: {% if passport_days < 0 %}#DC2626{% elif passport_days < 90 %}#EA580C{% else %}#16A34A{% endif %};">
+            {% if passport_days < 0 %}
+              {% trans "EXPIRED" %}
+            {% else %}
+              {{ passport_days }}<span class="text-base">d</span>
+            {% endif %}
+          </div>
+          <div class="text-xs text-slate-400">
+            {{ expert.passport_expiry_date|date:"M j, Y" }}
+          </div>
+        {% else %}
+          <div class="text-slate-400 text-sm">{% trans "Not on file" %}</div>
+        {% endif %}
+      </div>
+
+      <!-- Yellow Fever -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200">
+        <div class="text-2xl mb-2">💉</div>
+        <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-2">
+          {% trans "Yellow Fever" %}
+        </div>
+        {% if yf_days is not None %}
+          <div class="text-3xl font-black leading-none mb-2"
+               style="color: {% if yf_days < 0 %}#DC2626{% elif yf_days < 90 %}#EA580C{% else %}#16A34A{% endif %};">
+            {% if yf_days < 0 %}
+              {% trans "EXPIRED" %}
+            {% else %}
+              {{ yf_days }}<span class="text-base">d</span>
+            {% endif %}
+          </div>
+          <div class="text-xs text-slate-400">
+            {{ expert.yellow_fever_expiry_date|date:"M j, Y" }}
+          </div>
+        {% else %}
+          <div class="text-slate-400 text-sm">{% trans "Not on file" %}</div>
+        {% endif %}
+      </div>
+
+      <!-- Carte de Travail -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200">
+        <div class="text-2xl mb-2">💼</div>
+        <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-2">
+          {% trans "Carte de Travail" %}
+        </div>
+        {% if carte_days is not None %}
+          <div class="text-3xl font-black leading-none mb-2"
+               style="color: {% if carte_days < 0 %}#DC2626{% elif carte_days < 90 %}#EA580C{% else %}#16A34A{% endif %};">
+            {% if carte_days < 0 %}
+              {% trans "EXPIRED" %}
+            {% else %}
+              {{ carte_days }}<span class="text-base">d</span>
+            {% endif %}
+          </div>
+          <div class="text-xs text-slate-400">
+            {{ carte.expiry_date|date:"M j, Y" }}
+          </div>
+        {% else %}
+          <div class="text-slate-400 text-sm">{% trans "Not on file" %}</div>
+        {% endif %}
+      </div>
+
+    </div>
+
+    <!-- ═══ UPCOMING FLIGHTS ═══ -->
+    {% if upcoming_flights %}
+    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden mb-5">
+      <div class="p-5 border-b border-slate-100">
+        <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-1">
+          {% trans "My Upcoming Flights" %}
+        </div>
+      </div>
+      <div class="divide-y divide-slate-100">
+        {% for p in upcoming_flights %}
+        <div class="p-5 flex justify-between items-center">
+          <div>
+            <div class="font-bold text-navy-900">
+              {{ p.flight.route.origin_iata }} → {{ p.flight.route.destination_iata }}
+            </div>
+            <div class="text-xs text-slate-500 mt-1">
+              {{ p.flight.operator.name }} · {{ p.flight.aircraft.registration|default:"—" }}
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-sm font-bold text-navy-900">
+              {{ p.flight.departure_datetime|date:"M j" }}
+            </div>
+            <div class="text-xs text-slate-500">
+              {{ p.flight.departure_datetime|date:"H:i" }}
+            </div>
+            {% if p.seat_number %}
+            <div class="text-xs text-brand-600 font-bold mt-1">
+              {% trans "Seat" %} {{ p.seat_number }}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- ═══ FAMILY ═══ -->
+    {% if dependants %}
+    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden mb-5">
+      <div class="p-5 border-b border-slate-100">
+        <div class="text-xs uppercase tracking-widest text-slate-500 font-black">
+          {% trans "My Family" %}
+        </div>
+      </div>
+      <div class="divide-y divide-slate-100">
+        {% for d in dependants %}
+        <div class="p-5 flex justify-between items-center">
+          <div>
+            <div class="font-bold text-navy-900">{{ d.full_name }}</div>
+            <div class="text-xs text-slate-500 mt-1">
+              {{ d.get_relationship_display }} · {{ d.nationality }}
+            </div>
+          </div>
+          <div class="text-right text-xs text-slate-500">
+            {% if d.passport_expiry_date %}
+              {% trans "Passport" %}<br>
+              {{ d.passport_expiry_date|date:"M j, Y" }}
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- ═══ HELP ═══ -->
+    <div class="bg-navy-900 text-white rounded-2xl p-6">
+      <div class="text-xs uppercase tracking-widest text-brand-400 font-black mb-2">
+        {% trans "Need Help?" %}
+      </div>
+      <p class="text-slate-300 text-sm leading-relaxed mb-4">
+        {% trans "Contact your HR / Compliance Manager for document renewals, extensions, or any questions about your status." %}
+      </p>
+      <a href="mailto:compliance@kibali.local"
+         class="inline-block bg-brand-600 hover:bg-brand-700 text-white px-5 py-3 rounded-lg text-sm font-bold transition">
+        {% trans "Email Compliance" %} →
+      </a>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,264 @@
+{% extends "frontend/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Login" %} — DRC Expat{% endblock %}
+
+{% block extrahead %}
+<style>
+  /* Remove default nav padding on login page */
+  body > nav { position: absolute; top: 0; left: 0; right: 0; background: transparent !important; border-bottom: none !important; z-index: 50; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen grid lg:grid-cols-2">
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- LEFT — Brand panel                                   -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="hidden lg:flex relative bg-navy-900 text-white overflow-hidden">
+    <div class="absolute inset-0 opacity-20"
+         style="background-image:
+                radial-gradient(circle at 20% 30%, #0D9488 0%, transparent 45%),
+                radial-gradient(circle at 80% 70%, #0D9488 0%, transparent 45%);"></div>
+    <div class="absolute inset-0 opacity-[0.03]"
+         style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+    <div class="relative flex flex-col justify-between p-16 w-full">
+      <!-- Top: logo -->
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-12 h-12 rounded-xl bg-brand-600 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-brand-600/40">🇨🇩</div>
+        <div>
+          <div class="font-black text-xl leading-tight tracking-tight">DRC EXPAT</div>
+          <div class="text-[10px] text-brand-400 uppercase tracking-widest font-bold">Compliance Platform</div>
+        </div>
+      </a>
+
+      <!-- Middle: message -->
+      <div class="max-w-md">
+        <h2 class="text-4xl font-black leading-[1.15] tracking-tight mb-6">
+          The compliance platform built for <span class="text-brand-400">DRC mining operations</span>.
+        </h2>
+
+        <p class="text-slate-400 text-base leading-relaxed mb-10">
+          Visa tracking, expatriate quota, charter manifests, and Ministry of Labour permits — all in one auditable system.
+        </p>
+
+        <!-- Feature bullets -->
+        <ul class="space-y-4">
+          <li class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-full bg-brand-600/20 border border-brand-600/40 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span class="text-brand-400 text-xs font-black">✓</span>
+            </div>
+            <div>
+              <div class="font-bold text-sm">T-90 / T-60 / T-30 Auto-Alerts</div>
+              <div class="text-xs text-slate-500 mt-0.5">Never miss a DGM or Labour deadline again</div>
+            </div>
+          </li>
+          <li class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-full bg-brand-600/20 border border-brand-600/40 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span class="text-brand-400 text-xs font-black">✓</span>
+            </div>
+            <div>
+              <div class="font-bold text-sm">6.5% Expat Quota Enforced</div>
+              <div class="text-xs text-slate-500 mt-0.5">Ministerial Order 33 (2025) compliance in real time</div>
+            </div>
+          </li>
+          <li class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-full bg-brand-600/20 border border-brand-600/40 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span class="text-brand-400 text-xs font-black">✓</span>
+            </div>
+            <div>
+              <div class="font-bold text-sm">One-Click DGM Manifests</div>
+              <div class="text-xs text-slate-500 mt-0.5">Government-ready PDFs for every charter flight</div>
+            </div>
+          </li>
+          <li class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-full bg-brand-600/20 border border-brand-600/40 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span class="text-brand-400 text-xs font-black">✓</span>
+            </div>
+            <div>
+              <div class="font-bold text-sm">SOC 2 Audit Chain</div>
+              <div class="text-xs text-slate-500 mt-0.5">SHA-256 hash-chained, tamper-evident</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Bottom: trust badges -->
+      <div class="flex items-center gap-6 text-xs text-slate-500 font-bold uppercase tracking-widest">
+        <span>AES-256</span>
+        <span class="text-slate-700">•</span>
+        <span>SOC 2 Ready</span>
+        <span class="text-slate-700">•</span>
+        <span>EN / FR</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- RIGHT — Login form                                   -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="flex flex-col bg-slate-50">
+
+    <!-- Mobile-only logo -->
+    <div class="lg:hidden p-6">
+      <a href="/" class="flex items-center gap-2">
+        <div class="w-10 h-10 rounded-lg bg-brand-600 flex items-center justify-center text-white font-black">🇨🇩</div>
+        <div>
+          <div class="font-black text-base leading-tight text-navy-900">DRC EXPAT</div>
+          <div class="text-[9px] text-brand-600 uppercase tracking-widest font-bold">Compliance Platform</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Form wrapper -->
+    <div class="flex-1 flex items-center justify-center px-6 pb-12">
+      <div class="w-full max-w-md">
+
+        <!-- Header -->
+        <div class="mb-8">
+          <div class="text-xs uppercase tracking-widest text-brand-600 font-black mb-3">
+            {% trans "Welcome back" %}
+          </div>
+          <h1 class="text-3xl md:text-4xl font-black text-navy-900 leading-tight tracking-tight mb-3">
+            {% trans "Sign in to your account" %}
+          </h1>
+          <p class="text-slate-500 text-sm leading-relaxed">
+            {% trans "Enter your credentials to access the compliance platform." %}
+          </p>
+        </div>
+
+        <!-- Messages -->
+        {% if messages %}
+          {% for message in messages %}
+            <div class="mb-5 p-4 rounded-xl text-sm font-bold flex items-start gap-3
+                        {% if message.tags == 'error' %}bg-red-50 text-red-700 border border-red-200
+                        {% else %}bg-green-50 text-green-700 border border-green-200{% endif %}">
+              <span class="text-base leading-none mt-0.5">
+                {% if message.tags == 'error' %}⚠{% else %}✓{% endif %}
+              </span>
+              <span>{{ message }}</span>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <!-- Form -->
+        <form method="post" class="space-y-5">
+          {% csrf_token %}
+
+          <!-- Username -->
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-black text-slate-500 mb-2">
+              {% trans "Username" %}
+            </label>
+            <div class="relative">
+              <input type="text" name="username" autofocus required autocomplete="username"
+                     placeholder="{% trans 'your.username' %}"
+                     class="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 bg-white
+                            focus:border-brand-500 focus:ring-4 focus:ring-brand-100
+                            outline-none transition text-navy-900 font-medium placeholder:text-slate-400">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-base">👤</span>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-black text-slate-500 mb-2">
+              {% trans "Password" %}
+            </label>
+            <div class="relative">
+              <input type="password" name="password" required autocomplete="current-password"
+                     placeholder="••••••••••"
+                     id="password-input"
+                     class="w-full px-4 py-3.5 pl-11 pr-11 rounded-xl border border-slate-200 bg-white
+                            focus:border-brand-500 focus:ring-4 focus:ring-brand-100
+                            outline-none transition text-navy-900 font-medium placeholder:text-slate-400">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-base">🔒</span>
+              <button type="button" id="toggle-password"
+                      class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-sm">
+                👁
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember + forgot -->
+          <div class="flex items-center justify-between text-xs">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" name="remember" class="w-4 h-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500">
+              <span class="text-slate-600 font-medium">{% trans "Remember me" %}</span>
+            </label>
+            <a href="/admin/password_reset/" class="text-brand-600 hover:text-brand-700 font-bold">
+              {% trans "Forgot password?" %}
+            </a>
+          </div>
+
+            <!-- Language switcher (top-right of form panel) -->
+{% get_current_language as CURRENT_LANG %}
+<div class="flex justify-end p-6 pb-0">
+  <div class="inline-flex items-center gap-1 p-1 bg-white rounded-lg border border-slate-200 shadow-sm">
+    <a href="/i18n/setlang/?lang=en&next={{ request.get_full_path }}"
+       class="px-3 py-1.5 rounded-md text-xs font-black tracking-wide transition
+              {% if CURRENT_LANG == 'en' %}bg-navy-900 text-white{% else %}text-slate-500 hover:text-navy-900{% endif %}">
+      EN
+    </a>
+    <a href="/i18n/setlang/?lang=fr&next={{ request.get_full_path }}"
+       class="px-3 py-1.5 rounded-md text-xs font-black tracking-wide transition
+              {% if CURRENT_LANG == 'fr' %}bg-navy-900 text-white{% else %}text-slate-500 hover:text-navy-900{% endif %}">
+      FR
+    </a>
+  </div>
+</div>
+
+          <!-- Submit -->
+          <button type="submit"
+                  class="w-full bg-navy-900 hover:bg-navy-800 text-white py-3.5 rounded-xl
+                         font-black text-sm tracking-wide transition
+                         shadow-xl shadow-navy-900/20 flex items-center justify-center gap-2 group">
+            {% trans "Sign In" %}
+            <span class="transition-transform group-hover:translate-x-1">→</span>
+          </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="my-7 flex items-center gap-4">
+          <div class="flex-1 h-px bg-slate-200"></div>
+          <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">
+            {% trans "or" %}
+          </span>
+          <div class="flex-1 h-px bg-slate-200"></div>
+        </div>
+
+        <!-- Admin link -->
+        <a href="/admin/login/"
+           class="block w-full text-center py-3.5 rounded-xl border-2 border-slate-200
+                  hover:border-navy-900 hover:bg-white transition
+                  text-sm font-bold text-slate-600">
+          🔐 {% trans "Staff Admin Login" %}
+        </a>
+
+        <!-- Footer note -->
+        <div class="mt-8 text-center text-xs text-slate-400 leading-relaxed">
+          {% trans "First time here? Contact your HR / Compliance Manager for credentials." %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Password toggle JS -->
+<script>
+  document.getElementById('toggle-password')?.addEventListener('click', function() {
+    const input = document.getElementById('password-input');
+    if (input.type === 'password') {
+      input.type = 'text';
+      this.textContent = '🙈';
+    } else {
+      input.type = 'password';
+      this.textContent = '👁';
+    }
+  });
+</script>
+
+{% endblock %}

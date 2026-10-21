@@ -1,0 +1,154 @@
+{% extends "frontend/base_app.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Settings" %} — DRC Expat{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto">
+
+    <!-- Header -->
+    <div class="mb-8 border-b border-slate-200 dark:border-slate-700 pb-6">
+        <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+            {% trans "Settings" %}
+        </h1>
+        <p class="text-slate-500 mt-2">
+            {% trans "Manage your company profile, team access, and platform preferences." %}
+        </p>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-8">
+
+        <!-- Settings Navigation Sidebar -->
+        <div class="w-full md:w-64 shrink-0">
+            <nav class="space-y-1">
+                <a href="#company" class="flex items-center gap-3 px-4 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white rounded-lg font-bold text-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    {% trans "Company Profile" %}
+                </a>
+                <a href="#team" class="flex items-center gap-3 px-4 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg font-semibold text-sm transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    {% trans "Team Members" %}
+                </a>
+                <a href="#subscription" class="flex items-center gap-3 px-4 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg font-semibold text-sm transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                    {% trans "Subscription" %}
+                </a>
+            </nav>
+        </div>
+
+        <!-- Settings Content Area -->
+        <div class="flex-1 space-y-8">
+
+            <!-- Company Profile Section -->
+            <section id="company" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+                <div class="px-6 py-5 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white">{% trans "Company Profile" %}</h2>
+                </div>
+                <div class="p-6 space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">{% trans "Company Name" %}</label>
+                            <input type="text" value="{{ company.name|default:'—' }}" readonly class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-slate-500 cursor-not-allowed">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">{% trans "Platform Scope" %}</label>
+                            <input type="text" value="{{ scope_label }}" readonly class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-slate-500 cursor-not-allowed">
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/50 rounded-lg p-4 flex gap-3 text-sm text-amber-800 dark:text-amber-200">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <p>{% trans "To change your company name or DRC registration details, please contact platform support." %}</p>
+                    </div>
+                </div>
+            </section>
+
+        <!-- Data Import Section -->
+<section id="data-import" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+    <div class="px-6 py-5 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+        <h2 class="text-lg font-bold text-slate-900 dark:text-white">{% trans "Bulk Data Import" %}</h2>
+    </div>
+    <div class="p-6">
+        <p class="text-sm text-slate-500 mb-4">
+            {% trans "Upload a CSV file to import multiple experts at once. Ensure your CSV has the following headers:" %}
+            <br>
+            <code class="text-xs bg-slate-100 dark:bg-slate-900 p-1 rounded mt-2 inline-block">first_name, last_name, date_of_birth, nationality, passport_number, passport_issue_date, passport_expiry_date, email</code>
+        </p>
+        <form method="post" action="{% url 'frontend:import_experts_csv' %}" enctype="multipart/form-data" class="flex flex-col sm:flex-row gap-4 items-end">
+            {% csrf_token %}
+            <div class="flex-1">
+                <input type="file" name="csv_file" required accept=".csv" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 block p-3 transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 cursor-pointer">
+            </div>
+            <button type="submit" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-3 rounded-xl font-bold text-sm shadow-md hover:-translate-y-0.5 transition-all w-full sm:w-auto">
+                {% trans "Upload & Import" %}
+            </button>
+        </form>
+    </div>
+</section>
+
+            <!-- Team Members Section -->
+            <section id="team" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+                <div class="px-6 py-5 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white">{% trans "Team Members" %}</h2>
+                    <a href="/admin/organization/usercompanymembership/add/" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-lg text-sm font-bold hover:-translate-y-0.5 transition-transform shadow-sm flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        {% trans "Invite User" %}
+                    </a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-bold uppercase text-xs">
+                            <tr>
+                                <th class="px-6 py-3">{% trans "Name" %}</th>
+                                <th class="px-6 py-3">{% trans "Email" %}</th>
+                                <th class="px-6 py-3">{% trans "Role" %}</th>
+                                <th class="px-6 py-3">{% trans "Status" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                            {% for member in team_members %}
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                                <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">{{ member.user.get_full_name|default:member.user.username }}</td>
+                                <td class="px-6 py-4 text-slate-500">{{ member.user.email }}</td>
+                                <td class="px-6 py-4">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300">
+                                        {{ member.get_role_display }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                                        {% trans "Active" %}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="px-6 py-8 text-center text-slate-500 italic">{% trans "No team members found." %}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Subscription Section -->
+            <section id="subscription" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+                <div class="px-6 py-5 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white">{% trans "Subscription" %}</h2>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between p-5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-900/50">
+                        <div>
+                            <div class="font-black text-slate-900 dark:text-white text-lg">{% trans "Enterprise Tier" %}</div>
+                            <div class="text-sm text-slate-500 mt-1">{% trans "Unlimited experts, all modules active." %}</div>
+                        </div>
+                        <div class="px-4 py-2 rounded-lg bg-green-100 text-green-700 text-sm font-bold border border-green-200">
+                            {% trans "Active" %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

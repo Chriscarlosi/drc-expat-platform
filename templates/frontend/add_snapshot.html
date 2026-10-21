@@ -1,0 +1,64 @@
+{% extends "frontend/base_app.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-8">
+    <div class="mb-8">
+        <h1 class="text-3xl font-black text-slate-900 dark:text-white">{% trans "Record Workforce Snapshot" %}</h1>
+        <p class="text-slate-500 mt-2">{% trans "Enter the current workforce data for" %} <strong>{{ company.name }}</strong>. This will update the Expat Quota and Compliance Score.</p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8">
+        {% csrf_token %}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Date -->
+            <div>
+                <label class="mb-2 font-bold text-sm block">{{ form.snapshot_date.label }}</label>
+                {{ form.snapshot_date }}
+            </div>
+
+            <!-- Totals -->
+            <div class="md:col-span-2 grid grid-cols-2 gap-4 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                <div>
+                    <label class="mb-2 font-bold text-sm block">{{ form.total_congolese_staff.label }}</label>
+                    {{ form.total_congolese_staff }}
+                </div>
+                <div>
+                    <label class="mb-2 font-bold text-sm block">{{ form.total_expat_staff.label }}</label>
+                    {{ form.total_expat_staff }}
+                </div>
+            </div>
+
+            <!-- Congolese Breakdown -->
+            <div class="space-y-4">
+                <h3 class="font-bold text-lg border-b border-slate-200 dark:border-slate-700 pb-2">{% trans "Congolese Breakdown" %}</h3>
+                <div><label class="text-sm font-bold block mb-1">{{ form.congolese_class_i_v.label }}</label>{{ form.congolese_class_i_v }}</div>
+                <div><label class="text-sm font-bold block mb-1">{{ form.congolese_supervisor.label }}</label>{{ form.congolese_supervisor }}</div>
+                <div><label class="text-sm font-bold block mb-1">{{ form.congolese_management.label }}</label>{{ form.congolese_management }}</div>
+            </div>
+
+            <!-- Expat Breakdown -->
+            <div class="space-y-4">
+                <h3 class="font-bold text-lg border-b border-slate-200 dark:border-slate-700 pb-2">{% trans "Expat Breakdown" %}</h3>
+                <div><label class="text-sm font-bold block mb-1">{{ form.expat_class_i_v.label }}</label>{{ form.expat_class_i_v }}</div>
+                <div><label class="text-sm font-bold block mb-1">{{ form.expat_supervisor.label }}</label>{{ form.expat_supervisor }}</div>
+                <div><label class="text-sm font-bold block mb-1">{{ form.expat_management.label }}</label>{{ form.expat_management }}</div>
+            </div>
+
+            <!-- Notes -->
+            <div class="md:col-span-2">
+                <label class="mb-2 font-bold text-sm block">{{ form.notes.label }}</label>
+                {{ form.notes }}
+            </div>
+        </div>
+
+        <div class="mt-8 flex justify-end gap-4">
+            <a href="{% url 'frontend:executive_dashboard' %}" class="px-6 py-3 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200">{% trans "Cancel" %}</a>
+            <button type="submit" class="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-amber-500/30">
+                {% trans "Save Snapshot" %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

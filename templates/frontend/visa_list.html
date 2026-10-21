@@ -1,0 +1,114 @@
+{% extends "frontend/base_app.html" %}
+{% load i18n humanize %}
+
+{% block title %}{% trans "Visa Records" %} — DRC Expat{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-slate-200 dark:border-slate-700 pb-6">
+        <div>
+            <div class="text-xs uppercase tracking-[0.2em] text-amber-600 font-black mb-2 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                {% trans "Visa Management" %}
+            </div>
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                {% trans "Visa Records" %}
+            </h1>
+            <div class="text-slate-500 text-sm mt-2">
+                {% trans "Scope:" %} <strong class="text-slate-700 dark:text-slate-300">{{ scope_label }}</strong>
+            </div>
+        </div>
+        <div class="flex gap-3">
+            <a href="{% url 'frontend:prolongation_create' %}" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-amber-500/30 transition-transform hover:-translate-y-0.5">
+                + {% trans "Request Prolongation" %}
+            </a>
+        </div>
+    </div>
+
+    <!-- Filters & Search -->
+    <div class="flex flex-col sm:flex-row gap-4 bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <form method="get" class="flex-1 flex gap-4">
+            <div class="relative flex-1">
+                <svg class="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <input type="text" name="q" value="{{ request.GET.q }}" placeholder="{% trans 'Search by name or visa number...' %}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm rounded-xl pl-10 pr-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+            </div>
+            <select name="status" class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-700 dark:text-slate-300">
+                <option value="">{% trans "All Statuses" %}</option>
+                {% for val, label in status_choices %}
+                <option value="{{ val }}" {% if request.GET.status == val %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-2.5 rounded-xl font-bold text-sm">{% trans "Filter" %}</button>
+        </form>
+    </div>
+
+    <!-- Data Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 font-bold uppercase text-xs border-b border-slate-200 dark:border-slate-700">
+                    <tr>
+                        <th class="px-6 py-4 whitespace-nowrap">{% trans "Expert" %}</th>
+                        <th class="px-6 py-4 whitespace-nowrap">{% trans "Visa Number" %}</th>
+                        <th class="px-6 py-4 whitespace-nowrap">{% trans "Type" %}</th>
+                        <th class="px-6 py-4 whitespace-nowrap">{% trans "Issue Date" %}</th>
+                        <th class="px-6 py-4 whitespace-nowrap">{% trans "Expiry Date" %}</th>
+                        <th class="px-6 py-4 whitespace-nowrap">{% trans "Status" %}</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                    {% for visa in visas %}
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors group">
+                        <td class="px-6 py-4">
+                            <a href="{% url 'frontend:expert_profile' visa.expert.id %}" class="font-bold text-slate-900 dark:text-white hover:text-amber-600 transition-colors block">
+                                {{ visa.expert.full_name }}
+                            </a>
+                            <div class="text-xs text-slate-500 mt-0.5">{{ visa.expert.nationality }}</div>
+                        </td>
+                        <td class="px-6 py-4 font-mono text-xs text-slate-600 dark:text-slate-400 whitespace-nowrap">
+                            {{ visa.visa_number }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-bold text-xs border border-slate-200 dark:border-slate-700">
+                                {{ visa.visa_type.code }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">
+                            {{ visa.issue_date|date:"M j, Y" }}
+                        </td>
+                        <td class="px-6 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">
+                            {{ visa.expiry_date|date:"M j, Y" }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <!-- UNIFIED STATUS BADGE (Fixes the redundant column issue) -->
+                            {% if visa.status == 'EXPIRED' %}
+                                <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold border border-red-200">EXPIRED</span>
+                            {% elif visa.status == 'EXPIRING_SOON' %}
+                                <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-bold border border-amber-200">
+                                    {{ visa.days_until_expiry }}d left
+                                </span>
+                            {% elif visa.status == 'ACTIVE' %}
+                                <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold border border-green-200">
+                                    Active
+                                </span>
+                            {% else %}
+                                <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold">{{ visa.get_status_display }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="px-6 py-12 text-center text-slate-500">
+                            <svg class="w-12 h-12 text-slate-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            {% trans "No visa records found." %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

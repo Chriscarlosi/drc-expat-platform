@@ -1,0 +1,1234 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DRC Expat Compliance Platform\n"
+"PO-Revision-Date: 2026-10-16 11:38+0100\n"
+"Last-Translator:   <admin@drc-expat.local>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Translated-Using: django-rosetta 0.10.3\n"
+
+# ─── Navigation & Common ────────────────────────────────
+msgid "Dashboard"
+msgstr "Tableau de bord"
+
+msgid "Home"
+msgstr "Accueil"
+
+msgid "Back to Admin"
+msgstr "Retour à l'administration"
+
+msgid "Log out"
+msgstr "Déconnexion"
+
+msgid "Search"
+msgstr "Rechercher"
+
+msgid "Filters"
+msgstr "Filtres"
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Save"
+msgstr "Enregistrer"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Edit"
+msgstr "Modifier"
+
+msgid "Add"
+msgstr "Ajouter"
+
+msgid "View"
+msgstr "Voir"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Status"
+msgstr "Statut"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Amount"
+msgstr "Montant"
+
+msgid "Days"
+msgstr "Jours"
+
+msgid "Export PDF"
+msgstr "Exporter en PDF"
+
+msgid "Export Excel"
+msgstr "Exporter en Excel"
+
+msgid "Dark"
+msgstr "Sombre"
+
+msgid "Light"
+msgstr "Clair"
+
+msgid "English"
+msgstr "Anglais"
+
+msgid "French"
+msgstr "Français"
+
+# ─── Dashboard ──────────────────────────────────────────
+msgid "Risk & Penalty Mitigation Board"
+msgstr "Tableau de bord des risques et pénalités"
+
+msgid "Compliance Score"
+msgstr "Score de conformité"
+
+msgid "risk"
+msgstr "risque"
+
+msgid "Expat Quota"
+msgstr "Quota d'expatriés"
+
+msgid "cap"
+msgstr "plafond"
+
+msgid "workforce"
+msgstr "effectif"
+
+msgid "COMPLIANT"
+msgstr "CONFORME"
+
+msgid "QUOTA BREACH"
+msgstr "DÉPASSEMENT DE QUOTA"
+
+msgid "headroom"
+msgstr "marge disponible"
+
+msgid "Active Experts"
+msgstr "Experts actifs"
+
+msgid "Passports ≤ 90d"
+msgstr "Passeports ≤ 90j"
+
+msgid "Cartes ≤ 90d"
+msgstr "Cartes ≤ 90j"
+
+msgid "Visas ≤ 90d"
+msgstr "Visas ≤ 90j"
+
+msgid "Critical ≤ 30d"
+msgstr "Critique ≤ 30j"
+
+msgid "Penalties"
+msgstr "Pénalités"
+
+msgid "Document Expiry Funnel"
+msgstr "Entonnoir d'expiration des documents"
+
+msgid "15-day buckets over next 90 days"
+msgstr "Périodes de 15 jours sur les 90 prochains jours"
+
+msgid "Passports"
+msgstr "Passeports"
+
+msgid "Cartes"
+msgstr "Cartes"
+
+msgid "Visas"
+msgstr "Visas"
+
+msgid "Already Expired"
+msgstr "Déjà expiré"
+
+msgid "Passports Expiring"
+msgstr "Passeports expirant"
+
+msgid "Cartes de Travail"
+msgstr "Cartes de Travail"
+
+msgid "Visas Expiring"
+msgstr "Visas expirant"
+
+msgid "Active Penalties"
+msgstr "Pénalités actives"
+
+msgid "Next 90 days"
+msgstr "Prochains 90 jours"
+
+msgid "Unresolved DGM accruals"
+msgstr "Accumulations DGM non résolues"
+
+msgid "Recent Activity"
+msgstr "Activité récente"
+
+msgid "Immutable hash-chained audit log — latest entries"
+msgstr "Journal d'audit immuable — dernières entrées"
+
+msgid "CHAIN VERIFIED"
+msgstr "CHAÎNE VÉRIFIÉE"
+
+msgid "CHAIN BROKEN"
+msgstr "CHAÎNE ROMPUE"
+
+msgid "Expert"
+msgstr "Expert"
+
+msgid "Nationality"
+msgstr "Nationalité"
+
+msgid "Expiry"
+msgstr "Expiration"
+
+msgid "Reason"
+msgstr "Motif"
+
+msgid "entries"
+msgstr "entrées"
+
+msgid "checked"
+msgstr "vérifié"
+
+# ─── Travel & Charter ──────────────────────────────────
+msgid "Charter & Travel Management"
+msgstr "Gestion des vols et voyages"
+
+msgid "Cost Dashboard"
+msgstr "Tableau de bord des coûts"
+
+msgid "Rotation Calendar"
+msgstr "Calendrier de rotation"
+
+msgid "Medevac Readiness"
+msgstr "Préparation médicale"
+
+msgid "This Month"
+msgstr "Ce mois-ci"
+
+msgid "Year to Date"
+msgstr "Année en cours"
+
+msgid "All Time"
+msgstr "Depuis toujours"
+
+msgid "Monthly Spend — Last 12 Months"
+msgstr "Dépenses mensuelles — 12 derniers mois"
+
+msgid "Spend by Route"
+msgstr "Dépenses par itinéraire"
+
+msgid "Spend by Operator"
+msgstr "Dépenses par opérateur"
+
+msgid "Top 15 Experts by Cost"
+msgstr "Top 15 des experts par coût"
+
+msgid "Route Detail (Top 15)"
+msgstr "Détail des itinéraires (Top 15)"
+
+msgid "Flights"
+msgstr "Vols"
+
+msgid "Passengers"
+msgstr "Passagers"
+
+msgid "On Site Today"
+msgstr "Sur site aujourd'hui"
+
+msgid "Off Rotation Today"
+msgstr "En rotation aujourd'hui"
+
+msgid "Active Schedules"
+msgstr "Plannings actifs"
+
+msgid "Personnel On Site"
+msgstr "Personnel sur site"
+
+msgid "Medevac-Ready Flights"
+msgstr "Vols prêts pour médicalisation"
+
+msgid "Flights Next 7 Days"
+msgstr "Vols des 7 prochains jours"
+
+msgid "Manifest"
+msgstr "Manifeste"
+
+msgid "Print"
+msgstr "Imprimer"
+
+msgid "Scheduled"
+msgstr "Programmé"
+
+msgid "Boarding"
+msgstr "Embarquement"
+
+msgid "Departed"
+msgstr "Parti"
+
+msgid "Arrived"
+msgstr "Arrivé"
+
+msgid "Delayed"
+msgstr "Retardé"
+
+msgid "Cancelled"
+msgstr "Annulé"
+
+msgid "Diverted"
+msgstr "Dévié"
+
+msgid "Medevac"
+msgstr "Médicalisation"
+
+msgid "Operator"
+msgstr "Opérateur"
+
+msgid "Aircraft"
+msgstr "Appareil"
+
+msgid "Route"
+msgstr "Itinéraire"
+
+msgid "Departure"
+msgstr "Départ"
+
+msgid "Arrival"
+msgstr "Arrivée"
+
+msgid "Pax"
+msgstr "Passagers"
+
+msgid "DGM"
+msgstr "DGM"
+
+msgid "Manifest PDF"
+msgstr "Manifeste PDF"
+
+# ─── DGM Manifest PDF ──────────────────────────────────
+msgid "FLIGHT DETAILS"
+msgstr "DÉTAILS DU VOL"
+
+msgid "PASSENGER MANIFEST"
+msgstr "MANIFESTE DES PASSAGERS"
+
+msgid "SUMMARY"
+msgstr "RÉSUMÉ"
+
+msgid "Expatriates"
+msgstr "Expatriés"
+
+msgid "Family"
+msgstr "Famille"
+
+msgid "Crew"
+msgstr "Équipage"
+
+msgid "Pilot in Command"
+msgstr "Commandant de bord"
+
+msgid "HR / DGM Officer"
+msgstr "Responsable RH / DGM"
+
+msgid "Time"
+msgstr "Heure"
+
+msgid "Actor"
+msgstr "Utilisateur"
+
+msgid "Model"
+msgstr "Modèle"
+
+msgid "Object"
+msgstr "Objet"
+
+msgid "No passports expiring."
+msgstr "Aucun passeport expirant."
+
+msgid "No permits expiring."
+msgstr "Aucun permis expirant."
+
+msgid "No visas expiring."
+msgstr "Aucun visa expirant."
+
+msgid "No active penalties."
+msgstr "Aucune pénalité active."
+
+msgid "No activity yet."
+msgstr "Aucune activité pour le moment."
+
+# ─── Travel templates ───────────────────────────────────
+msgid "From → To"
+msgstr "De → À"
+
+msgid "Seat"
+msgstr "Siège"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Full Name"
+msgstr "Nom complet"
+
+msgid "Passport"
+msgstr "Passeport"
+
+msgid "DOB"
+msgstr "Date de naissance"
+
+msgid "EXPAT"
+msgstr "EXPATRIÉ"
+
+msgid "FAMILY"
+msgstr "FAMILLE"
+
+msgid "CREW"
+msgstr "ÉQUIPAGE"
+
+msgid "Signature"
+msgstr "Signature"
+
+msgid "Printed Name"
+msgstr "Nom imprimé"
+
+msgid "This manifest is generated by the DRC Expat Compliance Platform."
+msgstr "Ce manifeste est généré par la Plateforme de Conformité DRC Expat."
+
+msgid "No passengers booked on this flight."
+msgstr "Aucun passager réservé sur ce vol."
+
+msgid "Flight Manifest"
+msgstr "Manifeste de vol"
+
+msgid "Full Name / Nom complet"
+msgstr "Nom complet"
+
+msgid "Against"
+msgstr "Contre"
+
+msgid "LOW"
+msgstr "FAIBLE"
+
+msgid "MODERATE"
+msgstr "MODÉRÉ"
+
+msgid "HIGH"
+msgstr "ÉLEVÉ"
+
+msgid "CRITICAL"
+msgstr "CRITIQUE"
+
+msgid "Expired Carte(s) de Travail"
+msgstr "Carte(s) de Travail expirée(s)"
+
+msgid "Expired passport(s) on active expert(s)"
+msgstr "Passeport(s) expiré(s) sur expert(s) actif(s)"
+
+msgid "Expat quota breached (>6.5%)"
+msgstr "Quota d'expatriés dépassé (>6,5 %)"
+
+msgid "Unresolved DGM penalties"
+msgstr "Pénalités DGM non résolues"
+
+# ─── Frontend landing page ──────────────────────────────
+msgid "Login"
+msgstr "Connexion"
+
+msgid "Login to Platform"
+msgstr "Accéder à la plateforme"
+
+msgid "See Features"
+msgstr "Voir les fonctionnalités"
+
+msgid "Compliance without the chaos."
+msgstr "La conformité sans le chaos."
+
+msgid "Visa, permit, and charter tracking built for the DRC."
+msgstr "Suivi des visas, permis et vols conçu pour la RDC."
+
+msgid ""
+"The only platform that enforces the 6.5% expatriate quota, tracks DGM and "
+"Ministry of Labour deadlines, and generates government-ready flight "
+"manifests — all in one system."
+msgstr ""
+"La seule plateforme qui applique le quota d'expatriés de 6,5 %, suit les "
+"échéances DGM et du Ministère du Travail, et génère des manifestes de vol "
+"conformes — le tout en un seul système."
+
+msgid "SOC 2 Ready"
+msgstr "Prêt SOC 2"
+
+msgid "AES-256 Encrypted"
+msgstr "Chiffré AES-256"
+
+msgid "EN / FR Bilingual"
+msgstr "Bilingue EN / FR"
+
+msgid "Deployed in DRC"
+msgstr "Déployé en RDC"
+
+# ─── Executive dashboard ────────────────────────────────
+msgid "Executive Dashboard"
+msgstr "Tableau de bord exécutif"
+
+msgid "Full Compliance View"
+msgstr "Vue complète de conformité"
+
+msgid "Admin"
+msgstr "Administration"
+
+msgid "All compliance obligations are currently met. Continue monitoring."
+msgstr ""
+"Toutes les obligations de conformité sont actuellement remplies. Continuez "
+"la surveillance."
+
+msgid ""
+"Some documents require attention in the next 90 days. Review the alerts "
+"below."
+msgstr ""
+"Certains documents nécessitent une attention dans les 90 prochains jours. "
+"Consultez les alertes ci-dessous."
+
+msgid "Critical compliance issues detected. Immediate action required."
+msgstr "Problèmes critiques de conformité détectés. Action immédiate requise."
+
+msgid ""
+"Compliance breach detected. DGM or Ministry of Labour exposure is active."
+msgstr ""
+"Violation de conformité détectée. Exposition active DGM ou Ministère du "
+"Travail."
+
+msgid "expats"
+msgstr "expatriés"
+
+msgid "Congolese"
+msgstr "Congolais"
+
+msgid "Expiring (90 days)"
+msgstr "Expirant (90 jours)"
+
+msgid "passports"
+msgstr "passeports"
+
+msgid "cartes"
+msgstr "cartes"
+
+msgid "active accruals"
+msgstr "accumulations actives"
+
+msgid "Upcoming Expirations"
+msgstr "Expirations à venir"
+
+msgid "Unresolved DGM accruals"
+msgstr "Accumulations DGM non résolues"
+
+msgid "No upcoming expirations."
+msgstr "Aucune expiration à venir."
+
+msgid "days"
+msgstr "jours"
+
+msgid "BREACH"
+msgstr "VIOLATION"
+
+msgid "of"
+msgstr "sur"
+
+msgid "cap"
+msgstr "plafond"
+
+# ─── Expert portal ──────────────────────────────────────
+msgid "My Portal"
+msgstr "Mon portail"
+
+msgid "My Status"
+msgstr "Mon statut"
+
+msgid "Passport"
+msgstr "Passeport"
+
+msgid "Yellow Fever"
+msgstr "Fièvre jaune"
+
+msgid "Carte de Travail"
+msgstr "Carte de Travail"
+
+msgid "EXPIRED"
+msgstr "EXPIRÉ"
+
+msgid "Not on file"
+msgstr "Non enregistré"
+
+msgid "My Upcoming Flights"
+msgstr "Mes vols à venir"
+
+msgid "My Family"
+msgstr "Ma famille"
+
+msgid "Seat"
+msgstr "Siège"
+
+msgid "Need Help?"
+msgstr "Besoin d'aide ?"
+
+msgid ""
+"Contact your HR / Compliance Manager for document renewals, extensions, or "
+"any questions about your status."
+msgstr ""
+"Contactez votre responsable RH / Conformité pour les renouvellements de "
+"documents, les prolongations ou toute question sur votre statut."
+
+msgid "Email Compliance"
+msgstr "Contacter la conformité"
+
+msgid "No Expert Profile Linked"
+msgstr "Aucun profil d'expert lié"
+
+msgid ""
+"Your account is not linked to an expert profile. Please contact your HR / "
+"Compliance Manager."
+msgstr ""
+"Votre compte n'est pas lié à un profil d'expert. Veuillez contacter votre "
+"responsable RH / Conformité."
+
+msgid "Back to Home"
+msgstr "Retour à l'accueil"
+
+msgid "COMPLIANT"
+msgstr "CONFORME"
+
+msgid "ATTENTION"
+msgstr "ATTENTION"
+
+msgid "CRITICAL"
+msgstr "CRITIQUE"
+
+msgid "INCOMPLETE"
+msgstr "INCOMPLET"
+
+msgid "Welcome back"
+msgstr "Bon retour"
+
+msgid "Sign in to your compliance dashboard"
+msgstr "Connectez-vous à votre tableau de bord de conformité"
+
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+msgid "Password"
+msgstr "Mot de passe"
+
+msgid "Sign In"
+msgstr "Se connecter"
+
+msgid "Staff admin access?"
+msgstr "Accès administrateur ?"
+
+msgid "Login here"
+msgstr "Se connecter ici"
+
+msgid "Need help? Contact your HR / Compliance Manager."
+msgstr "Besoin d'aide ? Contactez votre responsable RH / Conformité."
+
+msgid "Invalid username or password."
+msgstr "Nom d'utilisateur ou mot de passe invalide."
+
+msgid "Sign in to your account"
+msgstr "Connectez-vous à votre compte"
+
+msgid "Enter your credentials to access the compliance platform."
+msgstr "Entrez vos identifiants pour accéder à la plateforme de conformité."
+
+msgid "your.username"
+msgstr "votre.nom_utilisateur"
+
+msgid "Remember me"
+msgstr "Se souvenir de moi"
+
+msgid "Forgot password?"
+msgstr "Mot de passe oublié ?"
+
+msgid "or"
+msgstr "ou"
+
+msgid "Staff Admin Login"
+msgstr "Connexion administrateur"
+
+msgid "First time here? Contact your HR / Compliance Manager for credentials."
+msgstr ""
+"Première visite ? Contactez votre responsable RH / Conformité pour vos "
+"identifiants."
+
+msgid "Enterprise Grade"
+msgstr "Qualité entreprise"
+
+msgid "The compliance platform built for"
+msgstr "La plateforme de conformité conçue pour"
+
+msgid "DRC mining operations"
+msgstr "les opérations minières en RDC"
+
+msgid ""
+"Visa tracking, expatriate quota, charter manifests, and Ministry of Labour "
+"permits — all in one auditable system."
+msgstr ""
+"Suivi des visas, quota d'expatriés, manifestes de vol et permis du Ministère"
+" du Travail — dans un seul système auditable."
+
+msgid "T-90 / T-60 / T-30 Auto-Alerts"
+msgstr "Alertes automatiques T-90 / T-60 / T-30"
+
+msgid "Never miss a DGM or Labour deadline again"
+msgstr "Ne manquez plus jamais une échéance DGM ou Travail"
+
+msgid "6.5% Expat Quota Enforced"
+msgstr "Quota d'expatriés de 6,5 % appliqué"
+
+msgid "Ministerial Order 33 (2025) compliance in real time"
+msgstr "Conformité à l'Arrêté ministériel 33 (2025) en temps réel"
+
+msgid "One-Click DGM Manifests"
+msgstr "Manifestes DGM en un clic"
+
+msgid "Government-ready PDFs for every charter flight"
+msgstr "PDF conformes pour chaque vol charter"
+
+msgid "SHA-256 hash-chained, tamper-evident"
+msgstr "Chaîné par hash SHA-256, inviolable"
+
+msgid "AES-256"
+msgstr "AES-256"
+
+msgid "SOC 2 Ready"
+msgstr "Prêt SOC 2"
+
+msgid "DRC Hosted"
+msgstr "Hébergé en RDC"
+
+# ─── Login page (final batch) ────────────────────────────
+msgid "Sign in to your account"
+msgstr "Connectez-vous à votre compte"
+
+msgid "Enter your credentials to access the compliance platform."
+msgstr "Entrez vos identifiants pour accéder à la plateforme de conformité."
+
+msgid "Remember me"
+msgstr "Se souvenir de moi"
+
+msgid "Forgot password?"
+msgstr "Mot de passe oublié ?"
+
+msgid "or"
+msgstr "ou"
+
+msgid "Staff Admin Login"
+msgstr "Connexion administrateur"
+
+msgid "First time here? Contact your HR / Compliance Manager for credentials."
+msgstr ""
+"Première visite ? Contactez votre responsable RH / Conformité pour vos "
+"identifiants."
+
+msgid "Enterprise Grade"
+msgstr "Qualité entreprise"
+
+msgid "The compliance platform built for"
+msgstr "La plateforme de conformité conçue pour"
+
+msgid "DRC mining operations"
+msgstr "les opérations minières en RDC"
+
+msgid ""
+"Visa tracking, expatriate quota, charter manifests, and Ministry of Labour "
+"permits — all in one auditable system."
+msgstr ""
+"Suivi des visas, quota d'expatriés, manifestes de vol et permis du Ministère"
+" du Travail — dans un seul système auditable."
+
+msgid "T-90 / T-60 / T-30 Auto-Alerts"
+msgstr "Alertes automatiques T-90 / T-60 / T-30"
+
+msgid "Never miss a DGM or Labour deadline again"
+msgstr "Ne manquez plus jamais une échéance DGM ou Travail"
+
+msgid "6.5% Expat Quota Enforced"
+msgstr "Quota d'expatriés de 6,5 % appliqué"
+
+msgid "Ministerial Order 33 (2025) compliance in real time"
+msgstr "Conformité à l'Arrêté ministériel 33 (2025) en temps réel"
+
+msgid "One-Click DGM Manifests"
+msgstr "Manifestes DGM en un clic"
+
+msgid "Government-ready PDFs for every charter flight"
+msgstr "PDF conformes pour chaque vol charter"
+
+msgid "SOC 2 Audit Chain"
+msgstr "Chaîne d'audit SOC 2"
+
+msgid "SHA-256 hash-chained, tamper-evident"
+msgstr "Chaîné par hash SHA-256, inviolable"
+
+msgid "DRC Hosted"
+msgstr "Hébergé en RDC"
+
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+msgid "Password"
+msgstr "Mot de passe"
+
+msgid "Sign In"
+msgstr "Se connecter"
+
+# ─── Marketing pages ────────────────────────────────────
+msgid "Home"
+msgstr "Accueil"
+
+msgid "Features"
+msgstr "Fonctionnalités"
+
+msgid "Modules"
+msgstr "Modules"
+
+msgid "Pricing"
+msgstr "Tarifs"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Platform Features"
+msgstr "Fonctionnalités de la plateforme"
+
+msgid "Every feature exists because a DRC mining HR team needed it."
+msgstr ""
+"Chaque fonctionnalité existe parce qu'une équipe RH minière en RDC en avait "
+"besoin."
+
+msgid ""
+"No filler. No bloat. Just the compliance primitives that keep you out of DGM"
+" fines and Ministry of Labour investigations."
+msgstr ""
+"Pas de remplissage. Pas de superflu. Juste les primitives de conformité qui "
+"vous évitent les amendes DGM et les enquêtes du Ministère du Travail."
+
+msgid "All 13 DRC visa codes. Every prolongation chain."
+msgstr "Les 13 codes de visa RDC. Chaque chaîne de prolongation."
+
+msgid ""
+"VV, VV2+, PVV3+, VV6, VSR+, VA, VVD, VET, VEO, DT, E-VVL, E-VETS, HOL-EX — "
+"validated against their legal validity windows. Prolongations tracked as a "
+"formal chain, not lost in email threads."
+msgstr ""
+"VV, VV2+, PVV3+, VV6, VSR+, VA, VVD, VET, VEO, DT, E-VVL, E-VETS, HOL-EX — "
+"validés selon leurs fenêtres de validité légales. Prolongations suivies "
+"comme une chaîne formelle, pas perdues dans des fils d'e-mails."
+
+msgid "Configurable catalog — add new codes without code changes"
+msgstr ""
+"Catalogue configurable — ajoutez de nouveaux codes sans modifications de "
+"code"
+
+msgid "Automatic validity-window validation per code"
+msgstr "Validation automatique de la fenêtre de validité par code"
+
+msgid "Full prolongation history with parent-visa linkage"
+msgstr "Historique complet des prolongations avec lien au visa parent"
+
+msgid "Visa codes supported"
+msgstr "Codes de visa pris en charge"
+
+msgid "Live quota"
+msgstr "Quota en direct"
+
+msgid "OF 6.5% CAP"
+msgstr "SUR 6,5 % DE PLAFOND"
+
+msgid "Headroom: 335 additional expats"
+msgstr "Marge disponible : 335 expatriés supplémentaires"
+
+msgid "The 6.5% expatriate cap — enforced in real time."
+msgstr "Le plafond d'expatriés de 6,5 % — appliqué en temps réel."
+
+msgid ""
+"Ministerial Order No 33 (2025) caps expatriate staff at 6.5% of the total "
+"workforce in the extractive sector. We calculate this live, per company and "
+"per site, with per-category caps."
+msgstr ""
+"L'Arrêté ministériel n° 33 (2025) plafonne le personnel expatrié à 6,5 % de "
+"l'effectif total dans le secteur extractif. Nous le calculons en direct, par"
+" entreprise et par site, avec des plafonds par catégorie."
+
+msgid "Per-company and per-site headroom visibility"
+msgstr "Visibilité de la marge disponible par entreprise et par site"
+
+msgid "Category caps: 2% Class I-V, 2.5% Supervisor, 2% Management"
+msgstr ""
+"Plafonds par catégorie : 2 % Classe I-V, 2,5 % Superviseur, 2 % Direction"
+
+msgid "Monthly Ministry-ready reports in one click"
+msgstr "Rapports mensuels prêts pour le Ministère en un clic"
+
+msgid "DGM and Ministry of Labour — interdependent by law."
+msgstr "DGM et Ministère du Travail — interdépendants par la loi."
+
+msgid ""
+"A Work Visa cannot be marked Active without a valid Carte de Travail. The "
+"system enforces this at the database level, not the UI."
+msgstr ""
+"Un visa de travail ne peut pas être marqué Actif sans une Carte de Travail "
+"valide. Le système l'applique au niveau de la base de données, pas de "
+"l'interface."
+
+msgid "Work Visa + no Carte = validation error"
+msgstr "Visa de travail + pas de Carte = erreur de validation"
+
+msgid "Carte expiring before visa = compliance warning"
+msgstr "Carte expirant avant le visa = avertissement de conformité"
+
+msgid "ONEM registration linked per expert"
+msgstr "Enregistrement ONEM lié par expert"
+
+msgid "Example validation"
+msgstr "Exemple de validation"
+
+msgid "Passport valid"
+msgstr "Passeport valide"
+
+msgid "Carte de Travail valid until 2027-06-15"
+msgstr "Carte de Travail valide jusqu'au 15/06/2027"
+
+msgid "Work Visa expires 2027-03-30"
+msgstr "Le visa de travail expire le 30/03/2027"
+
+msgid "Status: ACTIVE — compliant"
+msgstr "Statut : ACTIF — conforme"
+
+msgid "Audit chain sample"
+msgstr "Exemple de chaîne d'audit"
+
+msgid "Every action. Hash-chained. Tamper-evident."
+msgstr "Chaque action. Chaînée par hash. Inviolable."
+
+msgid ""
+"SHA-256 hash chains link each audit entry to the previous one. If anyone "
+"modifies a past record, the chain breaks — mathematically, provably. One "
+"command verifies integrity in seconds."
+msgstr ""
+"Les chaînes de hash SHA-256 relient chaque entrée d'audit à la précédente. "
+"Si quelqu'un modifie un ancien enregistrement, la chaîne se rompt — "
+"mathématiquement, prouvablement. Une commande vérifie l'intégrité en "
+"quelques secondes."
+
+msgid "Append-only log — no edits, no deletes"
+msgstr ""
+"Journal en ajout uniquement — pas de modifications, pas de suppressions"
+
+msgid "IP address, user, timestamp per entry"
+msgstr "Adresse IP, utilisateur, horodatage par entrée"
+
+msgid "One-command verification for auditors"
+msgstr "Vérification en une commande pour les auditeurs"
+
+msgid "T-90, T-60, T-30 — before it becomes a problem."
+msgstr "T-90, T-60, T-30 — avant que cela ne devienne un problème."
+
+msgid ""
+"Configurable alert tiers fire bilingual email and SMS. Daily Celery scan "
+"runs at midnight. Idempotent — no duplicate alerts, no missed deadlines."
+msgstr ""
+"Des niveaux d'alerte configurables déclenchent des e-mails et SMS bilingues."
+" Un scan Celery quotidien s'exécute à minuit. Idempotent — aucune alerte en "
+"double, aucune échéance manquée."
+
+msgid "Email + SMS bilingual EN/FR"
+msgstr "E-mail + SMS bilingue EN/FR"
+
+msgid "Customizable tiers per document type"
+msgstr "Niveaux personnalisables par type de document"
+
+msgid "Alert log with delivery status"
+msgstr "Journal des alertes avec statut de livraison"
+
+msgid "Alert schedule"
+msgstr "Calendrier des alertes"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Email + SMS"
+msgstr "E-mail + SMS"
+
+msgid "Charter manifests in one click."
+msgstr "Manifestes de vol en un clic."
+
+msgid ""
+"Every flight carries a DGM-compliant passenger manifest — expats, family, "
+"crew. Printable checklists for the departure desk. Cost tracking per route "
+"and per expert."
+msgstr ""
+"Chaque vol porte un manifeste de passagers conforme DGM — expatriés, "
+"famille, équipage. Listes imprimables pour le bureau de départ. Suivi des "
+"coûts par itinéraire et par expert."
+
+msgid "Government-ready PDF with 3 signature blocks"
+msgstr "PDF conforme pour le gouvernement avec 3 blocs de signature"
+
+msgid "Rotation calendar — 4/4, 6/3, 8/4 patterns"
+msgstr "Calendrier de rotation — cycles 4/4, 6/3, 8/4"
+
+msgid "Medevac readiness dashboard"
+msgstr "Tableau de bord de préparation médicale"
+
+msgid "Ready to eliminate DGM fines?"
+msgstr "Prêt à éliminer les amendes DGM ?"
+
+msgid "Request a Demo"
+msgstr "Demander une démo"
+
+msgid "See Pricing"
+msgstr "Voir les tarifs"
+
+msgid "11 Production Modules"
+msgstr "11 modules en production"
+
+msgid "Everything works on day one."
+msgstr "Tout fonctionne dès le premier jour."
+
+msgid ""
+"No premium tiers. No modules behind paywalls. Every feature ships in every "
+"plan."
+msgstr ""
+"Aucun niveau premium. Aucun module derrière un paywall. Chaque "
+"fonctionnalité est incluse dans chaque forfait."
+
+msgid "Every module. Every plan. No exceptions."
+msgstr "Chaque module. Chaque forfait. Sans exception."
+
+msgid "Transparent. Scalable. No surprises."
+msgstr "Transparent. Évolutif. Sans surprises."
+
+msgid ""
+"Pricing scales with active experts under management. All modules included in"
+" every tier."
+msgstr ""
+"Les tarifs évoluent avec les experts actifs gérés. Tous les modules inclus "
+"dans chaque niveau."
+
+msgid "Pilot"
+msgstr "Pilote"
+
+msgid "Standard"
+msgstr "Standard"
+
+msgid "Professional"
+msgstr "Professionnel"
+
+msgid "Enterprise"
+msgstr "Entreprise"
+
+msgid "month"
+msgstr "mois"
+
+msgid "Up to 30 experts"
+msgstr "Jusqu'à 30 experts"
+
+msgid "31 – 100 experts"
+msgstr "31 à 100 experts"
+
+msgid "101 – 250 experts"
+msgstr "101 à 250 experts"
+
+msgid "251 – 500 experts"
+msgstr "251 à 500 experts"
+
+msgid "All 11 modules"
+msgstr "Les 11 modules"
+
+msgid "30-day evaluation"
+msgstr "Évaluation de 30 jours"
+
+msgid "Full data export"
+msgstr "Export complet des données"
+
+msgid "Email support"
+msgstr "Support par e-mail"
+
+msgid "Everything in Pilot"
+msgstr "Tout du forfait Pilote"
+
+msgid "SMS notifications"
+msgstr "Notifications SMS"
+
+msgid "Monthly invoicing"
+msgstr "Facturation mensuelle"
+
+msgid "Priority support"
+msgstr "Support prioritaire"
+
+msgid "MOST POPULAR"
+msgstr "LE PLUS POPULAIRE"
+
+msgid "Everything in Standard"
+msgstr "Tout du forfait Standard"
+
+msgid "SSO ready"
+msgstr "Compatible SSO"
+
+msgid "Dedicated onboarding"
+msgstr "Intégration dédiée"
+
+msgid "24hr support SLA"
+msgstr "SLA de support 24h"
+
+msgid "Everything in Professional"
+msgstr "Tout du forfait Professionnel"
+
+msgid "Dedicated tenant"
+msgstr "Tenant dédié"
+
+msgid "Custom integrations"
+msgstr "Intégrations personnalisées"
+
+msgid "On-premise option"
+msgstr "Option sur site"
+
+msgid "Start Pilot"
+msgstr "Démarrer le pilote"
+
+msgid "Get Started"
+msgstr "Commencer"
+
+msgid "Contact Sales"
+msgstr "Contacter les ventes"
+
+msgid "One-Time Fees"
+msgstr "Frais uniques"
+
+msgid "Implementation & data migration (up to 300 experts)"
+msgstr "Mise en œuvre et migration des données (jusqu'à 300 experts)"
+
+msgid "Additional experts beyond 300"
+msgstr "Experts supplémentaires au-delà de 300"
+
+msgid "expert"
+msgstr "expert"
+
+msgid "Custom integrations (SAP, Workday, custom HRMS)"
+msgstr "Intégrations personnalisées (SAP, Workday, HRMS sur mesure)"
+
+msgid "On-site training (Kinshasa or Doko)"
+msgstr "Formation sur site (Kinshasa ou Doko)"
+
+msgid "travel"
+msgstr "déplacement"
+
+msgid "• All prices exclusive of VAT and applicable DRC taxes."
+msgstr "• Tous les prix hors TVA et taxes applicables en RDC."
+
+msgid "• Annual payment attracts a 15% discount."
+msgstr "• Le paiement annuel bénéficie d'une réduction de 15 %."
+
+msgid "• Source code escrow and full data export included at no cost."
+msgstr ""
+"• Séquestre du code source et export complet des données inclus sans frais."
+
+msgid "• Dedicated single-tenant instances priced separately (~40% uplift)."
+msgstr ""
+"• Instances dédiées mono-tenant tarifées séparément (~40 % de majoration)."
+
+msgid "Questions before the pilot?"
+msgstr "Des questions avant le pilote ?"
+
+msgid "Talk to our team. We'll scope it in 30 minutes."
+msgstr "Parlez à notre équipe. Nous cadrerons en 30 minutes."
+
+msgid "Book a Call"
+msgstr "Réserver un appel"
+
+msgid "Let's scope your pilot."
+msgstr "Cadrons votre pilote."
+
+msgid "Tell us about your operation. We'll respond within 24 hours."
+msgstr "Parlez-nous de votre opération. Nous répondrons sous 24 heures."
+
+msgid "Full Name"
+msgstr "Nom complet"
+
+msgid "Company"
+msgstr "Entreprise"
+
+msgid "Phone"
+msgstr "Téléphone"
+
+msgid "Your Role"
+msgstr "Votre rôle"
+
+msgid "Select..."
+msgstr "Sélectionnez..."
+
+msgid "HR / Compliance"
+msgstr "RH / Conformité"
+
+msgid "Operations"
+msgstr "Opérations"
+
+msgid "Executive / GM"
+msgstr "Direction / DG"
+
+msgid "Other"
+msgstr "Autre"
+
+msgid "Message"
+msgstr "Message"
+
+msgid "Tell us about your expat workforce and current compliance process..."
+msgstr ""
+"Parlez-nous de votre main-d'œuvre expatriée et de votre processus de "
+"conformité actuel..."
+
+msgid "Send Message"
+msgstr "Envoyer le message"
+
+msgid "Direct Contact"
+msgstr "Contact direct"
+
+msgid "Office"
+msgstr "Bureau"
+
+msgid "What Happens Next"
+msgstr "Ce qui se passe ensuite"
+
+msgid "We respond within 24 hours"
+msgstr "Nous répondons sous 24 heures"
+
+msgid "30-minute scoping call"
+msgstr "Appel de cadrage de 30 minutes"
+
+msgid "Pilot proposal within 3 days"
+msgstr "Proposition pilote sous 3 jours"
+
+msgid "Environment live in 2 weeks"
+msgstr "Environnement en production dans 2 semaines"
+
+msgid "Prefer a call?"
+msgstr "Vous préférez un appel ?"
+
+msgid "Book a 30-minute scoping session directly with our team."
+msgstr ""
+"Réservez une session de cadrage de 30 minutes directement avec notre équipe."
+
+msgid "Email Us"
+msgstr "Nous envoyer un e-mail"
+
+msgid ""
+"Thank you. Your message has been received. Our team will respond within 24 "
+"hours."
+msgstr ""
+"Merci. Votre message a été reçu. Notre équipe vous répondra sous 24 heures."

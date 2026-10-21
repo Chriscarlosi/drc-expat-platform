@@ -1,0 +1,103 @@
+{% extends "frontend/base_app.html" %}
+{% load i18n humanize %}
+
+{% block title %}{% trans "Penalties" %} — DRC Expat{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-slate-200 dark:border-slate-700 pb-6">
+        <div>
+            <div class="text-xs uppercase tracking-[0.2em] text-red-600 font-black mb-2 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                {% trans "Financial Compliance" %}
+            </div>
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                {% trans "Penalty Ledger" %}
+            </h1>
+            <div class="text-slate-500 text-sm mt-2">
+                {% trans "Scope:" %} <strong class="text-slate-700 dark:text-slate-300">{{ scope_label }}</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters & Search -->
+    <div class="flex flex-col sm:flex-row gap-4 bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <form method="get" class="flex-1 flex gap-4">
+            <div class="relative flex-1">
+                <svg class="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <input type="text" name="q" value="{{ request.GET.q }}" placeholder="{% trans 'Search by expert name...' %}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm rounded-xl pl-10 pr-4 py-2.5 focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            </div>
+            <select name="status" class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-red-500 focus:border-red-500 text-slate-700 dark:text-slate-300">
+                <option value="">{% trans "All Penalties" %}</option>
+                <option value="unresolved" {% if request.GET.status == 'unresolved' %}selected{% endif %}>{% trans "Unresolved Only" %}</option>
+                <option value="resolved" {% if request.GET.status == 'resolved' %}selected{% endif %}>{% trans "Resolved Only" %}</option>
+            </select>
+            <button type="submit" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-2.5 rounded-xl font-bold text-sm">{% trans "Filter" %}</button>
+        </form>
+    </div>
+
+    <!-- Data Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 font-bold uppercase text-xs border-b border-slate-200 dark:border-slate-700">
+                    <tr>
+                        <th class="px-6 py-4">{% trans "Expert" %}</th>
+                        <th class="px-6 py-4">{% trans "Reason" %}</th>
+                        <th class="px-6 py-4">{% trans "Days Overdue" %}</th>
+                        <th class="px-6 py-4">{% trans "Total Amount" %}</th>
+                        <th class="px-6 py-4 text-right">{% trans "Actions" %}</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                    {% for penalty in penalties %}
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors group">
+                        <td class="px-6 py-4">
+                            <a href="{% url 'frontend:expert_profile' penalty.expert.id %}" class="font-bold text-slate-900 dark:text-white hover:text-red-600 transition-colors block">
+                                {{ penalty.expert.full_name }}
+                            </a>
+                        </td>
+                        <td class="px-6 py-4 text-slate-600 dark:text-slate-400">
+                            {{ penalty.get_reason_display }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if penalty.resolved %}
+                                <span class="text-slate-400">—</span>
+                            {% else %}
+                                <span class="px-2.5 py-1 rounded-md bg-red-100 text-red-700 font-bold text-xs border border-red-200">
+                                    {{ penalty.days_overdue }} days
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 font-bold text-red-600">
+                            ${{ penalty.total_amount_usd|floatformat:2|intcomma }}
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            {% if penalty.resolved %}
+                                <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold border border-green-200">Resolved</span>
+                            {% else %}
+                                <form method="post" action="{% url 'frontend:resolve_penalty' penalty.id %}" class="inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg border border-slate-200 transition-colors" onclick="return confirm('Mark this penalty as resolved?')">
+                                        Resolve
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-12 text-center text-slate-500">
+                            <svg class="w-12 h-12 text-slate-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            {% trans "No penalties found. Excellent compliance!" %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends "frontend/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Contact" %} — DRC Expat{% endblock %}
+
+{% block content %}
+
+<section class="bg-navy-900 text-white relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 30% 40%, #0D9488 0%, transparent 50%);"></div>
+  <div class="relative max-w-7xl mx-auto px-6 py-24">
+    <div class="max-w-3xl">
+      <div class="text-xs uppercase tracking-widest text-brand-400 font-black mb-4">{% trans "Contact" %}</div>
+      <h1 class="text-4xl md:text-6xl font-black leading-[1.05] tracking-tight mb-6">
+        {% trans "Let's scope your pilot." %}
+      </h1>
+      <p class="text-lg md:text-xl text-slate-300 leading-relaxed">
+        {% trans "Tell us about your operation. We'll respond within 24 hours." %}
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="py-20 bg-white">
+  <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-5 gap-12">
+
+    <!-- FORM -->
+    <div class="md:col-span-3">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="mb-5 p-4 rounded-xl text-sm font-bold flex items-start gap-3
+                      {% if message.tags == 'error' %}bg-red-50 text-red-700 border border-red-200
+                      {% else %}bg-green-50 text-green-700 border border-green-200{% endif %}">
+            <span class="text-base leading-none mt-0.5">
+              {% if message.tags == 'error' %}⚠{% else %}✓{% endif %}
+            </span>
+            <span>{{ message }}</span>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <form method="post" class="space-y-5">
+        {% csrf_token %}
+
+        <div>
+          <label class="block text-xs uppercase tracking-widest font-black text-slate-500 mb-2">{% trans "Full Name" %} *</label>
+          <input type="text" name="name" required
+                 class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition">
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-black text-slate-500 mb-2">{% trans "Email" %} *</label>
+            <input type="email" name="email" required
+                   class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition">
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-black text-slate-500 mb-2">{% trans "Company" %}</label>
+            <input type="text" name="company"
+                   class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition">
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-black text-slate-500 mb-2">{% trans "Phone" %}</label>
+            <input type="tel" name="phone"
+                   class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition">
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-black text-slate-500 mb-2">{% trans "Your Role" %}</label>
+            <select name="role" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition bg-white">
+              <option value="">{% trans "Select..." %}</option>
+              <option value="HR">{% trans "HR / Compliance" %}</option>
+              <option value="IT">{% trans "IT" %}</option>
+              <option value="Operations">{% trans "Operations" %}</option>
+              <option value="Executive">{% trans "Executive / GM" %}</option>
+              <option value="Other">{% trans "Other" %}</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs uppercase tracking-widest font-black text-slate-500 mb-2">{% trans "Message" %} *</label>
+          <textarea name="message" rows="6" required
+                    placeholder="{% trans 'Tell us about your expat workforce and current compliance process...' %}"
+                    class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition resize-none"></textarea>
+        </div>
+
+        <button type="submit"
+                class="w-full bg-navy-900 hover:bg-navy-800 text-white py-4 rounded-xl font-black text-sm tracking-wide transition shadow-xl">
+          {% trans "Send Message" %} →
+        </button>
+      </form>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="md:col-span-2 space-y-8">
+      <div>
+        <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-3">{% trans "Direct Contact" %}</div>
+        <div class="space-y-3 text-sm">
+          <div class="flex items-start gap-3">
+            <span class="text-brand-600 mt-1">📧</span>
+            <div>
+              <div class="font-bold text-navy-900">Email</div>
+              <div class="text-slate-600">compliance@drcexpat.cd</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-brand-600 mt-1">📞</span>
+            <div>
+              <div class="font-bold text-navy-900">{% trans "Phone" %}</div>
+              <div class="text-slate-600">+243 XXX XXX XXX</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-brand-600 mt-1">📍</span>
+            <div>
+              <div class="font-bold text-navy-900">{% trans "Office" %}</div>
+              <div class="text-slate-600">Kinshasa, DRC</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200">
+        <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-3">{% trans "What Happens Next" %}</div>
+        <ol class="space-y-3 text-sm text-slate-600">
+          <li class="flex gap-3"><span class="font-black text-brand-600">1.</span>{% trans "We respond within 24 hours" %}</li>
+          <li class="flex gap-3"><span class="font-black text-brand-600">2.</span>{% trans "30-minute scoping call" %}</li>
+          <li class="flex gap-3"><span class="font-black text-brand-600">3.</span>{% trans "Pilot proposal within 3 days" %}</li>
+          <li class="flex gap-3"><span class="font-black text-brand-600">4.</span>{% trans "Environment live in 2 weeks" %}</li>
+        </ol>
+      </div>
+
+      <div class="bg-navy-900 text-white rounded-2xl p-6">
+        <div class="text-xs uppercase tracking-widest text-brand-400 font-black mb-3">{% trans "Prefer a call?" %}</div>
+        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+          {% trans "Book a 30-minute scoping session directly with our team." %}
+        </p>
+        <a href="mailto:compliance@drcexpat.cd" class="inline-block bg-brand-600 hover:bg-brand-700 text-white px-5 py-3 rounded-lg text-sm font-bold transition">
+          {% trans "Email Us" %} →
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,189 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static humanize %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'compliance/css/design-system.css' %}?v=6">
+<style>
+  .cd-wrap { padding: 24px; max-width: 1600px; margin: 0 auto; }
+  .cd-topbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 20px; margin-bottom: 28px; }
+  .cd-topbar h1 { font-size: clamp(20px, 2.2vw, 28px); font-weight: 800; color: var(--text-primary); margin: 6px 0 4px 0; letter-spacing: -0.8px; }
+  .cd-sub { color: var(--text-secondary); font-size: 13px; }
+  .cd-hero { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .cd-kpi { background: var(--bg-secondary); border: 1px solid var(--border-default); border-left: 4px solid var(--brand-500); border-radius: 12px; padding: 20px; }
+  .cd-kpi-num { font-size: clamp(22px, 2.4vw, 30px); font-weight: 800; color: var(--text-primary); letter-spacing: -1px; line-height: 1; }
+  .cd-kpi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-secondary); margin-top: 8px; font-weight: 700; }
+  .cd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 18px; margin-bottom: 20px; }
+  .cd-card { background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: 12px; padding: 22px; }
+  .cd-card h3 { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-primary); margin: 0 0 16px 0; padding-bottom: 12px; border-bottom: 1px solid var(--border-default); }
+  .cd-chart { height: 280px; width: 100%; }
+  .cd-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .cd-table th { text-align: left; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-muted); padding: 10px 8px; border-bottom: 1px solid var(--border-default); }
+  .cd-table td { padding: 12px 8px; border-bottom: 1px solid var(--border-default); color: var(--text-secondary); }
+  .cd-table tbody tr:hover td { background: var(--bg-hover); }
+  .cd-table td.right, .cd-table th.right { text-align: right; }
+  @media (max-width: 640px) { .cd-wrap { padding: 12px; } .cd-grid { grid-template-columns: 1fr; } }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="cd-wrap">
+
+  <div class="cd-topbar">
+    <div>
+      <a href="/admin/" style="color: var(--brand-600); font-size: 13px; font-weight: 600; text-decoration: none;">
+        ← {% trans "Back to Admin" %}
+      </a>
+      <h1>{% trans "Charter Cost Dashboard" %}</h1>
+      <div class="cd-sub">{{ today|date:"F j, Y" }} — Kibali Gold Mine</div>
+    </div>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <a href="/admin/travel/charterflight/" class="btn btn-primary">✈️ {% trans "Flights" %}</a>
+      <a href="/admin/travel/charterpassenger/" class="btn btn-ghost">👥 {% trans "Passengers" %}</a>
+    </div>
+  </div>
+
+  <div class="cd-hero">
+    <div class="cd-kpi">
+      <div class="cd-kpi-num">${{ total_this_month|floatformat:0|intcomma }}</div>
+      <div class="cd-kpi-label">{% trans "This Month" %}</div>
+    </div>
+    <div class="cd-kpi">
+      <div class="cd-kpi-num">${{ total_this_year|floatformat:0|intcomma }}</div>
+      <div class="cd-kpi-label">{% trans "Year to Date" %}</div>
+    </div>
+    <div class="cd-kpi">
+      <div class="cd-kpi-num">${{ total_all_time|floatformat:0|intcomma }}</div>
+      <div class="cd-kpi-label">{% trans "All Time" %}</div>
+    </div>
+  </div>
+
+  <div class="cd-grid">
+    <div class="cd-card">
+      <h3>📈 {% trans "Monthly Spend — Last 12 Months" %}</h3>
+      <div id="chart-monthly" class="cd-chart"></div>
+    </div>
+    <div class="cd-card">
+      <h3>🛣️ {% trans "Spend by Route" %}</h3>
+      <div id="chart-route" class="cd-chart"></div>
+    </div>
+  </div>
+
+  <div class="cd-grid">
+    <div class="cd-card">
+      <h3>✈️ {% trans "Spend by Operator" %}</h3>
+      {% if by_operator %}
+      <table class="cd-table">
+        <thead>
+          <tr><th>{% trans "Operator" %}</th><th class="right">{% trans "Passengers" %}</th><th class="right">{% trans "Total" %}</th></tr>
+        </thead>
+        <tbody>
+          {% for o in by_operator %}
+          <tr>
+            <td><strong>{{ o.flight__operator__code }}</strong> — {{ o.flight__operator__name }}</td>
+            <td class="right">{{ o.passengers }}</td>
+            <td class="right"><strong style="color:#0d9488;">${{ o.total|floatformat:0|intcomma }}</strong></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div style="padding: 20px; color: var(--text-muted); text-align: center; font-style: italic;">{% trans "No cost data yet." %}</div>
+      {% endif %}
+    </div>
+
+    <div class="cd-card">
+      <h3>👤 {% trans "Top 15 Experts by Cost" %}</h3>
+      {% if by_expert %}
+      <table class="cd-table">
+        <thead>
+          <tr><th>{% trans "Expert" %}</th><th>{% trans "Nationality" %}</th><th class="right">{% trans "Flights" %}</th><th class="right">{% trans "Total" %}</th></tr>
+        </thead>
+        <tbody>
+          {% for e in by_expert %}
+          <tr>
+            <td><strong>{{ e.expert__last_name }}, {{ e.expert__first_name }}</strong></td>
+            <td>{{ e.expert__nationality }}</td>
+            <td class="right">{{ e.flights }}</td>
+            <td class="right"><strong style="color:#0d9488;">${{ e.total|floatformat:0|intcomma }}</strong></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div style="padding: 20px; color: var(--text-muted); text-align: center; font-style: italic;">{% trans "No cost data yet." %}</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="cd-card">
+    <h3>🛣️ {% trans "Route Detail (Top 15)" %}</h3>
+    {% if by_route %}
+    <table class="cd-table">
+      <thead>
+        <tr><th>{% trans "Route" %}</th><th>{% trans "From → To" %}</th><th class="right">{% trans "Passengers" %}</th><th class="right">{% trans "Total" %}</th></tr>
+      </thead>
+      <tbody>
+        {% for r in by_route %}
+        <tr>
+          <td><strong>{{ r.flight__route__origin_iata }} → {{ r.flight__route__destination_iata }}</strong></td>
+          <td>{{ r.flight__route__origin_name }} → {{ r.flight__route__destination_name }}</td>
+          <td class="right">{{ r.passengers }}</td>
+          <td class="right"><strong style="color:#0d9488;">${{ r.total|floatformat:0|intcomma }}</strong></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div style="padding: 20px; color: var(--text-muted); text-align: center; font-style: italic;">{% trans "No cost data yet." %}</div>
+    {% endif %}
+  </div>
+
+</div>
+
+{{ dashboard_json|json_script:"cost-dashboard-data" }}
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script>
+  (function () {
+    if (typeof echarts === 'undefined') return;
+    const data = JSON.parse(document.getElementById('cost-dashboard-data').textContent);
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const text = isDark ? '#f8fafc' : '#0f172a';
+    const grid = isDark ? '#334155' : '#e2e8f0';
+
+    const mEl = document.getElementById('chart-monthly');
+    if (mEl && data.monthly_labels.length) {
+      echarts.init(mEl).setOption({
+        tooltip: { trigger: 'axis' },
+        grid: { left: 60, right: 20, top: 20, bottom: 40 },
+        xAxis: { type: 'category', data: data.monthly_labels,
+                 axisLabel: { color: text, fontFamily: 'Inter', fontSize: 10, rotate: 30 } },
+        yAxis: { type: 'value', axisLabel: { color: text, formatter: '${value}' },
+                 splitLine: { lineStyle: { color: grid } } },
+        series: [{
+          type: 'line', smooth: true, data: data.monthly_totals,
+          areaStyle: { opacity: 0.15 }, itemStyle: { color: '#0d9488' },
+          lineStyle: { width: 3 },
+        }],
+      });
+    }
+
+    const rEl = document.getElementById('chart-route');
+    if (rEl && data.route_labels.length) {
+      echarts.init(rEl).setOption({
+        tooltip: { trigger: 'axis' },
+        grid: { left: 80, right: 20, top: 20, bottom: 60 },
+        xAxis: { type: 'category', data: data.route_labels,
+                 axisLabel: { color: text, fontFamily: 'Inter', fontSize: 10, rotate: 45 } },
+        yAxis: { type: 'value', axisLabel: { color: text, formatter: '${value}' },
+                 splitLine: { lineStyle: { color: grid } } },
+        series: [{
+          type: 'bar', data: data.route_totals,
+          itemStyle: { color: '#3b82f6', borderRadius: [4, 4, 0, 0] },
+          barMaxWidth: 30,
+        }],
+      });
+    }
+  })();
+</script>
+{% endblock %}

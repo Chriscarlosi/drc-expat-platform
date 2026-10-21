@@ -16,7 +16,13 @@ from django.utils.translation import gettext_lazy as _
 GENESIS_HASH = "0" * 64
 
 
+# ═══════════════════════════════════════════════════════════════
+# IMMUTABLE AUDIT LOG
+# ═══════════════════════════════════════════════════════════════
+
 class ImmutableAuditLog(models.Model):
+    """Append-only hash-chained audit log. Never update. Never delete."""
+
     class Action(models.TextChoices):
         CREATE = "CREATE", _("Create")
         UPDATE = "UPDATE", _("Update")
@@ -30,7 +36,10 @@ class ImmutableAuditLog(models.Model):
     timestamp = models.DateTimeField(default=timezone.now, db_index=True, editable=False)
     user_id = models.IntegerField(null=True, blank=True, editable=False, db_index=True)
     user_repr = models.CharField(max_length=255, blank=True, editable=False)
-    action = models.CharField(max_length=20, choices=Action.choices, db_index=True, editable=False)
+    action = models.CharField(
+        max_length=20, choices=Action.choices,
+        db_index=True, editable=False,
+    )
     model_name = models.CharField(max_length=100, blank=True, editable=False, db_index=True)
     object_id = models.CharField(max_length=100, blank=True, editable=False)
     object_repr = models.CharField(max_length=500, blank=True, editable=False)
@@ -52,7 +61,12 @@ class ImmutableAuditLog(models.Model):
         ]
 
     def __str__(self):
-        return f"[{self.sequence}] {self.timestamp:%Y-%m-%d %H:%M} · {self.user_repr} · {self.action} {self.model_name}"
+        return (
+            f"[{self.sequence}] {self.timestamp:%Y-%m-%d %H:%M} · "
+            f"{self.user_repr} · {self.action} {self.model_name}"
+        )
+
+    # ─── Append-only guards ────────────────────────────────
 
     def save(self, *args, **kwargs):
         if self.pk is not None:
@@ -88,4 +102,33 @@ class ImmutableAuditLog(models.Model):
         return hashlib.sha256(raw.encode("utf-8")).hexdigest()
 
     def verify(self):
+        """Recompute the hash and compare. Returns True if the entry is intact."""
         return self._compute_hash() == self.entry_hash
+
+
+# ═══════════════════════════════════════════════════════════════
+# AUDIT CHAIN CHECK — cached result of the last verify run
+# ═══════════════════════════════════════════════════════════════
+
+class AuditChainCheck(models.Model):
+    """Stores the result of every verify_audit_chain run."""
+
+    checked_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    is_valid = models.BooleanField(default=True)
+    entry_count = models.IntegerField(default=0)
+    head_hash = models.CharField(max_length=64, blank=True)
+    duration_ms = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ["-checked_at"]
+        verbose_name = "Audit Chain Check"
+        verbose_name_plural = "Audit Chain Checks"
+
+    def __str__(self):
+        status = "✓ OK" if self.is_valid else "✗ FAIL"
+        return f"{status} @ {self.checked_at:%Y-%m-%d %H:%M}"
+
+    @classmethod
+    def latest(cls):
+        """Return the most recent verification record."""
+        return cls.objects.order_by("-checked_at").first()

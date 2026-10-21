@@ -1,0 +1,136 @@
+{% load i18n humanize %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'en' }}">
+<head>
+  <meta charset="UTF-8">
+  <title>{% trans "Flight Manifest" %} — {{ flight.flight_number }}</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #fff; color: #0f172a; padding: 20px; }
+    .page { max-width: 900px; margin: 0 auto; }
+    .header { text-align: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 3px solid #0B132B; }
+    .header h1 { font-size: 18px; font-weight: 800; letter-spacing: 1px; }
+    .header h2 { font-size: 14px; font-weight: 600; color: #475569; margin-top: 4px; }
+    .meta { display: flex; justify-content: space-between; font-size: 12px; color: #64748b; margin-top: 10px; }
+    .flight-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; background: #f8fafc; padding: 16px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
+    .fi-block { font-size: 12px; }
+    .fi-label { color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 10px; margin-bottom: 4px; }
+    .fi-value { color: #0B132B; font-weight: 700; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px; }
+    th { background: #0B132B; color: #fff; text-align: left; padding: 10px 8px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+    td { padding: 12px 8px; border-bottom: 1px solid #e2e8f0; }
+    tr:hover td { background: #f8fafc; }
+    .check-box { width: 24px; height: 24px; border: 2px solid #94a3b8; border-radius: 4px; display: inline-block; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .badge.exp { background: #dbeafe; color: #1e40af; }
+    .badge.dep { background: #fef3c7; color: #92400e; }
+    .badge.crew { background: #e0e7ff; color: #3730a3; }
+    .summary { display: flex; gap: 20px; justify-content: center; margin: 20px 0; padding: 16px; background: #f1f5f9; border-radius: 8px; font-size: 14px; font-weight: 700; }
+    .sigs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
+    .sig-block { border: 1px solid #0B132B; border-radius: 8px; padding: 16px; }
+    .sig-block h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #0B132B; margin-bottom: 12px; }
+    .sig-line { border-bottom: 1px solid #94a3b8; margin: 20px 0 4px 0; height: 1px; }
+    .sig-label { font-size: 10px; color: #94a3b8; }
+    .footer { text-align: center; font-size: 10px; color: #94a3b8; margin-top: 30px; padding-top: 16px; border-top: 1px solid #e2e8f0; }
+    .no-print { position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; }
+    .no-print button { background: #0d9488; color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; font-family: 'Inter', sans-serif; }
+    .no-print button:hover { background: #0f766e; }
+    @media print {
+      .no-print { display: none; }
+      body { padding: 0; }
+      .header { border-bottom-color: #000; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="no-print">
+  <button onclick="window.print()">🖨️ {% trans "Print" %}</button>
+</div>
+
+<div class="page">
+
+  <div class="header">
+    <h1>RÉPUBLIQUE DÉMOCRATIQUE DU CONGO</h1>
+    <h2>Direction Générale de Migration — {% trans "Flight Manifest" %}</h2>
+    <div class="meta">
+      <span><strong>Ref:</strong> DGM-{{ flight.departure_datetime|date:"Ymd" }}-{{ flight.flight_number }}</span>
+      <span><strong>{% trans "Date" %}:</strong> {{ generated_at|date:"M j, Y H:i" }}</span>
+    </div>
+  </div>
+
+  <div class="flight-info">
+    <div class="fi-block"><div class="fi-label">{% trans "Flights" %}</div><div class="fi-value">{{ flight.flight_number }}</div></div>
+    <div class="fi-block"><div class="fi-label">{% trans "Operator" %}</div><div class="fi-value">{{ flight.operator.name }}</div></div>
+    <div class="fi-block"><div class="fi-label">{% trans "Aircraft" %}</div><div class="fi-value">{{ flight.aircraft.registration|default:"—" }}</div></div>
+    <div class="fi-block"><div class="fi-label">{% trans "Route" %}</div><div class="fi-value">{{ flight.route.origin_iata }} → {{ flight.route.destination_iata }}</div></div>
+    <div class="fi-block"><div class="fi-label">{% trans "Departure" %}</div><div class="fi-value">{{ flight.departure_datetime|date:"M j, H:i" }}</div></div>
+    <div class="fi-block"><div class="fi-label">{% trans "Arrival" %}</div><div class="fi-value">{{ flight.arrival_datetime|date:"M j, H:i" }}</div></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:40px;">✓</th>
+        <th style="width:50px;">{% trans "Seat" %}</th>
+        <th style="width:70px;">{% trans "Type" %}</th>
+        <th>{% trans "Full Name" %}</th>
+        <th>{% trans "Nationality" %}</th>
+        <th>{% trans "Passport" %}</th>
+        <th>{% trans "DOB" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in passengers %}
+      <tr>
+        <td><span class="check-box"></span></td>
+        <td><strong>{{ p.seat_number|default:"—" }}</strong></td>
+        <td>
+          {% if p.passenger_type == "EXPERT" %}<span class="badge exp">{% trans "EXPAT" %}</span>
+          {% elif p.passenger_type == "DEPENDANT" %}<span class="badge dep">{% trans "FAMILY" %}</span>
+          {% elif p.passenger_type == "CREW" %}<span class="badge crew">{% trans "CREW" %}</span>
+          {% else %}{{ p.get_passenger_type_display }}{% endif %}
+        </td>
+        <td><strong>{{ p.passenger_name }}</strong></td>
+        <td>{{ p.nationality|default:"—" }}</td>
+        <td>{{ p.passport_number|default:"—" }}</td>
+        <td>{% if p.expert %}{{ p.expert.date_of_birth|date:"Y-m-d" }}{% elif p.dependant %}{{ p.dependant.date_of_birth|date:"Y-m-d" }}{% else %}—{% endif %}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="7" style="text-align:center; padding: 30px; color: #94a3b8; font-style: italic;">{% trans "No passengers booked on this flight." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="summary">
+    <span>{% trans "Expatriates" %}: {{ expert_count }}</span>
+    <span>{% trans "Family" %}: {{ dependant_count }}</span>
+    <span>{% trans "Crew" %}: {{ crew_count }}</span>
+    <span style="color:#0d9488;">{% trans "Total" %}: {{ passengers|length }}</span>
+  </div>
+
+  <div class="sigs">
+    <div class="sig-block">
+      <h4>{% trans "Pilot in Command" %}</h4>
+      <div class="sig-line"></div>
+      <div class="sig-label">{% trans "Signature" %}</div>
+      <div style="margin-top: 16px;"><span class="sig-label">{% trans "Printed Name" %}:</span> <span style="border-bottom: 1px solid #94a3b8; display: inline-block; width: 200px;"></span></div>
+      <div style="margin-top: 10px;"><span class="sig-label">{% trans "Date" %}:</span> <span style="border-bottom: 1px solid #94a3b8; display: inline-block; width: 200px;"></span></div>
+    </div>
+    <div class="sig-block">
+      <h4>{% trans "HR / DGM Officer" %}</h4>
+      <div class="sig-line"></div>
+      <div class="sig-label">{% trans "Signature" %}</div>
+      <div style="margin-top: 16px;"><span class="sig-label">{% trans "Printed Name" %}:</span> <span style="border-bottom: 1px solid #94a3b8; display: inline-block; width: 200px;"></span></div>
+      <div style="margin-top: 10px;"><span class="sig-label">{% trans "Date" %}:</span> <span style="border-bottom: 1px solid #94a3b8; display: inline-block; width: 200px;"></span></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    {% trans "This manifest is generated by the DRC Expat Compliance Platform." %}
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,11 +1,12 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from unfold.admin import ModelAdmin
 
 from .models import DocumentVersion
 
 
 @admin.register(DocumentVersion)
-class DocumentVersionAdmin(admin.ModelAdmin):
+class DocumentVersionAdmin(ModelAdmin):
 
     list_display = (
         "short_parent",

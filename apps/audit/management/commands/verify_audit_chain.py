@@ -1,5 +1,7 @@
 """Verify the integrity of the hash-chained audit log."""
 
+import time
+
 from django.core.management.base import BaseCommand
 
 from apps.audit.models import ImmutableAuditLog, GENESIS_HASH
@@ -9,6 +11,8 @@ class Command(BaseCommand):
     help = "Verify the integrity of the hash-chained immutable audit log."
 
     def handle(self, *args, **options):
+        start_time = time.time()   # ← START THE TIMER
+
         entries = list(ImmutableAuditLog.objects.order_by("sequence"))
 
         if not entries:
@@ -34,8 +38,22 @@ class Command(BaseCommand):
             expected_prev = entry.entry_hash
             expected_seq += 1
 
+        duration_ms = int((time.time() - start_time) * 1000)
+
+        # ── Save verification record (always, even on failure) ──
+        from apps.audit.models import AuditChainCheck
+        chain_head_for_record = entries[-1]
+        AuditChainCheck.objects.create(
+            is_valid=not errors,
+            entry_count=len(entries),
+            head_hash=chain_head_for_record.entry_hash,
+            duration_ms=duration_ms,
+        )
+
         if errors:
-            self.stdout.write(self.style.ERROR(f"\n❌ INTEGRITY FAILURE — {len(errors)} issue(s):\n"))
+            self.stdout.write(self.style.ERROR(
+                f"\n❌ INTEGRITY FAILURE — {len(errors)} issue(s):\n"
+            ))
             for err in errors[:30]:
                 self.stdout.write(self.style.ERROR(f"   • {err}"))
             raise SystemExit(1)
@@ -45,3 +63,4 @@ class Command(BaseCommand):
         self.stdout.write(f"   Total entries : {len(entries)}")
         self.stdout.write(f"   Head hash     : {chain_head.entry_hash}")
         self.stdout.write(f"   Head timestamp: {chain_head.timestamp}")
+        self.stdout.write(f"   Duration      : {duration_ms} ms")

@@ -1,0 +1,19 @@
+{% extends "frontend/base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="bg-slate-50 min-h-screen flex items-center justify-center px-4">
+  <div class="bg-white rounded-2xl p-10 max-w-md text-center border border-slate-200">
+    <div class="text-4xl mb-4">👤</div>
+    <h1 class="text-2xl font-black text-navy-900 mb-3">
+      {% trans "No Expert Profile Linked" %}
+    </h1>
+    <p class="text-slate-500 text-sm leading-relaxed mb-6">
+      {% trans "Your account is not linked to an expert profile. Please contact your HR / Compliance Manager." %}
+    </p>
+    <a href="/" class="bg-navy-900 hover:bg-navy-800 text-white px-6 py-3 rounded-lg font-bold text-sm inline-block">
+      {% trans "Back to Home" %}
+    </a>
+  </div>
+</div>
+{% endblock %}

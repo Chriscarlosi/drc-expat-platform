@@ -1,0 +1,74 @@
+{% extends "frontend/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Terms of Service" %} — DRC Expat{% endblock %}
+
+{% block content %}
+<div class="bg-navy-900 pt-24 pb-32 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 50% 0%, #0D9488 0%, transparent 70%);"></div>
+    <div class="relative max-w-4xl mx-auto px-6 text-center">
+        <h1 class="text-4xl md:text-5xl font-black text-white tracking-tight mb-4">
+            {% trans "Terms of Service" %}
+        </h1>
+        <p class="text-lg text-slate-300">
+            {% trans "The rules and agreements for using the platform." %}
+        </p>
+        <div class="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-navy-800 border border-navy-700 text-sm text-slate-300">
+            <svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            {% trans "Last updated: October 2026" %}
+        </div>
+    </div>
+</div>
+
+<div class="bg-slate-50 min-h-screen relative -mt-16 pb-24">
+    <div class="max-w-6xl mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+            <div class="hidden lg:block lg:col-span-4">
+                <div class="sticky top-12 bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                    <h4 class="text-xs uppercase tracking-widest text-slate-500 font-black mb-4">{% trans "Contents" %}</h4>
+                    <nav class="space-y-2 text-sm font-medium text-slate-600">
+                        <a href="#acceptance" class="block hover:text-brand-600 transition-colors">1. Acceptance of Terms</a>
+                        <a href="#authorized" class="block hover:text-brand-600 transition-colors">2. Authorized Use</a>
+                        <a href="#accuracy" class="block hover:text-brand-600 transition-colors">3. Accuracy of Data</a>
+                        <a href="#liability" class="block hover:text-brand-600 transition-colors">4. Limitation of Liability</a>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="lg:col-span-8">
+                <div class="bg-white rounded-3xl p-8 md:p-12 shadow-xl shadow-slate-200/50 border border-slate-100 space-y-10">
+
+                    <section id="acceptance" class="scroll-mt-12">
+                        <h2 class="text-2xl font-black text-navy-900 mb-4">{% trans "1. Acceptance of Terms" %}</h2>
+                        <p class="text-slate-600 leading-relaxed text-lg">
+                            {% trans "By accessing the DRC Expat Compliance Platform, you agree to these Terms of Service and our Privacy Policy." %}
+                        </p>
+                    </section>
+
+                    <section id="authorized" class="scroll-mt-12 pt-8 border-t border-slate-100">
+                        <h2 class="text-2xl font-black text-navy-900 mb-4">{% trans "2. Authorized Use" %}</h2>
+                        <p class="text-slate-600 leading-relaxed text-lg">
+                            {% trans "Access is granted strictly to authorized employees, HR managers, and contractors of the licensed corporate entity. You are responsible for maintaining the confidentiality of your login credentials." %}
+                        </p>
+                    </section>
+
+                    <section id="accuracy" class="scroll-mt-12 pt-8 border-t border-slate-100">
+                        <h2 class="text-2xl font-black text-navy-900 mb-4">{% trans "3. Accuracy of Data" %}</h2>
+                        <p class="text-slate-600 leading-relaxed text-lg">
+                            {% trans "You agree to input accurate and up-to-date information. The platform provides compliance alerts and calculations based on the data you provide and current interpretations of DRC law. It does not replace official legal advice." %}
+                        </p>
+                    </section>
+
+                    <section id="liability" class="scroll-mt-12 pt-8 border-t border-slate-100">
+                        <h2 class="text-2xl font-black text-navy-900 mb-4">{% trans "4. Limitation of Liability" %}</h2>
+                        <p class="text-slate-600 leading-relaxed text-lg">
+                            {% trans "The platform is provided 'as is'. We are not liable for DGM fines or penalties resulting from inaccurate data entry or failure to act on system alerts." %}
+                        </p>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

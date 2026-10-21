@@ -1,0 +1,137 @@
+{% extends "frontend/base_app.html" %}
+{% load i18n humanize %}
+
+{% block title %}{{ expert.full_name }} — {% trans "Profile" %}{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto space-y-8">
+
+    <!-- Header -->
+    <div class="flex flex-wrap justify-between items-end gap-6 border-b border-slate-200 dark:border-slate-700 pb-6">
+        <div class="flex items-center gap-6">
+            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-2xl font-black shadow-lg shadow-amber-500/30">
+                {{ expert.first_name|first }}{{ expert.last_name|first }}
+            </div>
+            <div>
+                <div class="text-xs uppercase tracking-[0.2em] text-amber-600 font-black mb-1 flex items-center gap-2">
+                    <a href="/dashboard/" class="hover:underline">{% trans "Dashboard" %}</a>
+                    <span>/</span>
+                    <span>{% trans "Expert Profile" %}</span>
+                </div>
+                <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                    {{ expert.full_name }}
+                </h1>
+                <div class="text-slate-500 mt-1 flex items-center gap-4 text-sm">
+                    <span class="flex items-center gap-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> {{ expert.nationality }}</span>
+                    <span class="flex items-center gap-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg> {{ expert.job_title }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="flex gap-3">
+            <a href="/admin/experts/expertprofile/{{ expert.id }}/change/" class="bg-white dark:bg-slate-800 hover:bg-slate-50 text-slate-700 dark:text-slate-200 px-5 py-2.5 rounded-xl font-bold text-sm border border-slate-200 dark:border-slate-700 transition">
+                {% trans "Edit Profile" %}
+            </a>
+            <a href="{% url 'frontend:expert_dependants' expert.id %}" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-2.5 rounded-xl font-bold text-sm shadow-md transition">
+                {% trans "Manage Family" %}
+            </a>
+        </div>
+    </div>
+
+    <!-- KPI Grid: Compliance Status -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Passport Status -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
+            <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-3">{% trans "Passport" %}</div>
+            <div class="text-xl font-black text-slate-900 dark:text-white">{{ expert.passport_expiry_date|date:"M j, Y" }}</div>
+            <div class="text-sm text-slate-500 mt-2">{{ expert.passport_number }}</div>
+        </div>
+        <!-- Yellow Fever -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
+            <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-3">{% trans "Yellow Fever" %}</div>
+            {% if expert.yellow_fever_expiry_date %}
+                <div class="text-xl font-black text-slate-900 dark:text-white">{{ expert.yellow_fever_expiry_date|date:"M j, Y" }}</div>
+            {% else %}
+                <div class="text-xl font-black text-slate-400 italic">{% trans "Not on file" %}</div>
+            {% endif %}
+        </div>
+        <!-- Active Carte -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
+            <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-3">{% trans "Latest Carte de Travail" %}</div>
+            {% with latest_carte=cartes.first %}
+                {% if latest_carte %}
+                    <div class="text-xl font-black text-slate-900 dark:text-white">{{ latest_carte.expiry_date|date:"M j, Y" }}</div>
+                    <div class="text-sm text-slate-500 mt-2">{{ latest_carte.permit_number }}</div>
+                {% else %}
+                    <div class="text-xl font-black text-slate-400 italic">{% trans "No active permit" %}</div>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+
+    <!-- Tabs / Sections -->
+    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden">
+
+        <!-- Section: Visas -->
+        <div class="p-8 border-b border-slate-100 dark:border-slate-700">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">{% trans "Visa History" %}</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-slate-50 dark:bg-slate-900 text-slate-500 font-bold uppercase text-xs">
+                        <tr>
+                            <th class="px-4 py-3">{% trans "Type" %}</th>
+                            <th class="px-4 py-3">{% trans "Number" %}</th>
+                            <th class="px-4 py-3">{% trans "Issue Date" %}</th>
+                            <th class="px-4 py-3">{% trans "Expiry Date" %}</th>
+                            <th class="px-4 py-3">{% trans "Status" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                        {% for visa in visas %}
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50">
+                            <td class="px-4 py-3 font-bold">{{ visa.visa_type.code }}</td>
+                            <td class="px-4 py-3">{{ visa.visa_number }}</td>
+                            <td class="px-4 py-3">{{ visa.issue_date|date:"M j, Y" }}</td>
+                            <td class="px-4 py-3">{{ visa.expiry_date|date:"M j, Y" }}</td>
+                            <td class="px-4 py-3">
+                                <span class="px-2.5 py-1 rounded-full text-xs font-bold
+                                    {% if visa.status == 'ACTIVE' %}bg-green-100 text-green-700
+                                    {% elif visa.status == 'EXPIRED' %}bg-red-100 text-red-700
+                                    {% else %}bg-slate-100 text-slate-600{% endif %}">
+                                    {{ visa.get_status_display }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="5" class="px-4 py-8 text-center text-slate-500 italic">{% trans "No visas recorded." %}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section: Dependants Summary -->
+        <div class="p-8 bg-slate-50/50 dark:bg-slate-900/20">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">{% trans "Family Members" %}</h3>
+                <a href="{% url 'frontend:expert_dependants' expert.id %}" class="text-sm font-bold text-amber-600 hover:text-amber-700 transition">{% trans "View All" %} →</a>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {% for dep in dependants %}
+                <div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-500 font-bold text-sm">
+                        {{ dep.first_name|first }}{{ dep.last_name|first }}
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-900 dark:text-white text-sm">{{ dep.full_name }}</div>
+                        <div class="text-xs text-slate-500">{{ dep.get_relationship_display }}</div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-span-full text-slate-500 italic text-sm py-4">{% trans "No family members recorded." %}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
