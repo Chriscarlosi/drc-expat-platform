@@ -1,19 +1,26 @@
+import os
 from .settings import *
 import dj_database_url
 
 # ─────────────────────────────────────────────────────────────
-# SECURITY
+# SECURITY & HOSTS
 # ─────────────────────────────────────────────────────────────
-# NEVER keep DEBUG=True in production
 DEBUG = False
 
-# Allow all hosts for now (we can restrict this to your domain later)
-ALLOWED_HOSTS = ['*']
+# Dynamically add the Render URL to ALLOWED_HOSTS
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+render_hostname = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+if render_hostname:
+    ALLOWED_HOSTS.append(render_hostname)
+
+# Required for HTTPS forms on Render
+CSRF_TRUSTED_ORIGINS = []
+if render_hostname:
+    CSRF_TRUSTED_ORIGINS.append(f"https://{render_hostname}")
 
 # ─────────────────────────────────────────────────────────────
 # DATABASE (PostgreSQL via Docker)
 # ─────────────────────────────────────────────────────────────
-# Uses the DATABASE_URL environment variable injected by Docker
 DATABASES = {
     'default': dj_database_url.config(
         default=config('DATABASE_URL', default='sqlite:///db.sqlite3')
@@ -23,8 +30,6 @@ DATABASES = {
 # ─────────────────────────────────────────────────────────────
 # STATIC FILES (WhiteNoise)
 # ─────────────────────────────────────────────────────────────
-# WhiteNoise allows Django to serve its own static files in production
-# without needing a separate Nginx server.
 MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
