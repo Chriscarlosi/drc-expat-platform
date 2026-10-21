@@ -8,7 +8,7 @@ import dj_database_url
 DEBUG = False
 
 # Allow all hosts for now (we can restrict this to your domain later)
-ALLOWED_HOSTS = ['drc-expat-platform.onrender.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 # ─────────────────────────────────────────────────────────────
 # DATABASE (PostgreSQL via Docker)
