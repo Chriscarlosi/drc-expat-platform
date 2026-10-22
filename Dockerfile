@@ -33,4 +33,5 @@ COPY . /app/
 RUN python manage.py collectstatic --noinput
 
 # Run the application with Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "config.wsgi:application"]
+RUN chmod +x start.sh
+CMD ["./start.sh"]
