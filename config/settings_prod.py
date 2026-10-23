@@ -8,7 +8,7 @@ import dj_database_url
 DEBUG = False
 
 # Dynamically add the Render URL to ALLOWED_HOSTS
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']
 render_hostname = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
 if render_hostname:
     ALLOWED_HOSTS.append(render_hostname)
