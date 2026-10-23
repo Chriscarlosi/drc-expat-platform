@@ -33,4 +33,9 @@ urlpatterns = [
     path("penalties/<uuid:penalty_id>/resolve/", views.resolve_penalty, name="resolve_penalty"),
     path("experts/add/", views.ExpertCreateView.as_view(), name="expert_add"),
     path("documents/", views.document_list, name="document_list"),
+
+    path("experts/<uuid:pk>/edit/", views.ExpertUpdateView.as_view(), name="expert_edit"),
+
+# Travel
+    path("travel/flights/", views.travel_flights_list, name="travel_list"),
 ]
