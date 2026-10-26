@@ -4,7 +4,7 @@ Compliance views — Risk Dashboard, exports, Unfold context callback.
 
 from datetime import timedelta
 
-from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -15,7 +15,7 @@ from apps.visas.models import (
     CarteDeTravail, FlyingVisa, AirportVisa, VoyageVisa, EstablishmentVisa,
 )
 from apps.compliance.models import PenaltyLedger
-from apps.organization.models import Company
+from apps.organization.models import Company, UserCompanyMembership
 from apps.compliance.services.quota_service import QuotaService
 
 
@@ -40,19 +40,19 @@ from apps.compliance.services.quota_service import QuotaService
 # ═══════════════════════════════════════════════════════════════
 
 def compute_risk_score(
-    passports_expired=0,
-    cartes_expired=0,
-    yellow_fever_expired=0,
-    passports_t30=0,
-    passports_t60=0,
-    passports_t90=0,
-    cartes_t30=0,
-    cartes_t90=0,
-    visas_t30=0,
-    visas_t90=0,
-    unresolved_penalties=0,
-    quota_breached=False,
-    workforce_data_complete=True,
+        passports_expired=0,
+        cartes_expired=0,
+        yellow_fever_expired=0,
+        passports_t30=0,
+        passports_t60=0,
+        passports_t90=0,
+        cartes_t30=0,
+        cartes_t90=0,
+        visas_t30=0,
+        visas_t90=0,
+        unresolved_penalties=0,
+        quota_breached=False,
+        workforce_data_complete=True,
 ):
     """
     Returns a dict:
@@ -194,33 +194,35 @@ def _is_super_admin(user):
     """Super-admin / DGM / Ministry can see across companies."""
     if user.is_superuser:
         return True
-    # Optional: add role-based check if you have a 'DGM' role
     return False
 
 
-@staff_member_required
+@login_required
 def dashboard(request):
     today = timezone.now().date()
     t90 = today + timedelta(days=90)
     t60 = today + timedelta(days=60)
     t30 = today + timedelta(days=30)
 
-    # ── Scope resolution ──────────────────────────────────────
+    # ── Scope resolution (FIXED) ──────────────────────────────
     is_super = _is_super_admin(request.user)
-    selected_company_id = request.GET.get('company') if is_super else None
+    selected_company_id = request.GET.get('company')
 
-    if is_super:
-        if selected_company_id:
-            company = Company.objects.filter(id=selected_company_id, is_active=True).first()
-        else:
-            company = None  # All-companies view
+    if selected_company_id:
+        # If a specific company is requested via the dropdown
+        company = Company.objects.filter(id=selected_company_id, is_active=True).first()
     else:
-        # Non-super users are scoped to their own company
-        from apps.organization.models import UserCompanyMembership
+        # Default to the user's assigned company
         membership = UserCompanyMembership.objects.filter(
             user=request.user, is_active=True
         ).select_related('company').first()
-        company = membership.company if membership else None
+
+        if membership:
+            company = membership.company
+        elif is_super:
+            company = None  # All companies for superusers with no membership
+        else:
+            company = None  # No access
 
     if not company and not is_super:
         return render(request, "compliance/dashboard.html", {
@@ -410,7 +412,7 @@ def dashboard_context(request, *args, **kwargs):
         "kpi_cartes": CarteDeTravail.objects.count(),
         "kpi_penalties": PenaltyLedger.objects.filter(resolved=False).count(),
         "kpi_documents": DocumentVersion.objects.count(),
-        # CHANGE THIS: Remove list() and just slice the queryset
+        # FIXED: Removed list() to prevent slicing errors in Unfold template
         "log_entries": (
             LogEntry.objects
             .select_related("user", "content_type")

@@ -41,10 +41,9 @@
   <!-- HEADER & SCOPE -->
   <div class="dash-topbar">
     <div class="dash-topbar-title">
-      <a href="/admin/" style="color: var(--brand-600); font-size: 13px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 4px;">
-        <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-        {% trans "Back to Admin" %}
-      </a>
+     <a href="/dashboard/" style="color: var(--brand-600); font-size: 13px; font-weight: 600; text-decoration: none;">
+    ← {% trans "Back to Dashboard" %}
+</a>
       <h1>{% trans "Risk & Penalty Mitigation Board" %}</h1>
       <div style="color: var(--text-secondary); font-size: 13px; display: flex; align-items: center; gap: 8px; margin-top: 6px;">
         <span><strong>{% trans "Scope" %}:</strong> {{ scope_label }}</span>
