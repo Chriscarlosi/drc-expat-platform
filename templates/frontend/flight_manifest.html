@@ -1,0 +1,105 @@
+{% extends "frontend/base_app.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Flight Manifest" %} — {{ flight.flight_number }}{% endblock %}
+
+{% block content %}
+<style>
+    /* Hide sidebar and nav when printing */
+    @media print {
+        aside, .sticky, header, .no-print { display: none !important; }
+        main { margin: 0 !important; padding: 0 !important; background: white !important; }
+        body { background: white !important; color: black !important; }
+        .print-container { max-width: 100% !important; border: none !important; box-shadow: none !important; }
+    }
+</style>
+
+<div class="max-w-4xl mx-auto py-8 print-container">
+
+    <!-- Action Bar (Hidden on Print) -->
+    <div class="flex justify-between items-center mb-8 no-print">
+        <a href="{% url 'frontend:travel_dashboard' %}" class="text-sm font-bold text-slate-500 hover:text-slate-900 flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            {% trans "Back to Dashboard" %}
+        </a>
+        <button onclick="window.print()" class="bg-slate-900 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg hover:-translate-y-0.5 transition-transform flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+            {% trans "Print Manifest" %}
+        </button>
+    </div>
+
+    <!-- Manifest Document -->
+    <div class="bg-white text-slate-900 border border-slate-200 rounded-2xl p-10 shadow-sm">
+
+        <!-- Header -->
+        <div class="text-center border-b-2 border-slate-900 pb-6 mb-8">
+            <h1 class="text-3xl font-black uppercase tracking-widest">Direction Générale de Migration</h1>
+            <h2 class="text-xl font-bold mt-2">PASSENGER MANIFEST / MANIFESTE DES PASSAGERS</h2>
+        </div>
+
+        <!-- Flight Details -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 text-sm">
+            <div>
+                <div class="text-slate-500 uppercase font-bold text-xs">{% trans "Flight Number" %}</div>
+                <div class="font-black text-lg">{{ flight.flight_number }}</div>
+            </div>
+            <div>
+                <div class="text-slate-500 uppercase font-bold text-xs">{% trans "Date" %}</div>
+                <div class="font-black text-lg">{{ flight.departure_datetime|date:"M j, Y" }}</div>
+            </div>
+            <div>
+                <div class="text-slate-500 uppercase font-bold text-xs">{% trans "Route" %}</div>
+                <div class="font-bold text-lg">{{ flight.route.origin }} → {{ flight.route.destination }}</div>
+            </div>
+            <div>
+                <div class="text-slate-500 uppercase font-bold text-xs">{% trans "Aircraft" %}</div>
+                <div class="font-bold text-lg">{{ flight.aircraft.registration|default:"N/A" }}</div>
+            </div>
+        </div>
+
+        <!-- Passenger Table -->
+        <table class="w-full text-sm border-collapse border border-slate-300">
+            <thead>
+                <tr class="bg-slate-100">
+                    <th class="border border-slate-300 p-2 text-left">#</th>
+                    <th class="border border-slate-300 p-2 text-left">{% trans "Full Name" %}</th>
+                    <th class="border border-slate-300 p-2 text-left">{% trans "Nationality" %}</th>
+                    <th class="border border-slate-300 p-2 text-left">{% trans "Passport" %}</th>
+                    <th class="border border-slate-300 p-2 text-left">{% trans "Role" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pax in passengers %}
+                <tr>
+                    <td class="border border-slate-300 p-2">{{ forloop.counter }}</td>
+                    <td class="border border-slate-300 p-2 font-bold uppercase">{{ pax.expert.last_name }}, {{ pax.expert.first_name }}</td>
+                    <td class="border border-slate-300 p-2">{{ pax.expert.nationality }}</td>
+                    <td class="border border-slate-300 p-2 font-mono">{{ pax.expert.passport_number }}</td>
+                    <td class="border border-slate-300 p-2">{{ pax.get_role_display|default:"Expatriate" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="border border-slate-300 p-8 text-center text-slate-500 italic">
+                        {% trans "No passengers currently booked on this flight." %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Signatures -->
+        <div class="grid grid-cols-3 gap-8 mt-16 text-center text-sm">
+            <div>
+                <div class="border-t border-slate-400 pt-2 mt-12">{% trans "Pilot in Command" %}</div>
+            </div>
+            <div>
+                <div class="border-t border-slate-400 pt-2 mt-12">{% trans "HR / DGM Officer" %}</div>
+            </div>
+            <div>
+                <div class="border-t border-slate-400 pt-2 mt-12">{% trans "DGM Inspector" %}</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

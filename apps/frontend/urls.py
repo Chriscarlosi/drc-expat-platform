@@ -40,5 +40,7 @@ urlpatterns = [
     path("workforce-snapshot/add/", views.add_workforce_snapshot, name="add_workforce_snapshot"),
 
     # Travel
-    path("travel/flights/", views.travel_flights_list, name="travel_list"),
+    path("settings/invite/", views.invite_user, name="invite_user"),
+    path("travel/", views.travel_dashboard, name="travel_dashboard"),
+    path("travel/<uuid:flight_id>/manifest/", views.flight_manifest, name="flight_manifest"),
 ]

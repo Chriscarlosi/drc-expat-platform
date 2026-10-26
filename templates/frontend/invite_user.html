@@ -1,0 +1,64 @@
+{% extends "frontend/base_app.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Invite User" %} — DRC Expat{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto py-8">
+
+    <div class="mb-8">
+        <nav class="flex mb-4 text-sm text-slate-500 font-medium">
+            <a href="{% url 'frontend:settings' %}" class="hover:text-amber-600 transition">{% trans "Settings" %}</a>
+            <span class="mx-2">/</span>
+            <span class="text-slate-800 dark:text-slate-200">{% trans "Invite User" %}</span>
+        </nav>
+        <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+            {% trans "Invite Team Member" %}
+        </h1>
+        <p class="text-slate-500 mt-2 text-lg">
+            {% trans "Send an invitation to join" %} <strong class="text-slate-900 dark:text-white">{{ company.name }}</strong>.
+        </p>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden">
+        <div class="p-8 md:p-10">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col md:col-span-2">
+                        <label class="mb-2 font-bold text-slate-700 dark:text-slate-300 text-sm">{{ form.email.label }} <span class="text-red-500">*</span></label>
+                        {{ form.email }}
+                        {% if form.email.errors %}<span class="text-red-500 text-xs mt-1">{{ form.email.errors.0 }}</span>{% endif %}
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="mb-2 font-bold text-slate-700 dark:text-slate-300 text-sm">{{ form.first_name.label }} <span class="text-red-500">*</span></label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}<span class="text-red-500 text-xs mt-1">{{ form.first_name.errors.0 }}</span>{% endif %}
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="mb-2 font-bold text-slate-700 dark:text-slate-300 text-sm">{{ form.last_name.label }} <span class="text-red-500">*</span></label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}<span class="text-red-500 text-xs mt-1">{{ form.last_name.errors.0 }}</span>{% endif %}
+                    </div>
+                    <div class="flex flex-col md:col-span-2">
+                        <label class="mb-2 font-bold text-slate-700 dark:text-slate-300 text-sm">{{ form.role.label }} <span class="text-red-500">*</span></label>
+                        {{ form.role }}
+                        <span class="text-xs text-slate-500 mt-1">{% trans "This determines what the user can see and do." %}</span>
+                        {% if form.role.errors %}<span class="text-red-500 text-xs mt-1">{{ form.role.errors.0 }}</span>{% endif %}
+                    </div>
+                </div>
+
+                <div class="pt-6 flex flex-col sm:flex-row gap-4 border-t border-slate-100 dark:border-slate-700 mt-8">
+                    <button type="submit" class="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white px-8 py-3 rounded-xl font-bold text-base shadow-lg shadow-amber-500/30 transform hover:-translate-y-0.5 transition-all duration-200">
+                        {% trans "Send Invitation" %}
+                    </button>
+                    <a href="{% url 'frontend:settings' %}" class="flex-1 bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-8 py-3 rounded-xl font-bold text-base border-2 border-slate-200 dark:border-slate-600 transition-all duration-200 text-center">
+                        {% trans "Cancel" %}
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

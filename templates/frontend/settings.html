@@ -29,9 +29,9 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                     {% trans "Team Members" %}
                 </a>
-                <a href="#subscription" class="flex items-center gap-3 px-4 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg font-semibold text-sm transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
-                    {% trans "Subscription" %}
+                <a href="#data-import" class="flex items-center gap-3 px-4 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg font-semibold text-sm transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    {% trans "Data Import" %}
                 </a>
             </nav>
         </div>
@@ -62,34 +62,12 @@
                 </div>
             </section>
 
-        <!-- Data Import Section -->
-<section id="data-import" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
-    <div class="px-6 py-5 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
-        <h2 class="text-lg font-bold text-slate-900 dark:text-white">{% trans "Bulk Data Import" %}</h2>
-    </div>
-    <div class="p-6">
-        <p class="text-sm text-slate-500 mb-4">
-            {% trans "Upload a CSV file to import multiple experts at once. Ensure your CSV has the following headers:" %}
-            <br>
-            <code class="text-xs bg-slate-100 dark:bg-slate-900 p-1 rounded mt-2 inline-block">first_name, last_name, date_of_birth, nationality, passport_number, passport_issue_date, passport_expiry_date, email</code>
-        </p>
-        <form method="post" action="{% url 'frontend:import_experts_csv' %}" enctype="multipart/form-data" class="flex flex-col sm:flex-row gap-4 items-end">
-            {% csrf_token %}
-            <div class="flex-1">
-                <input type="file" name="csv_file" required accept=".csv" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 block p-3 transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 cursor-pointer">
-            </div>
-            <button type="submit" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-3 rounded-xl font-bold text-sm shadow-md hover:-translate-y-0.5 transition-all w-full sm:w-auto">
-                {% trans "Upload & Import" %}
-            </button>
-        </form>
-    </div>
-</section>
-
             <!-- Team Members Section -->
             <section id="team" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
                 <div class="px-6 py-5 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 flex justify-between items-center">
                     <h2 class="text-lg font-bold text-slate-900 dark:text-white">{% trans "Team Members" %}</h2>
-                    <a href="/admin/organization/usercompanymembership/add/" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-lg text-sm font-bold hover:-translate-y-0.5 transition-transform shadow-sm flex items-center gap-2">
+                    <!-- FIXED: Points to frontend invite view -->
+                    <a href="{% url 'frontend:invite_user' %}" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-lg text-sm font-bold hover:-translate-y-0.5 transition-transform shadow-sm flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                         {% trans "Invite User" %}
                     </a>
@@ -130,21 +108,27 @@
                 </div>
             </section>
 
-            <!-- Subscription Section -->
-            <section id="subscription" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+            <!-- Data Import Section -->
+            <section id="data-import" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
                 <div class="px-6 py-5 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
-                    <h2 class="text-lg font-bold text-slate-900 dark:text-white">{% trans "Subscription" %}</h2>
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white">{% trans "Bulk Data Import" %}</h2>
                 </div>
                 <div class="p-6">
-                    <div class="flex items-center justify-between p-5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-900/50">
-                        <div>
-                            <div class="font-black text-slate-900 dark:text-white text-lg">{% trans "Enterprise Tier" %}</div>
-                            <div class="text-sm text-slate-500 mt-1">{% trans "Unlimited experts, all modules active." %}</div>
+                    <p class="text-sm text-slate-500 mb-4">
+                        {% trans "Upload a CSV file to import multiple experts at once. Ensure your CSV has the following headers:" %}
+                        <br>
+                        <code class="text-xs bg-slate-100 dark:bg-slate-900 p-1 rounded mt-2 inline-block">first_name, last_name, date_of_birth, nationality, passport_number, passport_issue_date, passport_expiry_date, email</code>
+                    </p>
+                    <!-- FIXED: Added enctype="multipart/form-data" -->
+                    <form method="post" action="{% url 'frontend:import_experts_csv' %}" enctype="multipart/form-data" class="flex flex-col sm:flex-row gap-4 items-end">
+                        {% csrf_token %}
+                        <div class="flex-1">
+                            <input type="file" name="csv_file" required accept=".csv" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 block p-3 transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 cursor-pointer">
                         </div>
-                        <div class="px-4 py-2 rounded-lg bg-green-100 text-green-700 text-sm font-bold border border-green-200">
-                            {% trans "Active" %}
-                        </div>
-                    </div>
+                        <button type="submit" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-3 rounded-xl font-bold text-sm shadow-md hover:-translate-y-0.5 transition-all w-full sm:w-auto">
+                            {% trans "Upload & Import" %}
+                        </button>
+                    </form>
                 </div>
             </section>
 

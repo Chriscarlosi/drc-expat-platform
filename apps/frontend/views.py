@@ -16,6 +16,10 @@ from django.views.generic import CreateView, TemplateView, UpdateView
 from django.urls import reverse_lazy
 from django.db import transaction
 from django.db.models import Q
+from django.contrib.auth.models import User
+
+from django.shortcuts import render, get_object_or_404
+from apps.travel.models import CharterFlight, CharterPassenger
 
 from apps.travel.models import CharterFlight
 from apps.audit.models import ImmutableAuditLog
@@ -27,7 +31,7 @@ from apps.compliance.models import PenaltyLedger
 from apps.organization.models import Company, UserCompanyMembership, WorkforceSnapshot
 from apps.organization.forms import WorkforceSnapshotForm
 from apps.documents.models import DocumentVersion
-from .forms import CSVImportForm
+from .forms import CSVImportForm, InviteUserForm
 
 logger = logging.getLogger(__name__)
 
@@ -460,6 +464,59 @@ def settings_dashboard(request):
     return render(request, "frontend/settings.html", context)
 
 
+@login_required
+def invite_user(request):
+    """Frontend view to invite a new team member."""
+    membership = getattr(request.user, 'membership', None)
+    if not membership or membership.role not in ['OWNER', 'ADMIN', 'HR_MANAGER']:
+        messages.error(request, "You do not have permission to invite users.")
+        return redirect('frontend:settings')
+
+    company = membership.company
+
+    if request.method == 'POST':
+        form = InviteUserForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+
+            if User.objects.filter(email=email).exists():
+                messages.error(request, "A user with this email already exists.")
+            elif UserCompanyMembership.objects.filter(user__email=email, company=company).exists():
+                messages.error(request, "This user is already a member of your company.")
+            else:
+                user = User.objects.create_user(
+                    username=email,
+                    email=email,
+                    first_name=form.cleaned_data['first_name'],
+                    last_name=form.cleaned_data['last_name'],
+                    password=None
+                )
+                user.set_unusable_password()
+                user.save()
+
+                UserCompanyMembership.objects.create(
+                    user=user,
+                    company=company,
+                    role=form.cleaned_data['role'],
+                    is_active=True
+                )
+
+                ImmutableAuditLog.objects.create(
+                    user_repr=request.user.username,
+                    action="USER_INVITED",
+                    model_name="UserCompanyMembership",
+                    object_repr=f"User {email}",
+                    changes={"info": f"Invited {email} with role {form.cleaned_data['role']}."}
+                )
+
+                messages.success(request, f"Invitation created for {email}. They will receive an email shortly.")
+                return redirect('frontend:settings')
+    else:
+        form = InviteUserForm()
+
+    return render(request, 'frontend/invite_user.html', {'form': form, 'company': company})
+
+
 # ═══════════════════════════════════════════════════════════════
 # TRUST & LEGAL PAGES
 # ═══════════════════════════════════════════════════════════════
@@ -560,7 +617,9 @@ def import_experts_csv(request):
             io_string = io.StringIO(data_set)
             reader = csv.DictReader(io_string)
 
-            company = getattr(request.user, 'membership', None).company if getattr(request.user, 'membership', None) else Company.objects.filter(is_active=True).first()
+            company = getattr(request.user, 'membership', None).company if getattr(request.user, 'membership',
+                                                                                   None) else Company.objects.filter(
+                is_active=True).first()
 
             created_count = 0
             skipped_count = 0
@@ -603,7 +662,8 @@ def import_experts_csv(request):
                 changes={"info": f"Imported {created_count} experts. Skipped {skipped_count}."}
             )
 
-            messages.success(request, f'Successfully imported {created_count} experts. ({skipped_count} skipped/duplicates).')
+            messages.success(request,
+                             f'Successfully imported {created_count} experts. ({skipped_count} skipped/duplicates).')
             return redirect('frontend:settings')
     else:
         return redirect('frontend:settings')
@@ -650,11 +710,13 @@ def visa_records_list(request):
     membership = getattr(request.user, 'membership', None)
     company = membership.company if membership else Company.objects.filter(is_active=True).first()
 
-    visas = VisaRecord.objects.filter(expert__company=company).select_related('expert', 'visa_type').order_by('-expiry_date')
+    visas = VisaRecord.objects.filter(expert__company=company).select_related('expert', 'visa_type').order_by(
+        '-expiry_date')
 
     query = request.GET.get('q')
     if query:
-        visas = visas.filter(Q(expert__first_name__icontains=query) | Q(expert__last_name__icontains=query) | Q(visa_number__icontains=query))
+        visas = visas.filter(Q(expert__first_name__icontains=query) | Q(expert__last_name__icontains=query) | Q(
+            visa_number__icontains=query))
 
     status_filter = request.GET.get('status')
     if status_filter:
@@ -744,7 +806,8 @@ def resolve_penalty(request, penalty_id):
     """Action to mark a penalty as resolved."""
     if request.method == 'POST':
         penalty = get_object_or_404(PenaltyLedger, id=penalty_id)
-        if not request.user.is_superuser and penalty.expert.company != getattr(request.user, 'membership', None).company:
+        if not request.user.is_superuser and penalty.expert.company != getattr(request.user, 'membership',
+                                                                               None).company:
             messages.error(request, "Permission denied.")
             return redirect('frontend:penalty_list')
 
@@ -771,10 +834,8 @@ def document_list(request):
     membership = getattr(request.user, 'membership', None)
     company = membership.company if membership else Company.objects.filter(is_active=True).first()
 
-    # Use the correct model fields
     documents = DocumentVersion.objects.all().order_by('-uploaded_at')
 
-    # Search
     query = request.GET.get('q')
     if query:
         documents = documents.filter(
@@ -801,12 +862,6 @@ class ExpertCreateView(LoginRequiredMixin, CreateView):
         company = membership.company if membership else Company.objects.filter(is_active=True).first()
         kwargs['company'] = company
         return kwargs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        membership = getattr(self.request.user, 'membership', None)
-        context['company'] = membership.company if membership else Company.objects.filter(is_active=True).first()
-        return context
 
     def form_valid(self, form):
         membership = getattr(self.request.user, 'membership', None)
@@ -836,10 +891,6 @@ class ExpertCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
-# ═══════════════════════════════════════════════════════════════
-# EXPERT EDIT
-# ═══════════════════════════════════════════════════════════════
-
 class ExpertUpdateView(LoginRequiredMixin, UpdateView):
     model = ExpertProfile
     form_class = ExpertProfileForm
@@ -859,17 +910,41 @@ class ExpertUpdateView(LoginRequiredMixin, UpdateView):
         return response
 
 
-# ═══════════════════════════════════════════════════════════════
-# TRAVEL (Simplified Frontend List)
-# ═══════════════════════════════════════════════════════════════
+
 
 @login_required
-def travel_flights_list(request):
-    """Simple frontend list for Charter Flights."""
-    flights = CharterFlight.objects.all().order_by('-departure_datetime')[:20]
+def travel_dashboard(request):
+    """Premium frontend dashboard for Travel & Charter."""
+    today = timezone.now().date()
+
+    # Get upcoming flights
+    upcoming_flights = CharterFlight.objects.filter(
+        departure_datetime__date__gte=today
+    ).select_related('route', 'aircraft', 'operator').order_by('departure_datetime')[:10]
+
+    # Basic stats
+    total_upcoming = CharterFlight.objects.filter(departure_datetime__date__gte=today).count()
+    total_passengers = CharterPassenger.objects.filter(flight__departure_datetime__date__gte=today).count()
+
     context = {
-        "flights": flights,
+        "upcoming_flights": upcoming_flights,
+        "total_upcoming": total_upcoming,
+        "total_passengers": total_passengers,
         "scope_label": getattr(request.user, 'membership', None).company.name if getattr(request.user, 'membership',
                                                                                          None) else "All Companies",
     }
-    return render(request, "frontend/travel_list.html", context)
+    return render(request, "frontend/travel_dashboard.html", context)
+
+
+@login_required
+def flight_manifest(request, flight_id):
+    """Printable DGM Manifest for a specific flight."""
+    flight = get_object_or_404(CharterFlight, id=flight_id)
+    passengers = CharterPassenger.objects.filter(flight=flight).select_related('expert')
+
+    context = {
+        "flight": flight,
+        "passengers": passengers,
+        "today": timezone.now().date(),
+    }
+    return render(request, "frontend/flight_manifest.html", context)
