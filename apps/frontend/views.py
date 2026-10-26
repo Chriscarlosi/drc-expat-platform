@@ -12,14 +12,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib import messages
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView, UpdateView
 from django.urls import reverse_lazy
 from django.db import transaction
 from django.db.models import Q
-from django.views.generic import UpdateView
 
 from apps.travel.models import CharterFlight
-
 from apps.audit.models import ImmutableAuditLog
 from apps.experts.models import ExpertProfile, Dependant
 from apps.experts.forms import DependantForm, ExpertProfileForm
@@ -790,6 +788,7 @@ def document_list(request):
     }
     return render(request, "frontend/document_list.html", context)
 
+
 class ExpertCreateView(LoginRequiredMixin, CreateView):
     model = ExpertProfile
     form_class = ExpertProfileForm
@@ -831,40 +830,40 @@ class ExpertCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
+# ═══════════════════════════════════════════════════════════════
+# EXPERT EDIT
+# ═══════════════════════════════════════════════════════════════
 
-    # ═══════════════════════════════════════════════════════════════
-    # EXPERT EDIT
-    # ═══════════════════════════════════════════════════════════════
+class ExpertUpdateView(LoginRequiredMixin, UpdateView):
+    model = ExpertProfile
+    form_class = ExpertProfileForm
+    template_name = 'frontend/expert_form.html'
+    success_url = reverse_lazy('frontend:expert_list')
 
-    class ExpertUpdateView(LoginRequiredMixin, UpdateView):
-        model = ExpertProfile
-        form_class = ExpertProfileForm
-        template_name = 'frontend/expert_form.html'
-        success_url = reverse_lazy('frontend:expert_list')
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        membership = getattr(self.request.user, 'membership', None)
+        company = membership.company if membership else Company.objects.filter(is_active=True).first()
+        kwargs['company'] = company
+        return kwargs
 
-        def get_form_kwargs(self):
-            kwargs = super().get_form_kwargs()
-            membership = getattr(self.request.user, 'membership', None)
-            company = membership.company if membership else Company.objects.filter(is_active=True).first()
-            kwargs['company'] = company
-            return kwargs
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, f"Expert {form.instance.full_name} updated successfully.")
+        return response
 
-        def form_valid(self, form):
-            response = super().form_valid(form)
-            messages.success(self.request, f"Expert {form.instance.full_name} updated successfully.")
-            return response
 
-    # ═══════════════════════════════════════════════════════════════
-    # TRAVEL (Simplified Frontend List)
-    # ═══════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════════
+# TRAVEL (Simplified Frontend List)
+# ═══════════════════════════════════════════════════════════════
 
-    @login_required
-    def travel_flights_list(request):
-        """Simple frontend list for Charter Flights."""
-        flights = CharterFlight.objects.all().order_by('-departure_datetime')[:20]
-        context = {
-            "flights": flights,
-            "scope_label": getattr(request.user, 'membership', None).company.name if getattr(request.user, 'membership',
-                                                                                             None) else "All Companies",
-        }
-        return render(request, "frontend/travel_list.html", context)
+@login_required
+def travel_flights_list(request):
+    """Simple frontend list for Charter Flights."""
+    flights = CharterFlight.objects.all().order_by('-departure_datetime')[:20]
+    context = {
+        "flights": flights,
+        "scope_label": getattr(request.user, 'membership', None).company.name if getattr(request.user, 'membership',
+                                                                                         None) else "All Companies",
+    }
+    return render(request, "frontend/travel_list.html", context)
