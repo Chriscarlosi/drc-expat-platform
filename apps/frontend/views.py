@@ -802,6 +802,12 @@ class ExpertCreateView(LoginRequiredMixin, CreateView):
         kwargs['company'] = company
         return kwargs
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        membership = getattr(self.request.user, 'membership', None)
+        context['company'] = membership.company if membership else Company.objects.filter(is_active=True).first()
+        return context
+
     def form_valid(self, form):
         membership = getattr(self.request.user, 'membership', None)
         company = membership.company if membership else Company.objects.filter(is_active=True).first()
