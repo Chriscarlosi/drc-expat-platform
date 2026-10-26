@@ -21,9 +21,9 @@
             </div>
         </div>
         <div class="flex gap-3">
-            <!-- Assuming we build an Add Expert frontend view later -->
-            <a href="/admin/experts/expertprofile/add/" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-amber-500/30 transition-transform hover:-translate-y-0.5">
-                + {% trans "Add Expert (Admin)" %}
+            <!-- FIXED: Now points to the frontend form -->
+            <a href="{% url 'frontend:expert_add' %}" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-amber-500/30 transition-transform hover:-translate-y-0.5">
+                + {% trans "Add Expert" %}
             </a>
         </div>
     </div>
