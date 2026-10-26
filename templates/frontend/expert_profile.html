@@ -14,9 +14,9 @@
             </div>
             <div>
                 <div class="text-xs uppercase tracking-[0.2em] text-amber-600 font-black mb-1 flex items-center gap-2">
-                    <a href="/dashboard/" class="hover:underline">{% trans "Dashboard" %}</a>
+                    <a href="{% url 'frontend:expert_list' %}" class="hover:underline">{% trans "Experts" %}</a>
                     <span>/</span>
-                    <span>{% trans "Expert Profile" %}</span>
+                    <span>{% trans "Profile" %}</span>
                 </div>
                 <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
                     {{ expert.full_name }}
@@ -28,9 +28,10 @@
             </div>
         </div>
         <div class="flex gap-3">
-          <a href="{% url 'frontend:expert_edit' expert.id %}" class="bg-white dark:bg-slate-800 hover:bg-slate-50 text-slate-700 dark:text-slate-200 px-5 py-2.5 rounded-xl font-bold text-sm border border-slate-200 dark:border-slate-700 transition">
-    {% trans "Edit Profile" %}
-</a>
+            <!-- FIXED: Points to frontend edit view -->
+            <a href="{% url 'frontend:expert_edit' expert.id %}" class="bg-white dark:bg-slate-800 hover:bg-slate-50 text-slate-700 dark:text-slate-200 px-5 py-2.5 rounded-xl font-bold text-sm border border-slate-200 dark:border-slate-700 transition">
+                {% trans "Edit Profile" %}
+            </a>
             <a href="{% url 'frontend:expert_dependants' expert.id %}" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-2.5 rounded-xl font-bold text-sm shadow-md transition">
                 {% trans "Manage Family" %}
             </a>
