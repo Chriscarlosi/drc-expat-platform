@@ -98,22 +98,21 @@
             </a>
         </nav>
 
-        <!-- User Menu -->
-        <div class="p-4 border-t border-slate-700/50">
-            <div class="flex items-center gap-3 px-3 py-3 rounded-xl bg-slate-800/50">
-                <div class="w-9 h-9 rounded-full bg-brand-500 flex items-center justify-center text-white font-bold text-xs shrink-0">
-                    {{ request.user.first_name|first|default:"U" }}{{ request.user.last_name|first|default:"S" }}
-                </div>
-                <div class="flex-1 min-w-0">
-                    <div class="text-sm font-bold text-white truncate">{{ request.user.get_full_name|default:request.user.username }}</div>
-                    <div class="text-[10px] text-slate-400 truncate">{{ user_role|default:"User" }}{% if user_company %} · {{ user_company.name }}{% endif %}</div>
-                </div>
-                <!-- Logout Button -->
-                <a href="{% url 'frontend:logout' %}" class="text-slate-400 hover:text-white transition-colors" title="{% trans 'Log out' %}">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                </a>
-            </div>
+     <!-- User Menu -->
+<div class="p-4 border-t border-slate-700/50">
+    <div class="flex items-center gap-3 px-3 py-3 rounded-xl bg-slate-800/50 hover:bg-slate-800 transition-colors cursor-pointer group" onclick="window.location.href='{% url 'frontend:profile' %}'">
+        <div class="w-9 h-9 rounded-full bg-brand-500 flex items-center justify-center text-white font-bold text-xs shrink-0 group-hover:scale-105 transition-transform">
+            {{ request.user.first_name|first|default:"U" }}{{ request.user.last_name|first|default:"S" }}
         </div>
+        <div class="flex-1 min-w-0">
+            <div class="text-sm font-bold text-white truncate">{{ request.user.get_full_name|default:request.user.username }}</div>
+            <div class="text-[10px] text-slate-400 truncate">{% trans "View Profile" %}</div>
+        </div>
+        <a href="{% url 'frontend:logout' %}" class="text-slate-400 hover:text-white transition-colors" title="{% trans 'Log out' %}" onclick="event.stopPropagation();">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+        </a>
+    </div>
+</div>
     </aside>
 
     <!-- MAIN CONTENT -->
@@ -137,11 +136,16 @@
                 <button onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400" title="{% trans 'Toggle theme' %}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                 </button>
-                <!-- Language toggle -->
-                <div class="flex gap-1 text-xs font-bold">
-                    <a href="?lang=en" class="px-2 py-1 rounded {% if LANGUAGE_CODE == 'en' %}bg-slate-900 text-white{% else %}text-slate-500{% endif %}">EN</a>
-                    <a href="?lang=fr" class="px-2 py-1 rounded {% if LANGUAGE_CODE == 'fr' %}bg-slate-900 text-white{% else %}text-slate-500{% endif %}">FR</a>
-                </div>
+
+                <!-- FIXED: Language toggle form -->
+                <form action="{% url 'set_language' %}" method="post" class="flex gap-1 text-xs font-bold m-0">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                    <button type="submit" name="language" value="en" class="px-2 py-1 rounded {% if LANGUAGE_CODE == 'en' %}bg-slate-900 text-white dark:bg-white dark:text-slate-900{% else %}text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700{% endif %}">EN</button>
+                    <button type="submit" name="language" value="fr" class="px-2 py-1 rounded {% if LANGUAGE_CODE == 'fr' %}bg-slate-900 text-white dark:bg-white dark:text-slate-900{% else %}text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700{% endif %}">FR</button>
+                </form>
+                <!-- END FIXED LANGUAGE TOGGLE -->
+
             </div>
         </div>
 

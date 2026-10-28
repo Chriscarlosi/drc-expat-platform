@@ -1,0 +1,42 @@
+{% extends "frontend/base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="bg-navy-900 min-h-screen flex items-center justify-center px-4">
+  <div class="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl">
+    <div class="text-center mb-6">
+      <div class="w-16 h-16 bg-red-100 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-4">🛡️</div>
+      <h1 class="text-2xl font-black text-navy-900">DGM Access Portal</h1>
+      <p class="text-slate-500 text-sm mt-1">Enter inspector credentials to begin.</p>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="mb-4 p-3 bg-red-50 text-red-700 text-sm font-bold rounded-lg border border-red-200">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post" class="space-y-4">
+      {% csrf_token %}
+      <div>
+        <label class="block text-xs uppercase tracking-widest font-black text-slate-500 mb-1">Inspector Name</label>
+        <input type="text" name="inspector_name" required placeholder="e.g. Jean Mukala" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-brand-500 outline-none">
+      </div>
+      <div>
+        <label class="block text-xs uppercase tracking-widest font-black text-slate-500 mb-1">DGM Badge ID</label>
+        <input type="text" name="inspector_id" required placeholder="e.g. DGM-8842" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-brand-500 outline-none">
+      </div>
+      <div>
+        <label class="block text-xs uppercase tracking-widest font-black text-slate-500 mb-1">Access PIN</label>
+        <input type="password" name="pin" placeholder="••••" required class="w-full text-center tracking-[0.5em] text-xl font-black px-4 py-2.5 rounded-lg border border-slate-200 focus:border-brand-500 outline-none">
+      </div>
+
+      <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white py-3.5 rounded-xl font-black transition mt-2">
+        Authorize Session
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

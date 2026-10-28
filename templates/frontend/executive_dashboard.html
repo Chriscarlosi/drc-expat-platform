@@ -31,11 +31,21 @@
         <svg class="w-6 h-6 text-amber-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
         <div class="flex-1">
             <div class="font-bold text-amber-800 dark:text-amber-300">{% trans "Workforce Data Incomplete" %}</div>
+            <!-- Note: To translate the warning below, ensure it is wrapped in gettext() in your views.py -->
             <div class="text-sm text-amber-700 dark:text-amber-400 mt-1">{{ workforce_warning }}</div>
         </div>
         <a href="{% url 'frontend:add_workforce_snapshot' %}" class="text-xs font-bold text-amber-700 dark:text-amber-300 hover:underline whitespace-nowrap bg-amber-100 dark:bg-amber-900/50 px-3 py-1.5 rounded-lg">{% trans "Add Snapshot →" %}</a>
     </div>
     {% endif %}
+
+    <div class="flex gap-3 flex-wrap">
+        <a href="/quota-simulator/" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-3 rounded-xl font-bold text-sm transition shadow-lg">
+          🎯 {% trans "Quota Simulator" %}
+        </a>
+        <a href="/inspection/" class="bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-xl font-bold text-sm transition shadow-lg">
+          🚨 {% trans "DGM Inspection Mode" %}
+        </a>
+    </div>
 
     <!-- Compliance Score Hero with Breakdown -->
     <div class="bg-navy-900 dark:bg-slate-950 rounded-3xl p-8 md:p-10 relative overflow-hidden shadow-2xl">
@@ -51,7 +61,6 @@
                         {{ compliance_score }}{% if compliance_score != "—" %}<span class="text-3xl text-slate-500 font-bold">/100</span>{% endif %}
                     </div>
 
-                    <!-- Single Unified Badge -->
                     {% if compliance_score == "—" %}
                     <div class="px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest text-navy-900 shadow-lg bg-amber-500">
                         {% trans "PENDING DATA" %}
@@ -123,8 +132,10 @@
         </div>
     </div>
 
-    <!-- The Four Numbers -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- The Five Numbers -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+
+        <!-- Experts -->
         <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
             <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-3">{% trans "Active Experts" %}</div>
             <div class="text-5xl font-black text-slate-900 dark:text-white leading-none tracking-tight">{{ total_experts }}</div>
@@ -133,6 +144,8 @@
                 <span><strong class="text-slate-600 dark:text-slate-300">{{ congolese_count|intcomma }}</strong> {% trans "Congolese" %}</span>
             </div>
         </div>
+
+        <!-- Quota -->
         <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
             <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-3">{% trans "Expat Quota" %}</div>
             <div class="text-5xl font-black leading-none tracking-tight" style="color: {% if quota_compliant %}16A34A{% else %}DC2626{% endif %};">
@@ -149,6 +162,8 @@
                 {% endif %}
             </div>
         </div>
+
+        <!-- Expiring -->
         <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
             <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-3">{% trans "Expiring (90 days)" %}</div>
             <div class="text-5xl font-black text-slate-900 dark:text-white leading-none tracking-tight">{{ passports_expiring|add:cartes_expiring }}</div>
@@ -157,6 +172,8 @@
                 <span><strong class="text-slate-600 dark:text-slate-300">{{ cartes_expiring }}</strong> {% trans "cartes" %}</span>
             </div>
         </div>
+
+        <!-- Penalties -->
         <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
             <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-3">{% trans "Penalties" %}</div>
             <div class="text-5xl font-black leading-none tracking-tight" style="color: {% if penalty_count %}DC2626{% else %}16A34A{% endif %};">
@@ -164,10 +181,22 @@
             </div>
             <div class="text-xs text-slate-400 mt-4 border-t border-slate-100 dark:border-slate-700 pt-3">{{ penalty_count }} {% trans "active accruals" %}</div>
         </div>
+
+        <!-- Travel / Flights -->
+        <a href="{% url 'frontend:travel_dashboard' %}" class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5 group">
+            <div class="flex justify-between items-start mb-3">
+                <div class="text-xs uppercase tracking-widest text-slate-500 font-black group-hover:text-brand-500 transition-colors">{% trans "Flights" %}</div>
+                <svg class="w-4 h-4 text-slate-300 group-hover:text-brand-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+            </div>
+            <div class="text-5xl font-black text-slate-900 dark:text-white leading-none tracking-tight">{{ upcoming_flights_count }}</div>
+            <div class="text-xs text-slate-400 mt-4 border-t border-slate-100 dark:border-slate-700 pt-3">{% trans "Upcoming Charters" %}</div>
+        </a>
     </div>
 
     <!-- Two-Column Details -->
     <div class="grid lg:grid-cols-2 gap-8">
+
+        <!-- Upcoming Expirations -->
         <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
             <div class="p-6 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
                 <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-1">{% trans "Upcoming Expirations" %}</div>
@@ -198,6 +227,8 @@
             <div class="p-10 text-center text-slate-400 italic">{% trans "No upcoming expirations." %} ✅</div>
             {% endif %}
         </div>
+
+        <!-- Active Penalties -->
         <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
             <div class="p-6 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
                 <div class="text-xs uppercase tracking-widest text-slate-500 font-black mb-1">{% trans "Active Penalties" %}</div>

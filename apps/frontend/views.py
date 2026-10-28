@@ -3,14 +3,18 @@ import json
 import logging
 import csv
 import io
+import base64
+import qrcode
 from datetime import timedelta
+
+from django.http import JsonResponse
+from django.utils import timezone
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
-from django.utils import timezone
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout, update_session_auth_hash
 from django.contrib import messages
 from django.views.generic import CreateView, TemplateView, UpdateView
 from django.urls import reverse_lazy
@@ -18,10 +22,8 @@ from django.db import transaction
 from django.db.models import Q
 from django.contrib.auth.models import User
 
-from django.shortcuts import render, get_object_or_404
 from apps.travel.models import CharterFlight, CharterPassenger
-
-from apps.travel.models import CharterFlight
+from apps.travel.services import ManifestValidator  # NEW IMPORT
 from apps.audit.models import ImmutableAuditLog
 from apps.experts.models import ExpertProfile, Dependant
 from apps.experts.forms import DependantForm, ExpertProfileForm
@@ -31,7 +33,8 @@ from apps.compliance.models import PenaltyLedger
 from apps.organization.models import Company, UserCompanyMembership, WorkforceSnapshot
 from apps.organization.forms import WorkforceSnapshotForm
 from apps.documents.models import DocumentVersion
-from .forms import CSVImportForm, InviteUserForm
+from .forms import CSVImportForm, InviteUserForm, UserProfileForm, CustomPasswordChangeForm
+from .models import InspectionSession, InspectionAuditLog
 
 logger = logging.getLogger(__name__)
 
@@ -133,6 +136,9 @@ def executive_dashboard(request):
     penalty_total = sum(p.total_amount_usd for p in penalties)
     penalty_count = penalties.count()
 
+    # ── Travel Stats ──────────────────────────────────────────
+    upcoming_flights_count = CharterFlight.objects.filter(departure_datetime__date__gte=today).count()
+
     # ── Risk score ────────────────────────────────────────────
     risk = compute_risk_score(
         passports_expired=passports_expired,
@@ -193,6 +199,7 @@ def executive_dashboard(request):
         "critical_count": passports_t30,
         "penalty_total": float(penalty_total),
         "penalty_count": penalty_count,
+        "upcoming_flights_count": upcoming_flights_count,
         "compliance_score": display_score,
         "risk_label": display_label,
         "risk_color": display_color,
@@ -237,7 +244,6 @@ def expert_portal(request):
 
     dependants = list(expert.expert_family_members.all())
 
-    from apps.travel.models import CharterPassenger
     upcoming_flights = (
         CharterPassenger.objects
         .filter(expert=expert, flight__departure_datetime__date__gte=today)
@@ -515,6 +521,36 @@ def invite_user(request):
         form = InviteUserForm()
 
     return render(request, 'frontend/invite_user.html', {'form': form, 'company': company})
+
+
+@login_required
+def profile_view(request):
+    """Handle user profile updates and password changes."""
+    if request.method == 'POST':
+        if 'update_profile' in request.POST:
+            profile_form = UserProfileForm(request.POST, instance=request.user)
+            if profile_form.is_valid():
+                profile_form.save()
+                messages.success(request, "Profile updated successfully.")
+                return redirect('frontend:profile')
+        elif 'change_password' in request.POST:
+            password_form = CustomPasswordChangeForm(request.user, request.POST)
+            if password_form.is_valid():
+                user = password_form.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, "Password changed successfully.")
+                return redirect('frontend:profile')
+    else:
+        profile_form = UserProfileForm(instance=request.user)
+        password_form = CustomPasswordChangeForm(request.user)
+
+    context = {
+        'profile_form': profile_form,
+        "password_form": password_form,
+        "company": getattr(request.user, 'membership', None).company if getattr(request.user, 'membership',
+                                                                                None) else None,
+    }
+    return render(request, 'frontend/profile.html', context)
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -910,19 +946,19 @@ class ExpertUpdateView(LoginRequiredMixin, UpdateView):
         return response
 
 
-
+# ═══════════════════════════════════════════════════════════════
+# TRAVEL & CHARTER
+# ═══════════════════════════════════════════════════════════════
 
 @login_required
 def travel_dashboard(request):
     """Premium frontend dashboard for Travel & Charter."""
     today = timezone.now().date()
 
-    # Get upcoming flights
     upcoming_flights = CharterFlight.objects.filter(
         departure_datetime__date__gte=today
     ).select_related('route', 'aircraft', 'operator').order_by('departure_datetime')[:10]
 
-    # Basic stats
     total_upcoming = CharterFlight.objects.filter(departure_datetime__date__gte=today).count()
     total_passengers = CharterPassenger.objects.filter(flight__departure_datetime__date__gte=today).count()
 
@@ -940,11 +976,237 @@ def travel_dashboard(request):
 def flight_manifest(request, flight_id):
     """Printable DGM Manifest for a specific flight."""
     flight = get_object_or_404(CharterFlight, id=flight_id)
-    passengers = CharterPassenger.objects.filter(flight=flight).select_related('expert')
+    passengers = CharterPassenger.objects.filter(flight=flight).select_related('expert', 'dependant')
+
+    # 1. Run the validation engine for the red/amber warning banners
+    validator = ManifestValidator(flight)
+    errors, warnings = validator.validate()
+
+    # 2. Generate the QR Code if the manifest is locked/submitted
+    qr_code_url = None
+    if flight.manifest_hash:
+        qr = qrcode.QRCode(version=1, box_size=10, border=2)
+        # This URL should point to a public verification page you build later
+        verify_url = request.build_absolute_uri(f"/verify/{flight.manifest_hash}/")
+        qr.add_data(verify_url)
+        qr.make(fit=True)
+
+        img = qr.make_image(fill_color="#0f172a", back_color="white")
+
+        # Convert image to base64 string for the HTML template
+        buffer = io.BytesIO()
+        img.save(buffer, format="PNG")
+        qr_code_url = base64.b64encode(buffer.getvalue()).decode()
 
     context = {
         "flight": flight,
         "passengers": passengers,
         "today": timezone.now().date(),
+        "validation_errors": errors,
+        "validation_warnings": warnings,
+        "qr_code_url": qr_code_url,
     }
     return render(request, "frontend/flight_manifest.html", context)
+
+
+# ═══════════════════════════════════════════════════════════════
+# DGM INSPECTION MODE (Tablet-optimized, PIN protected)
+# ═══════════════════════════════════════════════════════════════
+
+@login_required
+def inspection_mode(request):
+    """DGM Inspection Mode — DB-backed sessions and PII masking."""
+    today = timezone.now().date()
+    now = timezone.now()
+
+    # 1. Check for existing active session
+    session_id = request.session.get("inspection_session_id")
+    insp_session = None
+
+    if session_id:
+        insp_session = InspectionSession.objects.filter(id=session_id).first()
+        if not insp_session or not insp_session.is_active:
+            del request.session["inspection_session_id"]
+            insp_session = None
+            messages.warning(request, "Inspection session expired.")
+
+    # 2. Handle PIN submission
+    if not insp_session:
+        if request.method == "POST":
+            pin = request.POST.get("pin")
+            inspector_name = request.POST.get("inspector_name", "").strip()
+            inspector_id = request.POST.get("inspector_id", "").strip()
+
+            if pin == "1234" and inspector_name and inspector_id:
+                # Create a 1-hour session
+                insp_session = InspectionSession.objects.create(
+                    inspector_name=inspector_name,
+                    inspector_id=inspector_id,
+                    company=request.user.company_memberships.first().company,  # Or fallback
+                    expires_at=now + timedelta(hours=1),
+                    ip_address=request.META.get("REMOTE_ADDR")
+                )
+                request.session["inspection_session_id"] = insp_session.id
+                return redirect("/inspection/")
+            else:
+                messages.error(request, "Invalid PIN or missing Inspector details.")
+
+        return render(request, "frontend/inspection_pin.html")
+
+    # 3. Authorized — Fetch Data
+    company = insp_session.company
+    experts = ExpertProfile.objects.unscoped().filter(
+        company=company, is_active=True
+    ).select_related("department").order_by("last_name")
+
+    for e in experts:
+        e.passport_valid = e.passport_expiry_date and e.passport_expiry_date >= today
+        carte = CarteDeTravail.objects.filter(expert=e, is_active=True).order_by("-expiry_date").first()
+        e.carte_valid = carte and carte.expiry_date >= today
+        from apps.visas.models import VisaRecord
+        visa = VisaRecord.objects.filter(expert=e).order_by("-expiry_date").first()
+        e.visa_valid = visa and visa.expiry_date >= today
+
+    # Calculate time remaining
+    minutes_left = int((insp_session.expires_at - now).total_seconds() / 60)
+
+    return render(request, "frontend/inspection_mode.html", {
+        "experts": experts,
+        "insp_session": insp_session,
+        "company": company,
+        "today": today,
+        "minutes_left": minutes_left,
+    })
+
+
+@login_required
+def reveal_passport(request, expert_id):
+    """AJAX endpoint to reveal masked passport and log the action."""
+    session_id = request.session.get("inspection_session_id")
+    if not session_id:
+        return JsonResponse({"error": "No active session"}, status=403)
+
+    insp_session = InspectionSession.objects.filter(id=session_id).first()
+    if not insp_session or not insp_session.is_active:
+        return JsonResponse({"error": "Session expired"}, status=403)
+
+    try:
+        expert = ExpertProfile.objects.unscoped().get(id=expert_id, company=insp_session.company)
+
+        # Log the reveal
+        InspectionAuditLog.objects.create(
+            session=insp_session,
+            expert=expert,
+            action="REVEAL_PASSPORT"
+        )
+
+        return JsonResponse({"status": "ok", "passport": expert.passport_number})
+    except ExpertProfile.DoesNotExist:
+        return JsonResponse({"error": "Expert not found"}, status=404)
+
+
+@login_required
+def inspection_logout(request):
+    """Clear the session."""
+    if "inspection_session_id" in request.session:
+        del request.session["inspection_session_id"]
+    return redirect("/dashboard/")
+
+
+@login_required
+def inspection_logout(request):
+    """Clear the DGM PIN session."""
+    if "inspection_authorized" in request.session:
+        del request.session["inspection_authorized"]
+    return redirect("/dashboard/")
+
+
+# ═══════════════════════════════════════════════════════════════
+# QUOTA SIMULATOR
+# ═══════════════════════════════════════════════════════════════
+
+@login_required
+def quota_simulator(request):
+    """A sandbox calculator for HR to simulate workforce changes."""
+    company = getattr(request, "active_company", None)
+    if not company:
+        company = Company.objects.filter(is_active=True).first()
+
+    if not company:
+        return redirect("/admin/")
+
+    # Get current baselines
+    qs = ExpertProfile.objects.unscoped().filter(company=company, is_active=True)
+    current_expat_count = qs.filter(is_expatriate=True).count()
+    current_congolese_count = company.congolese_staff_count or 0
+
+    context = {
+        "company": company,
+        "current_expat_count": current_expat_count,
+        "current_congolese_count": current_congolese_count,
+        "quota_cap": 6.5,
+    }
+    return render(request, "frontend/quota_simulator.html", context)
+
+
+# ═══════════════════════════════════════════════════════════════
+# MANIFEST WORKFLOW & VERIFICATION
+# ═══════════════════════════════════════════════════════════════
+
+@login_required
+def submit_manifest(request, flight_id):
+    """Locks the manifest, generates the hash, and sets status to SUBMITTED."""
+    flight = get_object_or_404(CharterFlight, id=flight_id)
+
+    # 1. Check permissions (Only HR or Admins can submit)
+    membership = getattr(request.user, 'membership', None)
+    if not membership or membership.role not in ['OWNER', 'ADMIN', 'HR_MANAGER']:
+        messages.error(request, "You do not have permission to submit manifests.")
+        return redirect('frontend:flight_manifest', flight_id=flight.id)
+
+    if request.method == 'POST':
+        # 2. Run validation one last time before locking
+        from apps.travel.services import ManifestValidator
+        validator = ManifestValidator(flight)
+        errors, warnings = validator.validate()
+
+        # Check if they are overriding
+        override_reason = request.POST.get('override_reason', '').strip()
+
+        if errors and not override_reason:
+            messages.error(request, "Cannot submit: Please fix the validation errors or provide an override reason.")
+            return redirect('frontend:flight_manifest', flight_id=flight.id)
+
+        # 3. Lock the manifest
+        flight.manifest_status = CharterFlight.ManifestStatus.SUBMITTED
+        flight.locked_at = timezone.now()
+        flight.save()  # The save() method automatically generates the SHA-256 hash!
+
+        # 4. Log the action in the immutable audit trail
+        ImmutableAuditLog.objects.create(
+            user_repr=request.user.username,
+            action="MANIFEST_SUBMITTED",
+            model_name="CharterFlight",
+            object_repr=f"Manifest {flight.flight_number}",
+            changes={
+                "info": f"Submitted to DGM. Hash: {flight.manifest_hash}. Override Reason: {override_reason or 'None'}"}
+        )
+
+        messages.success(request, "Manifest successfully submitted to DGM and locked.")
+        return redirect('frontend:flight_manifest', flight_id=flight.id)
+
+    return redirect('frontend:flight_manifest', flight_id=flight.id)
+
+
+def verify_manifest(request, manifest_hash):
+    """Public page accessed via QR code to verify document authenticity."""
+    flight = CharterFlight.objects.filter(manifest_hash=manifest_hash).first()
+
+    is_valid = flight is not None
+
+    context = {
+        "is_valid": is_valid,
+        "flight": flight,
+        "scanned_hash": manifest_hash,
+    }
+    return render(request, "frontend/verify_manifest.html", context)

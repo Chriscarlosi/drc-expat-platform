@@ -65,18 +65,25 @@
 </div>
       <div class="flex items-center gap-3">
         {% get_current_language as CURRENT_LANG %}
-        <div class="hidden md:flex items-center gap-1 p-1 bg-navy-800 rounded-lg border border-navy-700">
-          <a href="/i18n/setlang/?lang=en&next={{ request.get_full_path }}"
+
+        <!-- FIXED LANGUAGE SWITCHER -->
+        <form action="{% url 'set_language' %}" method="post" class="hidden md:flex items-center gap-1 p-1 bg-navy-800 rounded-lg border border-navy-700 m-0">
+          {% csrf_token %}
+          <input name="next" type="hidden" value="{{ request.get_full_path }}">
+
+          <button type="submit" name="language" value="en"
              class="px-3 py-1.5 rounded-md text-xs font-bold transition
                     {% if CURRENT_LANG == 'en' %}bg-brand-600 text-white{% else %}text-slate-400 hover:text-white{% endif %}">
             EN
-          </a>
-          <a href="/i18n/setlang/?lang=fr&next={{ request.get_full_path }}"
+          </button>
+          <button type="submit" name="language" value="fr"
              class="px-3 py-1.5 rounded-md text-xs font-bold transition
                     {% if CURRENT_LANG == 'fr' %}bg-brand-600 text-white{% else %}text-slate-400 hover:text-white{% endif %}">
             FR
-          </a>
-        </div>
+          </button>
+        </form>
+        <!-- END FIXED LANGUAGE SWITCHER -->
+
       <a href="/login/" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2 rounded-lg text-sm font-bold transition shadow-lg shadow-brand-600/20">
   {% trans "Login" %}
 </a>
@@ -123,3 +130,5 @@
         <p class="mt-2 md:mt-0">{% trans "Built for DRC Mining Operations." %}</p>
     </div>
 </footer>
+</body>
+</html>

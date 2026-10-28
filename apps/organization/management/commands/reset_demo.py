@@ -9,23 +9,28 @@ Wipes:
     • All experts, cartes, visas, penalties, costs, invoices
     • All flights, passengers, rotations, dependants, authorizations
     • All document versions
+    • Legacy experts_dependant rows (superseded by travel_dependant)
+    • frontend_inspectionauditlog rows (demo data only)
+    • Nulls user↔expert membership FKs so users survive
 
 Keeps:
     • Users (superuser, hr_manager, mining_mgr)
     • Companies, Sites, Departments
     • Charter operators, aircraft, routes
     • Visa type catalog, cost categories, alert tiers
-    • Audit log (compromised — cannot be deleted by design)
+    • UserCompanyMembership rows (only expert_profile_id is unlinked)
 
 Rebuilds:
     • 12 curated experts across 4 compliance scenarios
     • 14-day flight schedule on real DKB routes
     • Rotations, costs, dependants, travel authorizations
+    • Re-links memberships to newly built experts by email
 """
 
 import random
 from datetime import date, datetime, time, timedelta
 from decimal import Decimal
+from dateutil.relativedelta import relativedelta
 
 from django.core.management.base import BaseCommand
 from django.db import connection, transaction
@@ -51,10 +56,45 @@ class Command(BaseCommand):
 
         random.seed(2026)
         with transaction.atomic():
+            self._audit_expert_fks()
             self._wipe()
+            self._verify_no_dangling_fks()   # ← NEW
             self._rebuild()
+            self._relink_memberships()
 
         self.stdout.write(self.style.SUCCESS("\n🎉 Demo reset complete.\n"))
+
+    # ═══════════════════════════════════════════════════════════════
+    # FK AUDIT (visibility only — never blocks the reset)
+    # ═══════════════════════════════════════════════════════════════
+
+    def _audit_expert_fks(self):
+        """Report every FK that points at experts_expertprofile."""
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT tc.table_name, kcu.column_name, rc.delete_rule
+                    FROM information_schema.table_constraints tc
+                    JOIN information_schema.key_column_usage kcu
+                      ON tc.constraint_name = kcu.constraint_name
+                     AND tc.table_schema    = kcu.table_schema
+                    JOIN information_schema.referential_constraints rc
+                      ON rc.constraint_name = tc.constraint_name
+                    JOIN information_schema.constraint_column_usage ccu
+                      ON tc.constraint_name = ccu.constraint_name
+                     AND tc.table_schema    = ccu.table_schema
+                    WHERE tc.constraint_type = 'FOREIGN KEY'
+                      AND ccu.table_name     = 'experts_expertprofile'
+                    ORDER BY tc.table_name, kcu.column_name;
+                """)
+                rows = cursor.fetchall()
+        except Exception as e:
+            self.stdout.write(self.style.WARNING(f"  ⚠ FK audit skipped: {e}"))
+            return
+
+        self.stdout.write("\n🔍 FK audit — tables referencing experts_expertprofile:")
+        for table, column, rule in rows:
+            self.stdout.write(f"    {table}.{column}  ON DELETE {rule}")
 
     # ═══════════════════════════════════════════════════════════════
     # WIPE
@@ -63,7 +103,14 @@ class Command(BaseCommand):
     def _wipe(self):
         self.stdout.write("\n🗑  Wiping business data...\n")
 
-        # Order matters — respect FK dependencies
+        # Order matters — respect FK dependencies.
+        # organization_usercompanymembership is NOT deleted; its
+        # expert_profile_id FK is nulled below so users survive.
+        #
+        # NOTE: BOTH dependant tables exist — apps.travel.Dependant
+        # writes to travel_dependant, but a legacy apps.experts.Dependant
+        # table (experts_dependant) can still hold rows from older seeds.
+        # Both must be cleared before experts_expertprofile.
         tables = [
             # Auths reference flights + experts
             "travel_travelauthorization_accompanying_dependants",
@@ -72,11 +119,15 @@ class Command(BaseCommand):
             "travel_charterpassenger",
             # Now flights
             "travel_charterflight",
-            # Dependants + rotations
+            # Dependants — BOTH tables, legacy first
+            "experts_dependant",              # ← NEW (was the crash)
             "travel_dependant",
+            # Rotations
             "travel_rotationschedule",
             # Notifications (has FK to experts)
             "notifications_alertlog",
+            # Audit log (demo data — production should use soft-delete)
+            "frontend_inspectionauditlog",    # ← NEW (latent crash)
             # Standalone
             "documents_documentversion",
             "compliance_expertcost",
@@ -95,12 +146,78 @@ class Command(BaseCommand):
         ]
 
         with connection.cursor() as cursor:
+            # ── Break the membership → expert FK first ──────────
+            try:
+                cursor.execute(
+                    "UPDATE organization_usercompanymembership "
+                    "SET expert_profile_id = NULL "
+                    "WHERE expert_profile_id IS NOT NULL;"
+                )
+                self.stdout.write("  ✓ Unlinked organization_usercompanymembership → expert")
+            except Exception as e:
+                self.stdout.write(
+                    self.style.WARNING(f"  ⚠ Skip unlink memberships: {e}")
+                )
+
+            # ── Delete business tables ─────────────────────────
             for table in tables:
                 try:
                     cursor.execute(f"DELETE FROM {table};")
                     self.stdout.write(f"  ✓ Cleared {table}")
                 except Exception as e:
                     self.stdout.write(self.style.WARNING(f"  ⚠ Skip {table}: {e}"))
+
+    # ═══════════════════════════════════════════════════════════════
+    # VERIFY no FK still dangles (runs post-wipe, pre-rebuild)
+    # ═══════════════════════════════════════════════════════════════
+
+    def _verify_no_dangling_fks(self):
+        """After wipe, warn if any FK table still holds non-null expert refs."""
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT tc.table_name, kcu.column_name
+                    FROM information_schema.table_constraints tc
+                    JOIN information_schema.key_column_usage kcu
+                      ON tc.constraint_name = kcu.constraint_name
+                     AND tc.table_schema    = kcu.table_schema
+                    JOIN information_schema.constraint_column_usage ccu
+                      ON tc.constraint_name = ccu.constraint_name
+                     AND tc.table_schema    = ccu.table_schema
+                    WHERE tc.constraint_type = 'FOREIGN KEY'
+                      AND ccu.table_name     = 'experts_expertprofile'
+                      AND tc.table_name NOT IN (
+                          'organization_usercompanymembership',
+                          'experts_expertprofile'
+                      );
+                """)
+                fks = cursor.fetchall()
+        except Exception as e:
+            self.stdout.write(self.style.WARNING(f"  ⚠ FK verify skipped: {e}"))
+            return
+
+        problems = 0
+        for table, column in fks:
+            try:
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        f"SELECT COUNT(*) FROM {table} WHERE {column} IS NOT NULL"
+                    )
+                    count = cursor.fetchone()[0]
+            except Exception:
+                continue
+            if count > 0:
+                problems += 1
+                self.stdout.write(
+                    self.style.WARNING(
+                        f"  ⚠ {table}.{column}: {count} rows still reference experts "
+                        f"— will fail at COMMIT. Add '{table}' to the wipe list."
+                    )
+                )
+
+        if problems == 0:
+            self.stdout.write("  🔒 FK verification: no dangling expert references")
+
     # ═══════════════════════════════════════════════════════════════
     # REBUILD
     # ═══════════════════════════════════════════════════════════════
@@ -197,6 +314,12 @@ class Command(BaseCommand):
              site_ug, dept_hr, 90, 200, 55, False, "CLASS_I_V"),  # No visa yet
         ]
 
+        # Resolve the VET visa type once (may be missing in fresh DBs)
+        try:
+            vet_visa_type = VisaTypeCatalog.objects.get(code="VET")
+        except VisaTypeCatalog.DoesNotExist:
+            vet_visa_type = None
+
         experts = []
         for i, (fn, ln, gender, nationality, job_en, job_fr,
                 site, dept, p_exp, yf_exp, carte_days,
@@ -246,27 +369,60 @@ class Command(BaseCommand):
                 )
 
             # ── Visa record ─────────────────────────────────
-            if has_visa:
-                try:
-                    vt = VisaTypeCatalog.objects.get(code="VET")
+            # Business rule enforced by VisaRecord.save():
+            #   "VET requires a valid Carte de Travail that extends
+            #    beyond the visa's expiry date."
+            #
+            # • Wei (carte_days=-40, expired): skip — his story is
+            #   the expired carte + penalty.
+            # • Marcus (carte_days=45): shorten the visa so it
+            #   expires BEFORE the carte does.
+            if has_visa and vet_visa_type is not None:
+                if carte_days is None or carte_days <= 0:
+                    self.stdout.write(
+                        self.style.WARNING(
+                            f"  ⚠ Skipping VET visa for {fn} {ln}: "
+                            f"no valid carte de travail (carte_days={carte_days})"
+                        )
+                    )
+                else:
+                    carte_expiry = today + timedelta(days=carte_days)
+                    default_issue = today - timedelta(days=180)
+
+                    if vet_visa_type.validity_months:
+                        validity_delta = relativedelta(months=vet_visa_type.validity_months)
+                    else:
+                        validity_delta = timedelta(days=365)
+                    default_expiry = default_issue + validity_delta
+
+                    if carte_expiry <= default_expiry:
+                        # Shorten visa so carte strictly extends beyond it
+                        visa_expiry = carte_expiry - timedelta(days=15)
+                        visa_issue = visa_expiry - validity_delta
+                        self.stdout.write(
+                            f"  ℹ Shortened VET visa for {fn} {ln}: "
+                            f"expires {visa_expiry} (carte expires {carte_expiry})"
+                        )
+                    else:
+                        visa_expiry = default_expiry
+                        visa_issue = default_issue
+
                     VisaRecord.objects.create(
                         expert=e,
-                        visa_type=vt,
+                        visa_type=vet_visa_type,
                         visa_number=f"VISA-DEMO-{3000 + i}",
-                        issue_date=today - timedelta(days=180),
-                        expiry_date=today + timedelta(days=random.randint(200, 600)),
+                        issue_date=visa_issue,
+                        expiry_date=visa_expiry,
                         status="ACTIVE",
                         dgm_reference=f"DGM-REF-{i:04d}",
                     )
-                except VisaTypeCatalog.DoesNotExist:
-                    pass
 
         self.stdout.write(self.style.SUCCESS(f"  ✅ {len(experts)} experts created"))
 
         # ═══════════════════════════════════════════════════════
         # PENALTIES — the "irregular" story
         # ═══════════════════════════════════════════════════════
-        wei = experts[4]  # Wei Chen
+        wei = experts[4]    # Wei Chen
         ahmed = experts[3]  # Ahmed Hassan
 
         PenaltyLedger.objects.create(
@@ -285,7 +441,7 @@ class Command(BaseCommand):
             resolved=False,
             resolution_notes="Passport expiring — renewal in progress.",
         )
-        self.stdout.write(self.style.SUCCESS(f"  ✅ 2 penalties created"))
+        self.stdout.write(self.style.SUCCESS("  ✅ 2 penalties created"))
 
         # ═══════════════════════════════════════════════════════
         # COSTS
@@ -313,9 +469,9 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f"  ✅ {cost_total} cost entries created"))
 
         # ═══════════════════════════════════════════════════════
-        # DEPENDANTS — Sarah's family
+        # DEPENDANTS — Sarah's family (travel.Dependant → travel_dependant)
         # ═══════════════════════════════════════════════════════
-        sarah = experts[6]  # Sarah O'Sullivan
+        sarah = experts[6]
         Dependant.objects.create(
             expert=sarah, first_name="Liam", last_name="O'Sullivan",
             date_of_birth=date(2018, 3, 15), relationship="CHILD",
@@ -330,7 +486,7 @@ class Command(BaseCommand):
             passport_expiry_date=today + timedelta(days=600),
             is_travel_eligible=True,
         )
-        self.stdout.write(self.style.SUCCESS(f"  ✅ 2 dependants created"))
+        self.stdout.write(self.style.SUCCESS("  ✅ 2 dependants created"))
 
         # ═══════════════════════════════════════════════════════
         # ROTATIONS — all 12 experts
@@ -343,7 +499,7 @@ class Command(BaseCommand):
                 cycle_start_date=today - timedelta(days=random.randint(5, 45)),
                 is_active=True,
             )
-        self.stdout.write(self.style.SUCCESS(f"  ✅ 12 rotations created"))
+        self.stdout.write(self.style.SUCCESS("  ✅ 12 rotations created"))
 
         # ═══════════════════════════════════════════════════════
         # FLIGHTS — 14-day schedule on DOK routes
@@ -359,6 +515,7 @@ class Command(BaseCommand):
             bar_1 = Aircraft.objects.get(registration="ZS-BAR1")
         except (CharterOperator.DoesNotExist, Aircraft.DoesNotExist) as exc:
             self.stdout.write(self.style.WARNING(f"  ⚠ Skipping flights — {exc}"))
+            self._print_summary()
             return
 
         routes = {f"{r.origin_iata}-{r.destination_iata}": r for r in CharterRoute.objects.all()}
@@ -406,7 +563,6 @@ class Command(BaseCommand):
             )
             flights_created += 1
 
-            # Add passengers
             seat_num = 1
             for idx in expert_idxs:
                 if idx >= len(experts):
@@ -431,7 +587,7 @@ class Command(BaseCommand):
 
         TravelAuthorization.objects.create(
             request_number="TA-2026-001",
-            expert=experts[1],  # Sophie
+            expert=experts[1],
             purpose=TravelAuthorization.Purpose.ROTATION,
             route=routes_dok_ebb,
             requested_departure_date=today + timedelta(days=20),
@@ -439,10 +595,9 @@ class Command(BaseCommand):
             status=TravelAuthorization.Status.DRAFT,
             justification="Standard 4/4 rotation.",
         )
-
         TravelAuthorization.objects.create(
             request_number="TA-2026-002",
-            expert=experts[2],  # Rajesh
+            expert=experts[2],
             purpose=TravelAuthorization.Purpose.BUSINESS,
             route=routes_dok_ebb,
             requested_departure_date=today + timedelta(days=10),
@@ -450,10 +605,9 @@ class Command(BaseCommand):
             status=TravelAuthorization.Status.PENDING_MANAGER,
             justification="Kinshasa processing plant review.",
         )
-
         TravelAuthorization.objects.create(
             request_number="TA-2026-003",
-            expert=experts[6],  # Sarah (family)
+            expert=experts[6],
             purpose=TravelAuthorization.Purpose.FAMILY_VISIT,
             route=routes_dok_ebb,
             requested_departure_date=today + timedelta(days=30),
@@ -463,10 +617,9 @@ class Command(BaseCommand):
             manager_approved_by_repr="mining_mgr",
             manager_approved_at=timezone.now(),
         )
-
         TravelAuthorization.objects.create(
             request_number="TA-2026-004",
-            expert=experts[0],  # Jean-Marc
+            expert=experts[0],
             purpose=TravelAuthorization.Purpose.TRAINING,
             route=routes_dok_ebb,
             requested_departure_date=today + timedelta(days=45),
@@ -478,11 +631,52 @@ class Command(BaseCommand):
             hr_approved_by_repr="hr_manager",
             hr_approved_at=timezone.now(),
         )
-        self.stdout.write(self.style.SUCCESS(f"  ✅ 4 travel authorizations created"))
+        self.stdout.write(self.style.SUCCESS("  ✅ 4 travel authorizations created"))
 
-        # ═══════════════════════════════════════════════════════
-        # SUMMARY
-        # ═══════════════════════════════════════════════════════
+        self._print_summary()
+
+    # ═══════════════════════════════════════════════════════════════
+    # POST-REBUILD: re-link users to demo experts
+    # ═══════════════════════════════════════════════════════════════
+
+    def _relink_memberships(self):
+        """Re-attach user↔company memberships to the new demo experts."""
+        from apps.experts.models import ExpertProfile
+        from apps.organization.models import UserCompanyMembership
+
+        unlinked = UserCompanyMembership.objects.filter(expert_profile__isnull=True)
+        if not unlinked.exists():
+            return
+
+        restored = 0
+        for m in unlinked:
+            email = getattr(m.user, "email", None)
+            if not email:
+                continue
+            expert = ExpertProfile.objects.unscoped().filter(email=email).first()
+            if expert is None:
+                continue
+            m.expert_profile = expert
+            m.save(update_fields=["expert_profile"])
+            restored += 1
+
+        if restored:
+            self.stdout.write(
+                self.style.SUCCESS(f"  ✅ {restored} memberships re-linked to demo experts")
+            )
+
+    # ═══════════════════════════════════════════════════════════════
+    # SUMMARY
+    # ═══════════════════════════════════════════════════════════════
+
+    def _print_summary(self):
+        from apps.experts.models import ExpertProfile
+        from apps.visas.models import CarteDeTravail, VisaRecord
+        from apps.compliance.models import PenaltyLedger, ExpertCost
+        from apps.travel.models import (
+            Dependant, RotationSchedule, CharterFlight, TravelAuthorization,
+        )
+
         self.stdout.write("\n" + "═" * 60)
         self.stdout.write(self.style.SUCCESS("📊 DEMO STATE SUMMARY"))
         self.stdout.write("═" * 60)

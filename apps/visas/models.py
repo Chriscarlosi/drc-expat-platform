@@ -10,6 +10,7 @@ from encrypted_model_fields.fields import EncryptedCharField
 import datetime
 
 from apps.experts.models import ExpertProfile
+from apps.documents.encrypted_storage import EncryptedFileSystemStorage
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -25,7 +26,14 @@ class CarteDeTravail(models.Model):
     issue_date = models.DateField()
     expiry_date = models.DateField()
     issuing_authority = models.CharField(max_length=200, default="Ministère du Travail")
-    scan = models.FileField(upload_to="work_permits/", null=True, blank=True)
+
+    # FIXED: Encrypted storage applied to the actual file field
+    scan = models.FileField(
+        upload_to="work_permits/",
+        null=True, blank=True,
+        storage=EncryptedFileSystemStorage()
+    )
+
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -79,7 +87,14 @@ class Visa(models.Model):
     issue_date = models.DateField()
     expiry_date = models.DateField()
     dgm_reference = models.CharField(max_length=100, blank=True)
-    dgm_authorization_scan = models.FileField(upload_to="dgm_authorizations/", null=True, blank=True)
+
+    # FIXED: Encrypted storage
+    dgm_authorization_scan = models.FileField(
+        upload_to="dgm_authorizations/",
+        null=True, blank=True,
+        storage=EncryptedFileSystemStorage()
+    )
+
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.DRAFT)
     notes = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -181,6 +196,7 @@ class EstablishmentVisa(Visa):
         verbose_name = "Establishment Visa (Visa d'Établissement)"
 
     def clean(self):
+        # 1. Cross-Ministry Rule (Work Visa requires Carte)
         if (self.establishment_type == self.EstablishmentType.WORK
                 and self.status == self.Status.ACTIVE):
             if not self.carte_de_travail:
@@ -192,6 +208,18 @@ class EstablishmentVisa(Visa):
                     f"Carte de Travail expires ({self.carte_de_travail.expiry_date}) "
                     f"before visa expiry ({self.expiry_date})."
                 )
+
+        # 2. FIXED: Duration Rules (1-2 years for Work, ~3 years for Ordinary)
+        if self.issue_date and self.expiry_date:
+            days = (self.expiry_date - self.issue_date).days
+
+            if self.establishment_type == self.EstablishmentType.WORK:
+                if days < 365 or days > 731:
+                    raise ValidationError("Work Visa must be valid for 1 to 2 years.")
+
+            if self.establishment_type == self.EstablishmentType.ORDINARY:
+                if days < 1000 or days > 1150:
+                    raise ValidationError("Ordinary Visa must be valid for approximately 3 years.")
 
     def save(self, *args, **kwargs):
         self.visa_type = self.VisaType.ESTABLISHMENT
@@ -276,7 +304,14 @@ class VisaRecord(models.Model):
     expiry_date = models.DateField(db_index=True)
     entry_date = models.DateField(null=True, blank=True)
     dgm_reference = models.CharField(max_length=100, blank=True)
-    dgm_authorization_scan = models.FileField(upload_to="dgm_authorizations/", null=True, blank=True)
+
+    # FIXED: Encrypted storage
+    dgm_authorization_scan = models.FileField(
+        upload_to="dgm_authorizations/",
+        null=True, blank=True,
+        storage=EncryptedFileSystemStorage()
+    )
+
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.DRAFT, db_index=True)
     notes = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -290,7 +325,6 @@ class VisaRecord(models.Model):
             models.Index(fields=["expert", "status"]),
             models.Index(fields=["expiry_date", "status"]),
         ]
-        # Ticket 1: DB CheckConstraints
         constraints = [
             models.CheckConstraint(
                 condition=models.Q(expiry_date__gt=models.F('issue_date')),
@@ -302,20 +336,15 @@ class VisaRecord(models.Model):
         return f"{self.visa_type.code} — {self.expert.full_name}"
 
     def clean(self):
-        from . import services  # Imported here to avoid circular import issues
+        from . import services
 
-        # Ticket 6: Block standalone visa records for prolongation types
         if self.visa_type and self.visa_type.category == VisaTypeCatalog.Category.PROLONGATION:
             raise ValidationError("Prolongation types cannot be used to issue a standalone visa record.")
 
-        # Ticket 1: Enforce validity rules (uses services.py)
         services.validate_visa_validity(self)
-
-        # Ticket 2: Carte de travail block (uses services.py)
         services.validate_carte_de_travail(self)
 
     def save(self, *args, **kwargs):
-        # Ticket 1: Trigger full_clean to run the validation in clean()
         self.full_clean()
         super().save(*args, **kwargs)
 
@@ -329,13 +358,12 @@ class VisaRecord(models.Model):
 
     @property
     def computed_status(self):
-        """Ticket 3: Computed status property."""
         from . import services
         return services.compute_visa_status(self)
 
 
 # ═══════════════════════════════════════════════════════════════
-# VISA PROLONGATION (Ticket 6 - Option A Workflow)
+# VISA PROLONGATION
 # ═══════════════════════════════════════════════════════════════
 
 class VisaProlongation(models.Model):
@@ -348,7 +376,7 @@ class VisaProlongation(models.Model):
     parent_visa = models.ForeignKey(VisaRecord, on_delete=models.PROTECT, related_name="prolongations")
     prolongation_type = models.ForeignKey(VisaTypeCatalog, on_delete=models.PROTECT,
                                           related_name="prolongation_requests")
-    prolongation_number = EncryptedCharField(max_length=50, blank=True)  # Made blank=True for auto-numbering
+    prolongation_number = EncryptedCharField(max_length=50, blank=True)
     request_date = models.DateField()
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.REQUESTED)
 
@@ -360,16 +388,19 @@ class VisaProlongation(models.Model):
     approval_date = models.DateField(null=True, blank=True)
 
     dgm_reference = models.CharField(max_length=100, blank=True)
-    scan = models.FileField(upload_to="prolongations/", null=True, blank=True)
+
+    # FIXED: Encrypted storage
+    scan = models.FileField(
+        upload_to="prolongations/",
+        null=True, blank=True,
+        storage=EncryptedFileSystemStorage()
+    )
+
     notes = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # NEW FIELD for Audit Tracking
     submitted_by = models.ForeignKey(
-        'auth.User',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
+        'auth.User', on_delete=models.SET_NULL, null=True, blank=True,
         related_name="submitted_prolongations",
         help_text="The user who submitted this request."
     )
@@ -378,11 +409,12 @@ class VisaProlongation(models.Model):
         verbose_name = "Visa Prolongation"
         verbose_name_plural = "Visa Prolongations"
         ordering = ["-request_date"]
-        # Ticket 10: Unique DGM reference and prolongation number
         constraints = [
-            models.UniqueConstraint(fields=['dgm_reference'],
-                                    condition=models.Q(dgm_reference__isnull=False) & ~models.Q(dgm_reference=''),
-                                    name='unique_dgm_reference'),
+            models.UniqueConstraint(
+                fields=['dgm_reference'],
+                condition=models.Q(dgm_reference__isnull=False) & ~models.Q(dgm_reference=''),
+                name='unique_dgm_reference'
+            ),
             models.UniqueConstraint(fields=['prolongation_number'], name='unique_prolongation_number'),
         ]
 
@@ -390,7 +422,6 @@ class VisaProlongation(models.Model):
         return f"{self.prolongation_type.code} for {self.expert.full_name}"
 
     def clean(self):
-        # Ticket 8: Prolongation status flow and validations
         if self.parent_visa and not self.parent_visa.visa_type.allows_prolongation:
             raise ValidationError(f"Visa type {self.parent_visa.visa_type.code} does not allow prolongations.")
 
@@ -401,10 +432,10 @@ class VisaProlongation(models.Model):
             ).count()
             if existing_count >= self.parent_visa.visa_type.max_prolongations:
                 raise ValidationError(
-                    f"Maximum number of prolongations ({self.parent_visa.visa_type.max_prolongations}) reached for this visa.")
+                    f"Maximum number of prolongations ({self.parent_visa.visa_type.max_prolongations}) reached for this visa."
+                )
 
     def save(self, *args, **kwargs):
-        # Ticket 10: Auto-generate prolongation number if missing
         if not self.prolongation_number:
             year = datetime.date.today().year
             last_record = VisaProlongation.objects.filter(
@@ -422,20 +453,24 @@ class VisaProlongation(models.Model):
 
             self.prolongation_number = f"PROL-{year}-{new_seq:04d}"
 
-        # Trigger full_clean to enforce Ticket 8 validations
         self.full_clean()
         super().save(*args, **kwargs)
 
 
 # ═══════════════════════════════════════════════════════════════
-# PROLONGATION DOCUMENT VERSIONING (Ticket 11)
+# PROLONGATION DOCUMENT VERSIONING
 # ═══════════════════════════════════════════════════════════════
 
 class ProlongationDocument(models.Model):
-    """Ticket 11: Document versioning for prolongation scans."""
     prolongation = models.ForeignKey(VisaProlongation, on_delete=models.CASCADE, related_name="documents")
     version = models.PositiveIntegerField(default=1)
-    file = models.FileField(upload_to="prolongations/documents/")
+
+    # FIXED: Encrypted storage
+    file = models.FileField(
+        upload_to="prolongations/documents/",
+        storage=EncryptedFileSystemStorage()
+    )
+
     uploaded_at = models.DateTimeField(auto_now_add=True)
     uploaded_by = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True)
     notes = models.TextField(blank=True)

@@ -2,8 +2,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: DRC Expat Compliance Platform\n"
-"PO-Revision-Date: 2026-10-16 11:38+0100\n"
-"Last-Translator:   <admin@drc-expat.local>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 10:46+0100\n"
+"PO-Revision-Date: 2026-10-28 12:00+0100\n"
+"Last-Translator: <admin@drc-expat.local>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -11,572 +13,1704 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-# ─── Navigation & Common ────────────────────────────────
-msgid "Dashboard"
-msgstr "Tableau de bord"
+#: .\apps\audit\models.py:27
+msgid "Create"
+msgstr "Créer"
 
-msgid "Home"
-msgstr "Accueil"
+#: .\apps\audit\models.py:28
+msgid "Update"
+msgstr "Mettre à jour"
 
-msgid "Back to Admin"
-msgstr "Retour à l'administration"
-
-msgid "Log out"
-msgstr "Déconnexion"
-
-msgid "Search"
-msgstr "Rechercher"
-
-msgid "Filters"
-msgstr "Filtres"
-
-msgid "Actions"
-msgstr "Actions"
-
-msgid "Save"
-msgstr "Enregistrer"
-
-msgid "Cancel"
-msgstr "Annuler"
-
+#: .\apps\audit\models.py:29
 msgid "Delete"
 msgstr "Supprimer"
 
-msgid "Edit"
-msgstr "Modifier"
-
-msgid "Add"
-msgstr "Ajouter"
-
-msgid "View"
-msgstr "Voir"
-
-msgid "Total"
-msgstr "Total"
-
-msgid "Status"
-msgstr "Statut"
-
-msgid "Date"
-msgstr "Date"
-
-msgid "Amount"
-msgstr "Montant"
-
-msgid "Days"
-msgstr "Jours"
-
-msgid "Export PDF"
-msgstr "Exporter en PDF"
-
-msgid "Export Excel"
-msgstr "Exporter en Excel"
-
-msgid "Dark"
-msgstr "Sombre"
-
-msgid "Light"
-msgstr "Clair"
-
-msgid "English"
-msgstr "Anglais"
-
-msgid "French"
-msgstr "Français"
-
-# ─── Dashboard ──────────────────────────────────────────
-msgid "Risk & Penalty Mitigation Board"
-msgstr "Tableau de bord des risques et pénalités"
-
-msgid "Compliance Score"
-msgstr "Score de conformité"
-
-msgid "risk"
-msgstr "risque"
-
-msgid "Expat Quota"
-msgstr "Quota d'expatriés"
-
-msgid "cap"
-msgstr "plafond"
-
-msgid "workforce"
-msgstr "effectif"
-
-msgid "COMPLIANT"
-msgstr "CONFORME"
-
-msgid "QUOTA BREACH"
-msgstr "DÉPASSEMENT DE QUOTA"
-
-msgid "headroom"
-msgstr "marge disponible"
-
-msgid "Active Experts"
-msgstr "Experts actifs"
-
-msgid "Passports ≤ 90d"
-msgstr "Passeports ≤ 90j"
-
-msgid "Cartes ≤ 90d"
-msgstr "Cartes ≤ 90j"
-
-msgid "Visas ≤ 90d"
-msgstr "Visas ≤ 90j"
-
-msgid "Critical ≤ 30d"
-msgstr "Critique ≤ 30j"
-
-msgid "Penalties"
-msgstr "Pénalités"
-
-msgid "Document Expiry Funnel"
-msgstr "Entonnoir d'expiration des documents"
-
-msgid "15-day buckets over next 90 days"
-msgstr "Périodes de 15 jours sur les 90 prochains jours"
-
-msgid "Passports"
-msgstr "Passeports"
-
-msgid "Cartes"
-msgstr "Cartes"
-
-msgid "Visas"
-msgstr "Visas"
-
-msgid "Already Expired"
-msgstr "Déjà expiré"
-
-msgid "Passports Expiring"
-msgstr "Passeports expirant"
-
-msgid "Cartes de Travail"
-msgstr "Cartes de Travail"
-
-msgid "Visas Expiring"
-msgstr "Visas expirant"
-
-msgid "Active Penalties"
-msgstr "Pénalités actives"
-
-msgid "Next 90 days"
-msgstr "Prochains 90 jours"
-
-msgid "Unresolved DGM accruals"
-msgstr "Accumulations DGM non résolues"
-
-msgid "Recent Activity"
-msgstr "Activité récente"
-
-msgid "Immutable hash-chained audit log — latest entries"
-msgstr "Journal d'audit immuable — dernières entrées"
-
-msgid "CHAIN VERIFIED"
-msgstr "CHAÎNE VÉRIFIÉE"
-
-msgid "CHAIN BROKEN"
-msgstr "CHAÎNE ROMPUE"
-
-msgid "Expert"
-msgstr "Expert"
-
-msgid "Nationality"
-msgstr "Nationalité"
-
-msgid "Expiry"
-msgstr "Expiration"
-
-msgid "Reason"
-msgstr "Motif"
-
-msgid "entries"
-msgstr "entrées"
-
-msgid "checked"
-msgstr "vérifié"
-
-# ─── Travel & Charter ──────────────────────────────────
-msgid "Charter & Travel Management"
-msgstr "Gestion des vols et voyages"
-
-msgid "Cost Dashboard"
-msgstr "Tableau de bord des coûts"
-
-msgid "Rotation Calendar"
-msgstr "Calendrier de rotation"
-
-msgid "Medevac Readiness"
-msgstr "Préparation médicale"
-
-msgid "This Month"
-msgstr "Ce mois-ci"
-
-msgid "Year to Date"
-msgstr "Année en cours"
-
-msgid "All Time"
-msgstr "Depuis toujours"
-
-msgid "Monthly Spend — Last 12 Months"
-msgstr "Dépenses mensuelles — 12 derniers mois"
-
-msgid "Spend by Route"
-msgstr "Dépenses par itinéraire"
-
-msgid "Spend by Operator"
-msgstr "Dépenses par opérateur"
-
-msgid "Top 15 Experts by Cost"
-msgstr "Top 15 des experts par coût"
-
-msgid "Route Detail (Top 15)"
-msgstr "Détail des itinéraires (Top 15)"
-
-msgid "Flights"
-msgstr "Vols"
-
-msgid "Passengers"
-msgstr "Passagers"
-
-msgid "On Site Today"
-msgstr "Sur site aujourd'hui"
-
-msgid "Off Rotation Today"
-msgstr "En rotation aujourd'hui"
-
-msgid "Active Schedules"
-msgstr "Plannings actifs"
-
-msgid "Personnel On Site"
-msgstr "Personnel sur site"
-
-msgid "Medevac-Ready Flights"
-msgstr "Vols prêts pour médicalisation"
-
-msgid "Flights Next 7 Days"
-msgstr "Vols des 7 prochains jours"
-
-msgid "Manifest"
-msgstr "Manifeste"
-
-msgid "Print"
-msgstr "Imprimer"
-
-msgid "Scheduled"
-msgstr "Programmé"
-
-msgid "Boarding"
-msgstr "Embarquement"
-
-msgid "Departed"
-msgstr "Parti"
-
-msgid "Arrived"
-msgstr "Arrivé"
-
-msgid "Delayed"
-msgstr "Retardé"
-
-msgid "Cancelled"
-msgstr "Annulé"
-
-msgid "Diverted"
-msgstr "Dévié"
-
-msgid "Medevac"
-msgstr "Médicalisation"
-
-msgid "Operator"
-msgstr "Opérateur"
-
-msgid "Aircraft"
-msgstr "Appareil"
-
-msgid "Route"
-msgstr "Itinéraire"
-
-msgid "Departure"
-msgstr "Départ"
-
-msgid "Arrival"
-msgstr "Arrivée"
-
-msgid "Pax"
-msgstr "Passagers"
-
-msgid "DGM"
-msgstr "DGM"
-
-msgid "Manifest PDF"
-msgstr "Manifeste PDF"
-
-# ─── DGM Manifest PDF ──────────────────────────────────
-msgid "FLIGHT DETAILS"
-msgstr "DÉTAILS DU VOL"
-
-msgid "PASSENGER MANIFEST"
-msgstr "MANIFESTE DES PASSAGERS"
-
-msgid "SUMMARY"
-msgstr "RÉSUMÉ"
-
-msgid "Expatriates"
-msgstr "Expatriés"
-
-msgid "Family"
-msgstr "Famille"
-
-msgid "Crew"
-msgstr "Équipage"
-
-msgid "Pilot in Command"
-msgstr "Commandant de bord"
-
-msgid "HR / DGM Officer"
-msgstr "Responsable RH / DGM"
-
-msgid "Time"
-msgstr "Heure"
-
-msgid "Actor"
-msgstr "Utilisateur"
-
-msgid "Model"
-msgstr "Modèle"
-
-msgid "Object"
-msgstr "Objet"
-
-msgid "No passports expiring."
-msgstr "Aucun passeport expirant."
-
-msgid "No permits expiring."
-msgstr "Aucun permis expirant."
-
-msgid "No visas expiring."
-msgstr "Aucun visa expirant."
-
-msgid "No active penalties."
-msgstr "Aucune pénalité active."
-
-msgid "No activity yet."
-msgstr "Aucune activité pour le moment."
-
-# ─── Travel templates ───────────────────────────────────
-msgid "From → To"
-msgstr "De → À"
-
-msgid "Seat"
-msgstr "Siège"
-
-msgid "Type"
-msgstr "Type"
-
-msgid "Full Name"
-msgstr "Nom complet"
-
-msgid "Passport"
-msgstr "Passeport"
-
-msgid "DOB"
-msgstr "Date de naissance"
-
-msgid "EXPAT"
-msgstr "EXPATRIÉ"
-
-msgid "FAMILY"
-msgstr "FAMILLE"
-
-msgid "CREW"
-msgstr "ÉQUIPAGE"
-
-msgid "Signature"
-msgstr "Signature"
-
-msgid "Printed Name"
-msgstr "Nom imprimé"
-
-msgid "This manifest is generated by the DRC Expat Compliance Platform."
-msgstr "Ce manifeste est généré par la Plateforme de Conformité DRC Expat."
-
-msgid "No passengers booked on this flight."
-msgstr "Aucun passager réservé sur ce vol."
-
-msgid "Flight Manifest"
-msgstr "Manifeste de vol"
-
-msgid "Full Name / Nom complet"
-msgstr "Nom complet"
-
-msgid "Against"
-msgstr "Contre"
-
-msgid "LOW"
-msgstr "FAIBLE"
-
-msgid "MODERATE"
-msgstr "MODÉRÉ"
-
-msgid "HIGH"
-msgstr "ÉLEVÉ"
-
-msgid "CRITICAL"
-msgstr "CRITIQUE"
-
-msgid "Expired Carte(s) de Travail"
-msgstr "Carte(s) de Travail expirée(s)"
-
-msgid "Expired passport(s) on active expert(s)"
-msgstr "Passeport(s) expiré(s) sur expert(s) actif(s)"
-
-msgid "Expat quota breached (>6.5%)"
-msgstr "Quota d'expatriés dépassé (>6,5 %)"
-
-msgid "Unresolved DGM penalties"
-msgstr "Pénalités DGM non résolues"
-
-# ─── Frontend landing page ──────────────────────────────
+#: .\apps\audit\models.py:30 .\templates\frontend\base.html:88
+#: .\templates\frontend\base.html:115 .\templates\frontend\login.html:4
 msgid "Login"
 msgstr "Connexion"
 
-msgid "Login to Platform"
-msgstr "Accéder à la plateforme"
+#: .\apps\audit\models.py:31
+msgid "Logout"
+msgstr "Déconnexion"
 
-msgid "See Features"
-msgstr "Voir les fonctionnalités"
+#: .\apps\audit\models.py:32
+msgid "Access"
+msgstr "Accès"
 
-msgid "Compliance without the chaos."
-msgstr "La conformité sans le chaos."
+#: .\apps\audit\models.py:33
+msgid "System"
+msgstr "Système"
 
-msgid "Visa, permit, and charter tracking built for the DRC."
-msgstr "Suivi des visas, permis et vols conçu pour la RDC."
+#: .\apps\compliance\views.py:73
+msgid "Expat quota breached (>6.5%)"
+msgstr "Quota d'expatriés dépassé (>6,5 %)"
 
+#: .\apps\compliance\views.py:79
+#, python-brace-format
+msgid "{n} expired passport(s)"
+msgstr "{n} passeport(s) expiré(s)"
+
+#: .\apps\compliance\views.py:85
+#, python-brace-format
+msgid "{n} expired Carte(s) de Travail"
+msgstr "{n} Carte(s) de Travail expirée(s)"
+
+#: .\apps\compliance\views.py:91
+#, python-brace-format
+msgid "{n} unresolved DGM penalty(ies)"
+msgstr "{n} pénalité(s) DGM non résolue(s)"
+
+#: .\apps\compliance\views.py:103
+#, python-brace-format
+msgid "{n} expired Yellow Fever card(s)"
+msgstr "{n} carte(s) de fièvre jaune expirée(s)"
+
+#: .\apps\compliance\views.py:108
+#, python-brace-format
+msgid "{n} passport(s) expiring in ≤30 days"
+msgstr "{n} passeport(s) expirant dans ≤30 jours"
+
+#: .\apps\compliance\views.py:113
+#, python-brace-format
+msgid "{n} passport(s) expiring in ≤60 days"
+msgstr "{n} passeport(s) expirant dans ≤60 jours"
+
+#: .\apps\compliance\views.py:118
+#, python-brace-format
+msgid "{n} passport(s) expiring in ≤90 days"
+msgstr "{n} passeport(s) expirant dans ≤90 jours"
+
+#: .\apps\compliance\views.py:123
+#, python-brace-format
+msgid "{n} carte(s) expiring in ≤30 days"
+msgstr "{n} carte(s) expirant dans ≤30 jours"
+
+#: .\apps\compliance\views.py:128
+#, python-brace-format
+msgid "{n} carte(s) expiring in ≤90 days"
+msgstr "{n} carte(s) expirant dans ≤90 jours"
+
+#: .\apps\compliance\views.py:133
+#, python-brace-format
+msgid "{n} visa(s) expiring in ≤30 days"
+msgstr "{n} visa(s) expirant dans ≤30 jours"
+
+#: .\apps\compliance\views.py:138
+#, python-brace-format
+msgid "{n} visa(s) expiring in ≤90 days"
+msgstr "{n} visa(s) expirant dans ≤90 jours"
+
+#: .\apps\compliance\views.py:148
 msgid ""
-"The only platform that enforces the 6.5% expatriate quota, tracks DGM and "
-"Ministry of Labour deadlines, and generates government-ready flight "
-"manifests — all in one system."
+"Workforce data incomplete. The quota hard cap was NOT applied. Please record "
+"a recent workforce snapshot."
 msgstr ""
-"La seule plateforme qui applique le quota d'expatriés de 6,5 %, suit les "
-"échéances DGM et du Ministère du Travail, et génère des manifestes de vol "
-"conformes — le tout en un seul système."
+"Données sur les effectifs incomplètes. Le plafond strict du quota n'a PAS "
+"été appliqué. Veuillez enregistrer un instantané récent des effectifs."
 
-msgid "SOC 2 Ready"
-msgstr "Prêt SOC 2"
+#: .\apps\compliance\views.py:164
+msgid "LOW"
+msgstr "FAIBLE"
 
-msgid "AES-256 Encrypted"
-msgstr "Chiffré AES-256"
+#: .\apps\compliance\views.py:166
+msgid "MODERATE"
+msgstr "MODÉRÉ"
 
-msgid "EN / FR Bilingual"
-msgstr "Bilingue EN / FR"
+#: .\apps\compliance\views.py:168
+msgid "HIGH"
+msgstr "ÉLEVÉ"
 
-msgid "Deployed in DRC"
-msgstr "Déployé en RDC"
+#: .\apps\compliance\views.py:169
+msgid "CRITICAL"
+msgstr "CRITIQUE"
 
-# ─── Executive dashboard ────────────────────────────────
-msgid "Executive Dashboard"
-msgstr "Tableau de bord exécutif"
+#: .\apps\experts\models.py:24
+msgid "Male / Masculin"
+msgstr "Homme / Masculin"
 
-msgid "Full Compliance View"
-msgstr "Vue complète de conformité"
+#: .\apps\experts\models.py:25
+msgid "Female / Féminin"
+msgstr "Femme / Féminin"
 
-msgid "Admin"
-msgstr "Administration"
+#: .\apps\experts\models.py:26
+msgid "Other / Autre"
+msgstr "Autre"
 
-msgid "All compliance obligations are currently met. Continue monitoring."
-msgstr ""
-"Toutes les obligations de conformité sont actuellement remplies. Continuez "
-"la surveillance."
+#: .\apps\experts\models.py:33
+msgid "Class I-V (Workers) — 2% cap"
+msgstr "Classe I-V (Travailleurs) — plafond 2 %"
 
+#: .\apps\experts\models.py:34
+msgid "Supervisor / Manager — 2.5% cap"
+msgstr "Superviseur / Manager — plafond 2,5 %"
+
+#: .\apps\experts\models.py:35
+msgid "Management — 2% cap"
+msgstr "Direction — plafond 2 %"
+
+#: .\apps\experts\models.py:48
+msgid "The employer company (tenant) that owns this expert."
+msgstr "L'entreprise employeuse (locataire) propriétaire de cet expert."
+
+#: .\apps\experts\models.py:72
+msgid "First name"
+msgstr "Prénom"
+
+#: .\apps\experts\models.py:73
+msgid "Last name"
+msgstr "Nom de famille"
+
+#: .\apps\experts\models.py:74
+msgid "Date of birth"
+msgstr "Date de naissance"
+
+#: .\apps\experts\models.py:76 .\templates\compliance\dashboard.html:288
+#: .\templates\frontend\dependants.html:55
+#: .\templates\frontend\expert_list.html:54
+#: .\templates\travel\cost_dashboard.html:100
+#: .\templates\travel\manifest_print.html:78
+#: .\templates\travel\medevac_dashboard.html:63
+msgid "Nationality"
+msgstr "Nationalité"
+
+#: .\apps\experts\models.py:80
+msgid "False if this person is a DRC national."
+msgstr "Faux si cette personne est de nationalité RDC."
+
+#: .\apps\experts\models.py:102
+msgid "Job category (DRC)"
+msgstr "Catégorie d'emploi (RDC)"
+
+#: .\apps\experts\models.py:107
+msgid "Determines the expat cap for this role."
+msgstr "Détermine le plafond d'expatriés pour ce rôle."
+
+#: .\apps\experts\models.py:123
+msgid "Expert Profile"
+msgstr "Profil d'expert"
+
+#: .\apps\experts\models.py:124 .\config\settings.py:327
+msgid "Expert Profiles"
+msgstr "Profils d'experts"
+
+#: .\apps\frontend\templates\prolongation_auccess.html:4
+#: .\templates\frontend\prolongation_success.html:4
+msgid "Request Submitted"
+msgstr "Demande soumise"
+
+#: .\apps\frontend\templates\prolongation_auccess.html:18
+#: .\templates\frontend\prolongation_success.html:18
+msgid "Request Submitted!"
+msgstr "Demande soumise !"
+
+#: .\apps\frontend\templates\prolongation_auccess.html:22
+#: .\templates\frontend\prolongation_success.html:22
 msgid ""
-"Some documents require attention in the next 90 days. Review the alerts "
-"below."
+"Your prolongation request has been successfully logged. Our compliance team "
+"will review it and update the status shortly."
 msgstr ""
-"Certains documents nécessitent une attention dans les 90 prochains jours. "
-"Consultez les alertes ci-dessous."
+"Votre demande de prolongation a été enregistrée avec succès. Notre équipe de "
+"conformité l'examinera et mettra à jour le statut sous peu."
 
-msgid "Critical compliance issues detected. Immediate action required."
-msgstr "Problèmes critiques de conformité détectés. Action immédiate requise."
+#: .\apps\frontend\templates\prolongation_auccess.html:27
+#: .\templates\frontend\prolongation_success.html:27
+msgid "Return to Dashboard"
+msgstr "Retour au tableau de bord"
 
+#: .\apps\frontend\templates\prolongation_auccess.html:30
+#: .\templates\frontend\prolongation_success.html:30
+msgid "Submit Another"
+msgstr "Soumettre une autre"
+
+#: .\apps\frontend\templates\prolongation_form.html:4
+#: .\templates\frontend\executive_dashboard.html:23
+#: .\templates\frontend\prolongation_form.html:4
+#: .\templates\frontend\visa_list.html:25
+msgid "Request Prolongation"
+msgstr "Demander une prolongation"
+
+#: .\apps\frontend\templates\prolongation_form.html:16
+msgid "Request Visa Prolongation"
+msgstr "Demander une prolongation de visa"
+
+#: .\apps\frontend\templates\prolongation_form.html:19
 msgid ""
-"Compliance breach detected. DGM or Ministry of Labour exposure is active."
+"Submit a new prolongation request. Our compliance team will review it within "
+"24 hours."
 msgstr ""
-"Violation de conformité détectée. Exposition active DGM ou Ministère du "
-"Travail."
+"Soumettez une nouvelle demande de prolongation. Notre équipe de conformité "
+"l'examinera dans les 24 heures."
 
-msgid "expats"
-msgstr "expatriés"
+#: .\apps\frontend\templates\prolongation_form.html:57
+msgid "Submit Prolongation Request"
+msgstr "Soumettre la demande de prolongation"
 
-msgid "Congolese"
-msgstr "Congolais"
+#: .\apps\frontend\templates\prolongation_form.html:60
+#: .\templates\frontend\add_snapshot.html:57
+#: .\templates\frontend\dependant_form.html:87
+#: .\templates\frontend\expert_form.html:138
+#: .\templates\frontend\invite_user.html:57
+#: .\templates\frontend\prolongation_form.html:164
+msgid "Cancel"
+msgstr "Annuler"
 
-msgid "Expiring (90 days)"
-msgstr "Expirant (90 jours)"
+#: .\apps\notifications\models.py:20
+msgid "Email only"
+msgstr "E-mail uniquement"
 
-msgid "passports"
-msgstr "passeports"
+#: .\apps\notifications\models.py:21
+msgid "SMS only"
+msgstr "SMS uniquement"
 
-msgid "cartes"
-msgstr "cartes"
+#: .\apps\notifications\models.py:22 .\templates\frontend\features.html:191
+#: .\templates\frontend\features.html:195
+#: .\templates\frontend\features.html:199
+msgid "Email + SMS"
+msgstr "E-mail + SMS"
 
-msgid "active accruals"
-msgstr "accumulations actives"
+#: .\apps\notifications\models.py:25
+msgid "All document types"
+msgstr "Tous les types de documents"
 
-msgid "Upcoming Expirations"
-msgstr "Expirations à venir"
+#: .\apps\notifications\models.py:26
+msgid "Passports only"
+msgstr "Passeports uniquement"
 
-msgid "Unresolved DGM accruals"
-msgstr "Accumulations DGM non résolues"
+#: .\apps\notifications\models.py:27
+msgid "Yellow fever cards only"
+msgstr "Cartes de fièvre jaune uniquement"
 
-msgid "No upcoming expirations."
-msgstr "Aucune expiration à venir."
+#: .\apps\notifications\models.py:28
+msgid "Cartes de Travail only"
+msgstr "Cartes de Travail uniquement"
 
-msgid "days"
-msgstr "jours"
+#: .\apps\notifications\models.py:29
+msgid "Visas only"
+msgstr "Visas uniquement"
 
-msgid "BREACH"
-msgstr "VIOLATION"
+#: .\apps\notifications\models.py:33
+msgid "Human-readable label, e.g. 'T-90 warning'."
+msgstr "Étiquette lisible par l'homme, par ex. « avertissement T-90 »."
 
-msgid "of"
-msgstr "sur"
+#: .\apps\notifications\models.py:37
+msgid "Days before expiry to trigger (e.g., 90)."
+msgstr "Jours avant l'expiration pour déclencher (par ex., 90)."
 
+#: .\apps\notifications\models.py:51
+msgid "Alert Tier"
+msgstr "Niveau d'alerte"
+
+#: .\apps\notifications\models.py:52
+msgid "Alert Tiers"
+msgstr "Niveaux d'alerte"
+
+#: .\apps\notifications\models.py:66
+msgid "Sent"
+msgstr "Envoyé"
+
+#: .\apps\notifications\models.py:67
+msgid "Failed"
+msgstr "Échoué"
+
+#: .\apps\notifications\models.py:68
+msgid "Skipped"
+msgstr "Ignoré"
+
+#: .\apps\notifications\models.py:88
+msgid "Alert Log"
+msgstr "Journal des alertes"
+
+#: .\apps\notifications\models.py:89
+msgid "Alert Logs"
+msgstr "Journaux des alertes"
+
+#: .\apps\organization\models.py:17
+msgid "Created at"
+msgstr "Créé le"
+
+#: .\apps\organization\models.py:18
+msgid "Updated at"
+msgstr "Mis à jour le"
+
+#: .\apps\organization\models.py:19
+msgid "Soft deleted"
+msgstr "Supprimé logiquement"
+
+#: .\apps\organization\models.py:32
+msgid "Legal name"
+msgstr "Nom légal"
+
+#: .\apps\organization\models.py:33
+msgid "URL slug"
+msgstr "Slug d'URL"
+
+#: .\apps\organization\models.py:35
+msgid "DGM registration number"
+msgstr "Numéro d'enregistrement DGM"
+
+#: .\apps\organization\models.py:39
+msgid "DRC tax ID (DGI)"
+msgstr "Numéro d'impôt RDC (DGI)"
+
+#: .\apps\organization\models.py:40
+msgid "ONEM employer registry"
+msgstr "Registre des employeurs ONEM"
+
+#: .\apps\organization\models.py:44
+msgid "Total Congolese staff"
+msgstr "Total du personnel congolais"
+
+#: .\apps\organization\models.py:49
+msgid "Compliance contact email"
+msgstr "E-mail de contact conformité"
+
+#: .\apps\organization\models.py:50
+msgid "Compliance contact phone"
+msgstr "Téléphone de contact conformité"
+
+#: .\apps\organization\models.py:55 .\templates\compliance\dashboard.html:182
+#: .\templates\frontend\contact.html:57 .\templates\frontend\profile.html:41
+#: .\templates\frontend\prolongation_form.html:182
+msgid "Company"
+msgstr "Entreprise"
+
+#: .\apps\organization\models.py:56 .\config\settings.py:349
+msgid "Companies"
+msgstr "Entreprises"
+
+#: .\apps\organization\models.py:80
+msgid "Site name"
+msgstr "Nom du site"
+
+#: .\apps\organization\models.py:81
+msgid "Site code"
+msgstr "Code du site"
+
+#: .\apps\organization\models.py:82
+msgid "DRC province"
+msgstr "Province de la RDC"
+
+#: .\apps\organization\models.py:86
+#: .\templates\travel\medevac_dashboard.html:63
+msgid "Site"
+msgstr "Site"
+
+#: .\apps\organization\models.py:87 .\config\settings.py:351
+msgid "Sites"
+msgstr "Sites"
+
+#: .\apps\organization\models.py:103
+msgid "Department name"
+msgstr "Nom du département"
+
+#: .\apps\organization\models.py:104
+msgid "Department code"
+msgstr "Code du département"
+
+#: .\apps\organization\models.py:107
+#: .\templates\travel\medevac_dashboard.html:63
+msgid "Department"
+msgstr "Département"
+
+#: .\apps\organization\models.py:108 .\config\settings.py:353
+msgid "Departments"
+msgstr "Départements"
+
+#: .\apps\organization\models.py:125
+msgid "Owner"
+msgstr "Propriétaire"
+
+#: .\apps\organization\models.py:126
+msgid "Company Admin"
+msgstr "Administrateur de l'entreprise"
+
+#: .\apps\organization\models.py:127
+msgid "Executive / GM (read-only)"
+msgstr "Direction / DG (lecture seule)"
+
+#: .\apps\organization\models.py:128
+msgid "HR / Compliance Manager"
+msgstr "Responsable RH / Conformité"
+
+#: .\apps\organization\models.py:129
+msgid "Department Manager"
+msgstr "Responsable de département"
+
+#: .\apps\organization\models.py:130
+msgid "Site Manager"
+msgstr "Responsable de site"
+
+#: .\apps\organization\models.py:131
+msgid "Expatriate Expert (self-service)"
+msgstr "Expert expatrié (libre-service)"
+
+#: .\apps\organization\models.py:132
+msgid "Read-only Viewer"
+msgstr "Lecteur en lecture seule"
+
+#: .\apps\organization\models.py:145 .\templates\frontend\settings.html:81
+msgid "Role"
+msgstr "Rôle"
+
+#: .\apps\organization\models.py:157
+msgid "If set, this user sees only experts in this department."
+msgstr "Si défini, cet utilisateur ne voit que les experts de ce département."
+
+#: .\apps\organization\models.py:164
+msgid "If set, this user sees only experts at this site."
+msgstr "Si défini, cet utilisateur ne voit que les experts sur ce site."
+
+#: .\apps\organization\models.py:173
+msgid "If this user is themselves an expert, link to their profile."
+msgstr "Si cet utilisateur est lui-même un expert, liez-le à son profil."
+
+#: .\apps\organization\models.py:177
+msgid "Default company for this user"
+msgstr "Entreprise par défaut pour cet utilisateur"
+
+#: .\apps\organization\models.py:179
+msgid "Used when the user first logs in."
+msgstr "Utilisé lors de la première connexion de l'utilisateur."
+
+#: .\apps\organization\models.py:184
+msgid "User Company Membership"
+msgstr "Adhésion de l'utilisateur à l'entreprise"
+
+#: .\apps\organization\models.py:185
+msgid "User Company Memberships"
+msgstr "Adhésions des utilisateurs aux entreprises"
+
+#: .\apps\travel\models.py:25
+msgid "Internal fleet (company-owned)"
+msgstr "Flotte interne (propriété de l'entreprise)"
+
+#: .\apps\travel\models.py:26
+msgid "External charter operator"
+msgstr "Opérateur de vol charter externe"
+
+#: .\apps\travel\models.py:27
+msgid "Commercial airline"
+msgstr "Compagnie aérienne commerciale"
+
+#: .\apps\travel\models.py:28
+msgid "Military / government"
+msgstr "Militaire / gouvernemental"
+
+#: .\apps\travel\models.py:29
+msgid "Medical evacuation specialist"
+msgstr "Spécialiste de l'évacuation médicale"
+
+#: .\apps\travel\models.py:60
+msgid "Fixed wing"
+msgstr "Avion à voilure fixe"
+
+#: .\apps\travel\models.py:61
+msgid "Helicopter"
+msgstr "Hélicoptère"
+
+#: .\apps\travel\models.py:119 .\templates\frontend\travel_dashboard.html:83
+msgid "Scheduled"
+msgstr "Programmé"
+
+#: .\apps\travel\models.py:120
+msgid "Boarding"
+msgstr "Embarquement"
+
+#: .\apps\travel\models.py:121 .\templates\frontend\travel_dashboard.html:85
+msgid "Departed"
+msgstr "Parti"
+
+#: .\apps\travel\models.py:122
+msgid "Arrived"
+msgstr "Arrivé"
+
+#: .\apps\travel\models.py:123
+msgid "Delayed"
+msgstr "Retardé"
+
+#: .\apps\travel\models.py:124 .\apps\travel\models.py:289
+#: .\apps\travel\models.py:494
+msgid "Cancelled"
+msgstr "Annulé"
+
+#: .\apps\travel\models.py:125
+msgid "Diverted"
+msgstr "Dévié"
+
+#: .\apps\travel\models.py:126 .\templates\travel\medevac_dashboard.html:109
+msgid "Medevac"
+msgstr "Médicalisation"
+
+#: .\apps\travel\models.py:129 .\apps\travel\models.py:489
+msgid "Draft"
+msgstr "Brouillon"
+
+#: .\apps\travel\models.py:130
+msgid "Submitted to DGM"
+msgstr ""
+
+#: .\apps\travel\models.py:131
+#, fuzzy
+#| msgid "Approved"
+msgid "Approved by DGM"
+msgstr "Approuvé"
+
+#: .\apps\travel\models.py:132
+#, fuzzy
+#| msgid "Rejected"
+msgid "Rejected by DGM"
+msgstr "Rejeté"
+
+#: .\apps\travel\models.py:232
+msgid "Spouse"
+msgstr "Conjoint(e)"
+
+#: .\apps\travel\models.py:233
+msgid "Child"
+msgstr "Enfant"
+
+#: .\apps\travel\models.py:234
+msgid "Parent"
+msgstr "Parent"
+
+#: .\apps\travel\models.py:235
+msgid "Sibling"
+msgstr "Frère/Sœur"
+
+#: .\apps\travel\models.py:236 .\apps\travel\models.py:504
+#: .\templates\frontend\contact.html:77
+msgid "Other"
+msgstr "Autre"
+
+#: .\apps\travel\models.py:277
+msgid "Expatriate Expert"
+msgstr "Expert expatrié"
+
+#: .\apps\travel\models.py:278
+msgid "Family Dependant"
+msgstr "Personne à charge de la famille"
+
+#: .\apps\travel\models.py:279
+msgid "Flight Crew"
+msgstr "Équipage de vol"
+
+#: .\apps\travel\models.py:280
+msgid "VIP / Executive"
+msgstr "VIP / Direction"
+
+#: .\apps\travel\models.py:281
+msgid "Medical / Medevac"
+msgstr "Médical / Médicalisation"
+
+#: .\apps\travel\models.py:284
+msgid "Reserved"
+msgstr "Réservé"
+
+#: .\apps\travel\models.py:285
+msgid "Confirmed"
+msgstr "Confirmé"
+
+#: .\apps\travel\models.py:286
+msgid "Checked in"
+msgstr "Enregistré"
+
+#: .\apps\travel\models.py:287
+msgid "Boarded"
+msgstr "Embarqué"
+
+#: .\apps\travel\models.py:288
+msgid "No-show"
+msgstr "Non présenté"
+
+#: .\apps\travel\models.py:403
+msgid "4 weeks on / 4 weeks off"
+msgstr "4 semaines en poste / 4 semaines de repos"
+
+#: .\apps\travel\models.py:404
+msgid "6 weeks on / 3 weeks off"
+msgstr "6 semaines en poste / 3 semaines de repos"
+
+#: .\apps\travel\models.py:405
+msgid "8 weeks on / 4 weeks off"
+msgstr "8 semaines en poste / 4 semaines de repos"
+
+#: .\apps\travel\models.py:406
+msgid "9 weeks on / 3 weeks off"
+msgstr "9 semaines en poste / 3 semaines de repos"
+
+#: .\apps\travel\models.py:407
+msgid "28 days on / 28 days off"
+msgstr "28 jours en poste / 28 jours de repos"
+
+#: .\apps\travel\models.py:408
+msgid "Custom"
+msgstr "Personnalisé"
+
+#: .\apps\travel\models.py:490
+msgid "Pending Manager Approval"
+msgstr "En attente d'approbation du responsable"
+
+#: .\apps\travel\models.py:491
+msgid "Pending HR Approval"
+msgstr "En attente d'approbation des RH"
+
+#: .\apps\travel\models.py:492
+msgid "Approved"
+msgstr "Approuvé"
+
+#: .\apps\travel\models.py:493
+msgid "Rejected"
+msgstr "Rejeté"
+
+#: .\apps\travel\models.py:495
+msgid "Completed"
+msgstr "Terminé"
+
+#: .\apps\travel\models.py:498
+msgid "Rotation (on/off)"
+msgstr "Rotation (poste/repos)"
+
+#: .\apps\travel\models.py:499
+msgid "Business travel"
+msgstr "Voyage d'affaires"
+
+#: .\apps\travel\models.py:500
+msgid "Medical evacuation"
+msgstr "Évacuation médicale"
+
+#: .\apps\travel\models.py:501
+msgid "Family visit"
+msgstr "Visite familiale"
+
+#: .\apps\travel\models.py:502
+msgid "Repatriation"
+msgstr "Rapatriement"
+
+#: .\apps\travel\models.py:503
+msgid "Training"
+msgstr "Formation"
+
+#: .\config\settings.py:299 .\templates\frontend\base_app.html:55
+msgid "Dashboard"
+msgstr "Tableau de bord"
+
+#: .\config\settings.py:303
+msgid "Risk Dashboard"
+msgstr "Tableau de bord des risques"
+
+#: .\config\settings.py:310
+msgid "Compliance"
+msgstr "Conformité"
+
+#: .\config\settings.py:313 .\templates\frontend\penalty_list.html:17
+msgid "Penalty Ledger"
+msgstr "Registre des pénalités"
+
+#: .\config\settings.py:315
+msgid "Cost Categories"
+msgstr "Catégories de coûts"
+
+#: .\config\settings.py:317
+msgid "Expert Costs"
+msgstr "Coûts des experts"
+
+#: .\config\settings.py:319
+msgid "Monthly Invoices"
+msgstr "Factures mensuelles"
+
+#: .\config\settings.py:324 .\templates\frontend\base_app.html:61
+#: .\templates\frontend\dependant_form.html:12
+#: .\templates\frontend\dependants.html:13
+#: .\templates\frontend\expert_form.html:12
+#: .\templates\frontend\expert_list.html:4
+#: .\templates\frontend\expert_list.html:17
+#: .\templates\frontend\expert_profile.html:17
+msgid "Experts"
+msgstr "Experts"
+
+#: .\config\settings.py:332
+msgid "Visas & Permits"
+msgstr "Visas & Permis"
+
+#: .\config\settings.py:335 .\templates\frontend\visa_list.html:4
+#: .\templates\frontend\visa_list.html:17
+msgid "Visa Records"
+msgstr "Dossiers de visa"
+
+#: .\config\settings.py:337
+msgid "Visa Type Catalog"
+msgstr "Catalogue des types de visa"
+
+#: .\config\settings.py:339 .\templates\frontend\base_app.html:73
+msgid "Prolongations"
+msgstr "Prolongations"
+
+#: .\config\settings.py:341 .\templates\compliance\dashboard.html:311
+msgid "Cartes de Travail"
+msgstr "Cartes de Travail"
+
+#: .\config\settings.py:346
+msgid "Organization"
+msgstr "Organisation"
+
+#: .\config\settings.py:358
+msgid "Security & Audit"
+msgstr "Sécurité & Audit"
+
+#: .\config\settings.py:361
+msgid "Immutable Audit Log"
+msgstr "Journal d'audit immuable"
+
+#: .\config\settings.py:363
+msgid "Document Versions"
+msgstr "Versions des documents"
+
+#: .\config\settings.py:365
+msgid "Users"
+msgstr "Utilisateurs"
+
+#: .\config\settings.py:367
+msgid "Groups"
+msgstr "Groupes"
+
+#: .\config\settings.py:372 .\templates\frontend\travel_dashboard.html:4
+msgid "Travel & Charter"
+msgstr "Voyages & Vols charter"
+
+#: .\config\settings.py:375
+msgid "Flight Manifest Board"
+msgstr "Tableau des manifestes de vol"
+
+#: .\config\settings.py:377 .\templates\travel\rotation_calendar.html:48
+msgid "Rotation Calendar"
+msgstr "Calendrier de rotation"
+
+#: .\config\settings.py:379
+msgid "Medevac Readiness"
+msgstr "Préparation médicale"
+
+#: .\config\settings.py:381
+msgid "Cost Dashboard"
+msgstr "Tableau de bord des coûts"
+
+#: .\config\settings.py:383
+msgid "Charter Operators"
+msgstr "Opérateurs de vol charter"
+
+#: .\config\settings.py:385
+msgid "Aircraft Fleet"
+msgstr "Flotte d'appareils"
+
+#: .\config\settings.py:387
+msgid "Routes"
+msgstr "Itinéraires"
+
+#: .\config\settings.py:389
+msgid "Dependants"
+msgstr "Personnes à charge"
+
+#: .\config\settings.py:391
+msgid "Travel Authorizations"
+msgstr "Autorisations de voyage"
+
+#: .\config\settings.py:396
+msgid "Automation"
+msgstr "Automatisation"
+
+#: .\config\settings.py:399
+msgid "Scheduled Tasks"
+msgstr "Tâches planifiées"
+
+#: .\config\settings.py:401
+msgid "Task Results"
+msgstr "Résultats des tâches"
+
+#: .\templates\compliance\dashboard.html:45
+#: .\templates\frontend\flight_manifest.html:27
+msgid "Back to Dashboard"
+msgstr "Retour au tableau de bord"
+
+#: .\templates\compliance\dashboard.html:47
+msgid "Risk & Penalty Mitigation Board"
+msgstr "Tableau de bord des risques et pénalités"
+
+#: .\templates\compliance\dashboard.html:49
+#: .\templates\frontend\base_app.html:123
+msgid "Scope"
+msgstr "Périmètre"
+
+#: .\templates\compliance\dashboard.html:58
+#: .\templates\frontend\expert_list.html:43
+#: .\templates\frontend\penalty_list.html:37
+#: .\templates\frontend\visa_list.html:43
+msgid "Filter"
+msgstr "Filtre"
+
+#: .\templates\compliance\dashboard.html:60
+msgid "All Companies"
+msgstr "Toutes les entreprises"
+
+#: .\templates\compliance\dashboard.html:74
+msgid "Theme"
+msgstr "Thème"
+
+#: .\templates\compliance\dashboard.html:94
+#: .\templates\frontend\executive_dashboard.html:33
+msgid "Workforce Data Incomplete"
+msgstr "Données sur les effectifs incomplètes"
+
+#: .\templates\compliance\dashboard.html:97
+msgid "Add Snapshot"
+msgstr "Ajouter un instantané"
+
+#: .\templates\compliance\dashboard.html:107
+#: .\templates\frontend\executive_dashboard.html:57
+msgid "Overall Compliance Score"
+msgstr "Score de conformité global"
+
+#: .\templates\compliance\dashboard.html:119
+#: .\templates\frontend\executive_dashboard.html:88
+msgid "Score Breakdown"
+msgstr "Détail du score"
+
+#: .\templates\compliance\dashboard.html:134
+#: .\templates\frontend\executive_dashboard.html:123
+msgid "No deductions. Perfect score!"
+msgstr "Aucune déduction. Score parfait !"
+
+#: .\templates\compliance\dashboard.html:144
+#: .\templates\compliance\dashboard.html:262
+#: .\templates\frontend\executive_dashboard.html:150
+#: .\templates\frontend\partials\landing_card.html:39
+msgid "Expat Quota"
+msgstr "Quota d'expatriés"
+
+#: .\templates\compliance\dashboard.html:144
+#: .\templates\compliance\dashboard.html:264
+#: .\templates\frontend\executive_dashboard.html:159
 msgid "cap"
 msgstr "plafond"
 
-# ─── Expert portal ──────────────────────────────────────
+#: .\templates\compliance\dashboard.html:150
+msgid "workforce"
+msgstr "effectif"
+
+#: .\templates\compliance\dashboard.html:155
+#: .\templates\compliance\dashboard.html:204
+#: .\templates\frontend\executive_dashboard.html:157
+msgid "BREACH"
+msgstr "VIOLATION"
+
+#: .\templates\compliance\dashboard.html:155
+#: .\templates\compliance\dashboard.html:202
+#: .\templates\frontend\executive_dashboard.html:157
+msgid "COMPLIANT"
+msgstr "CONFORME"
+
+#: .\templates\compliance\dashboard.html:156
+msgid "headroom"
+msgstr "marge disponible"
+
+#: .\templates\compliance\dashboard.html:158
+#: .\templates\compliance\dashboard.html:200
+msgid "DATA INCOMPLETE"
+msgstr "DONNÉES INCOMPLÈTES"
+
+#: .\templates\compliance\dashboard.html:173
+msgid "Per-Company Quota Breakdown"
+msgstr "Répartition du quota par entreprise"
+
+#: .\templates\compliance\dashboard.html:175
+msgid "Expat percentage across all active companies"
+msgstr "Pourcentage d'expatriés dans toutes les entreprises actives"
+
+#: .\templates\compliance\dashboard.html:183
+msgid "Expats"
+msgstr "Expatriés"
+
+#: .\templates\compliance\dashboard.html:184
+#: .\templates\frontend\executive_dashboard.html:144
+msgid "Congolese"
+msgstr "Congolais"
+
+#: .\templates\compliance\dashboard.html:185
+#: .\templates\travel\cost_dashboard.html:78
+#: .\templates\travel\cost_dashboard.html:100
+#: .\templates\travel\cost_dashboard.html:124
+#: .\templates\travel\manifest_print.html:109
+msgid "Total"
+msgstr "Total"
+
+#: .\templates\compliance\dashboard.html:186
+#, python-format
+msgid "Expat %%"
+msgstr "%% d'expatriés"
+
+#: .\templates\compliance\dashboard.html:187
+#: .\templates\frontend\expert_list.html:57
+#: .\templates\frontend\expert_profile.html:86
+#: .\templates\frontend\settings.html:82
+#: .\templates\frontend\travel_list.html:32
+#: .\templates\frontend\visa_list.html:58
+#: .\templates\travel\medevac_dashboard.html:109
+msgid "Status"
+msgstr "Statut"
+
+#: .\templates\compliance\dashboard.html:219
+#: .\templates\frontend\executive_dashboard.html:140
+msgid "Active Experts"
+msgstr "Experts actifs"
+
+#: .\templates\compliance\dashboard.html:223
+msgid "Passports ≤ 90d"
+msgstr "Passeports ≤ 90j"
+
+#: .\templates\compliance\dashboard.html:227
+msgid "Cartes ≤ 90d"
+msgstr "Cartes ≤ 90j"
+
+#: .\templates\compliance\dashboard.html:231
+msgid "Visas ≤ 90d"
+msgstr "Visas ≤ 90j"
+
+#: .\templates\compliance\dashboard.html:235
+msgid "Critical ≤ 30d"
+msgstr "Critique ≤ 30j"
+
+#: .\templates\compliance\dashboard.html:239
+#: .\templates\frontend\base_app.html:85
+#: .\templates\frontend\executive_dashboard.html:178
+#: .\templates\frontend\penalty_list.html:4
+msgid "Penalties"
+msgstr "Pénalités"
+
+#: .\templates\compliance\dashboard.html:250
+msgid "Document Expiry Funnel"
+msgstr "Entonnoir d'expiration des documents"
+
+#: .\templates\compliance\dashboard.html:252
+msgid "15-day buckets over next 90 days"
+msgstr "Périodes de 15 jours sur les 90 prochains jours"
+
+#: .\templates\compliance\dashboard.html:264
+msgid "Against"
+msgstr "Contre"
+
+#: .\templates\compliance\dashboard.html:279
+msgid "Passports Expiring"
+msgstr "Passeports expirant"
+
+#: .\templates\compliance\dashboard.html:281
+#: .\templates\compliance\dashboard.html:313
+#: .\templates\compliance\dashboard.html:345
+#: .\templates\frontend\executive_dashboard.html:203
+msgid "Next 90 days"
+msgstr "Prochains 90 jours"
+
+#: .\templates\compliance\dashboard.html:288
+#: .\templates\compliance\dashboard.html:320
+#: .\templates\compliance\dashboard.html:352
+#: .\templates\compliance\dashboard.html:386
+#: .\templates\frontend\penalty_list.html:47
+#: .\templates\frontend\prolongation_form.html:126
+#: .\templates\frontend\visa_list.html:53
+#: .\templates\travel\cost_dashboard.html:100
+#: .\templates\travel\medevac_dashboard.html:63
+msgid "Expert"
+msgstr "Expert"
+
+#: .\templates\compliance\dashboard.html:288
+#: .\templates\compliance\dashboard.html:320
+#: .\templates\compliance\dashboard.html:352
+msgid "Expiry"
+msgstr "Expiration"
+
+#: .\templates\compliance\dashboard.html:288
+#: .\templates\compliance\dashboard.html:320
+#: .\templates\compliance\dashboard.html:352
+#: .\templates\compliance\dashboard.html:388
+msgid "Days"
+msgstr "Jours"
+
+#: .\templates\compliance\dashboard.html:302
+msgid "No passports expiring."
+msgstr "Aucun passeport expirant."
+
+#: .\templates\compliance\dashboard.html:334
+msgid "No permits expiring."
+msgstr "Aucun permis expirant."
+
+#: .\templates\compliance\dashboard.html:343
+msgid "Visas Expiring"
+msgstr "Visas expirant"
+
+#: .\templates\compliance\dashboard.html:352
+#: .\templates\frontend\base_app.html:67
+msgid "Visas"
+msgstr "Visas"
+
+#: .\templates\compliance\dashboard.html:366
+msgid "No visas expiring."
+msgstr "Aucun visa expirant."
+
+#: .\templates\compliance\dashboard.html:375
+#: .\templates\frontend\executive_dashboard.html:234
+msgid "Active Penalties"
+msgstr "Pénalités actives"
+
+#: .\templates\compliance\dashboard.html:377
+#: .\templates\frontend\executive_dashboard.html:235
+msgid "Unresolved DGM accruals"
+msgstr "Accumulations DGM non résolues"
+
+#: .\templates\compliance\dashboard.html:387
+#: .\templates\frontend\penalty_list.html:48
+msgid "Reason"
+msgstr "Motif"
+
+#: .\templates\compliance\dashboard.html:389
+msgid "Amount"
+msgstr "Montant"
+
+#: .\templates\compliance\dashboard.html:405
+#: .\templates\frontend\executive_dashboard.html:253
+msgid "No active penalties."
+msgstr "Aucune pénalité active."
+
+#: .\templates\compliance\dashboard.html:417
+#: .\templates\frontend\partials\landing_card.html:76
+msgid "Recent Activity"
+msgstr "Activité récente"
+
+#: .\templates\compliance\dashboard.html:419
+msgid "Immutable hash-chained audit log — latest entries"
+msgstr "Journal d'audit immuable — dernières entrées"
+
+#: .\templates\compliance\dashboard.html:426
+msgid "CHAIN VERIFIED"
+msgstr "CHAÎNE VÉRIFIÉE"
+
+#: .\templates\compliance\dashboard.html:431
+msgid "CHAIN BROKEN"
+msgstr "CHAÎNE ROMPUE"
+
+#: .\templates\compliance\dashboard.html:435
+msgid "entries"
+msgstr "entrées"
+
+#: .\templates\compliance\dashboard.html:435
+msgid "checked"
+msgstr "vérifié"
+
+#: .\templates\compliance\dashboard.html:445
+msgid "Time"
+msgstr "Heure"
+
+#: .\templates\compliance\dashboard.html:446
+msgid "Actor"
+msgstr "Utilisateur"
+
+#: .\templates\compliance\dashboard.html:447
+#: .\templates\frontend\penalty_list.html:51
+msgid "Actions"
+msgstr "Actions"
+
+#: .\templates\compliance\dashboard.html:448
+msgid "Model"
+msgstr "Modèle"
+
+#: .\templates\compliance\dashboard.html:449
+msgid "Object"
+msgstr "Objet"
+
+#: .\templates\compliance\dashboard.html:466
+msgid "No activity yet."
+msgstr "Aucune activité pour le moment."
+
+#: .\templates\frontend\add_snapshot.html:7
+msgid "Record Workforce Snapshot"
+msgstr "Enregistrer un instantané des effectifs"
+
+#: .\templates\frontend\add_snapshot.html:8
+msgid "Enter the current workforce data for"
+msgstr "Entrez les données actuelles des effectifs pour"
+
+#: .\templates\frontend\add_snapshot.html:35
+msgid "Congolese Breakdown"
+msgstr "Répartition des Congolais"
+
+#: .\templates\frontend\add_snapshot.html:43
+msgid "Expat Breakdown"
+msgstr "Répartition des expatriés"
+
+#: .\templates\frontend\add_snapshot.html:59
+msgid "Save Snapshot"
+msgstr "Enregistrer l'instantané"
+
+#: .\templates\frontend\base.html:60
+msgid "Home"
+msgstr "Accueil"
+
+#: .\templates\frontend\base.html:61 .\templates\frontend\base.html:112
+#: .\templates\frontend\features.html:4 .\templates\frontend\landing.html:137
+msgid "Features"
+msgstr "Fonctionnalités"
+
+#: .\templates\frontend\base.html:62 .\templates\frontend\base.html:113
+#: .\templates\frontend\modules.html:4
+msgid "Modules"
+msgstr "Modules"
+
+#: .\templates\frontend\base.html:63 .\templates\frontend\base.html:114
+#: .\templates\frontend\pricing.html:4 .\templates\frontend\pricing.html:12
+msgid "Pricing"
+msgstr "Tarifs"
+
+#: .\templates\frontend\base.html:64 .\templates\frontend\base.html:124
+#: .\templates\frontend\contact.html:4 .\templates\frontend\contact.html:12
+msgid "Contact"
+msgstr "Contact"
+
+#: .\templates\frontend\base.html:106
+msgid ""
+"Enterprise visa, permit, and charter management for mining operations in the "
+"DRC."
+msgstr ""
+"Gestion des visas, permis et vols charter pour les opérations minières en "
+"RDC."
+
+#: .\templates\frontend\base.html:110
+msgid "Platform"
+msgstr "Plateforme"
+
+#: .\templates\frontend\base.html:119
+msgid "Trust & Legal"
+msgstr "Confiance & Légal"
+
+#: .\templates\frontend\base.html:121 .\templates\frontend\profile.html:56
+msgid "Security"
+msgstr "Sécurité"
+
+#: .\templates\frontend\base.html:122 .\templates\frontend\privacy.html:4
+#: .\templates\frontend\privacy.html:11
+msgid "Privacy Policy"
+msgstr "Politique de confidentialité"
+
+#: .\templates\frontend\base.html:123 .\templates\frontend\terms.html:4
+#: .\templates\frontend\terms.html:11
+msgid "Terms of Service"
+msgstr "Conditions d'utilisation"
+
+#: .\templates\frontend\base.html:129
+msgid "All rights reserved."
+msgstr "Tous droits réservés."
+
+#: .\templates\frontend\base.html:130
+msgid "Built for DRC Mining Operations."
+msgstr "Conçu pour les opérations minières en RDC."
+
+#: .\templates\frontend\base_app.html:45
+msgid "DRC EXPAT"
+msgstr "DRC EXPAT"
+
+#: .\templates\frontend\base_app.html:46
+msgid "COMPLIANCE PLATFORM"
+msgstr "PLATEFORME DE CONFORMITÉ"
+
+#: .\templates\frontend\base_app.html:79
+#: .\templates\frontend\document_list.html:4
+#: .\templates\frontend\document_list.html:17
+msgid "Documents"
+msgstr "Documents"
+
+#: .\templates\frontend\base_app.html:91
+msgid "Reports"
+msgstr "Rapports"
+
+#: .\templates\frontend\base_app.html:97
+#: .\templates\frontend\invite_user.html:11
+#: .\templates\frontend\settings.html:4 .\templates\frontend\settings.html:12
+msgid "Settings"
+msgstr "Paramètres"
+
+#: .\templates\frontend\base_app.html:109
+msgid "View Profile"
+msgstr "Voir le profil"
+
+#: .\templates\frontend\base_app.html:111
+msgid "Log out"
+msgstr "Déconnexion"
+
+#: .\templates\frontend\base_app.html:136
+msgid "Toggle theme"
+msgstr "Changer de thème"
+
+#: .\templates\frontend\contact.html:14
+msgid "Let's scope your pilot."
+msgstr "Cadrons votre pilote."
+
+#: .\templates\frontend\contact.html:17
+msgid "Tell us about your operation. We'll respond within 24 hours."
+msgstr "Parlez-nous de votre opération. Nous répondrons sous 24 heures."
+
+#: .\templates\frontend\contact.html:45
+#: .\templates\travel\manifest_print.html:77
+msgid "Full Name"
+msgstr "Nom complet"
+
+#: .\templates\frontend\contact.html:52 .\templates\frontend\features.html:183
+#: .\templates\frontend\features.html:187 .\templates\frontend\settings.html:80
+msgid "Email"
+msgstr "E-mail"
+
+#: .\templates\frontend\contact.html:65 .\templates\frontend\contact.html:111
+msgid "Phone"
+msgstr "Téléphone"
+
+#: .\templates\frontend\contact.html:70
+msgid "Your Role"
+msgstr "Votre rôle"
+
+#: .\templates\frontend\contact.html:72
+msgid "Select..."
+msgstr "Sélectionnez..."
+
+#: .\templates\frontend\contact.html:73
+msgid "HR / Compliance"
+msgstr "RH / Conformité"
+
+#: .\templates\frontend\contact.html:74
+msgid "IT"
+msgstr "IT"
+
+#: .\templates\frontend\contact.html:75
+msgid "Operations"
+msgstr "Opérations"
+
+#: .\templates\frontend\contact.html:76
+msgid "Executive / GM"
+msgstr "Direction / DG"
+
+#: .\templates\frontend\contact.html:83
+msgid "Message"
+msgstr "Message"
+
+#: .\templates\frontend\contact.html:85
+msgid "Tell us about your expat workforce and current compliance process..."
+msgstr ""
+"Parlez-nous de votre main-d'œuvre expatriée et de votre processus de "
+"conformité actuel..."
+
+#: .\templates\frontend\contact.html:91
+msgid "Send Message"
+msgstr "Envoyer le message"
+
+#: .\templates\frontend\contact.html:99
+msgid "Direct Contact"
+msgstr "Contact direct"
+
+#: .\templates\frontend\contact.html:118
+msgid "Office"
+msgstr "Bureau"
+
+#: .\templates\frontend\contact.html:126
+msgid "What Happens Next"
+msgstr "Ce qui se passe ensuite"
+
+#: .\templates\frontend\contact.html:128
+msgid "We respond within 24 hours"
+msgstr "Nous répondons sous 24 heures"
+
+#: .\templates\frontend\contact.html:129
+msgid "30-minute scoping call"
+msgstr "Appel de cadrage de 30 minutes"
+
+#: .\templates\frontend\contact.html:130
+msgid "Pilot proposal within 3 days"
+msgstr "Proposition pilote sous 3 jours"
+
+#: .\templates\frontend\contact.html:131
+msgid "Environment live in 2 weeks"
+msgstr "Environnement en production dans 2 semaines"
+
+#: .\templates\frontend\contact.html:136
+msgid "Prefer a call?"
+msgstr "Vous préférez un appel ?"
+
+#: .\templates\frontend\contact.html:138
+msgid "Book a 30-minute scoping session directly with our team."
+msgstr ""
+"Réservez une session de cadrage de 30 minutes directement avec notre équipe."
+
+#: .\templates\frontend\contact.html:141
+msgid "Email Us"
+msgstr "Nous envoyer un e-mail"
+
+#: .\templates\frontend\dependant_form.html:4
+#: .\templates\frontend\dependant_form.html:16
+#: .\templates\frontend\dependant_form.html:20
+#: .\templates\frontend\dependants.html:27
+#: .\templates\frontend\dependants.html:73
+msgid "Add Family Member"
+msgstr "Ajouter un membre de la famille"
+
+#: .\templates\frontend\dependant_form.html:23
+msgid "Register a dependant for"
+msgstr "Enregistrer une personne à charge pour"
+
+#: .\templates\frontend\dependant_form.html:37
+#: .\templates\frontend\profile.html:24
+msgid "Personal Details"
+msgstr "Détails personnels"
+
+#: .\templates\frontend\dependant_form.html:67
+msgid "Passport Information"
+msgstr "Informations du passeport"
+
+#: .\templates\frontend\dependant_form.html:84
+msgid "Save Family Member"
+msgstr "Enregistrer le membre de la famille"
+
+#: .\templates\frontend\dependants.html:4
+#: .\templates\frontend\dependants.html:15
+#: .\templates\frontend\expert_profile.html:116
+msgid "Family Members"
+msgstr "Membres de la famille"
+
+#: .\templates\frontend\dependants.html:21
+msgid "Manage spouse and dependants for visa and charter manifests."
+msgstr ""
+"Gérez le conjoint et les personnes à charge pour les visas et les manifestes "
+"de vol."
+
+#: .\templates\frontend\dependants.html:49
+#: .\templates\frontend\settings.html:97
+msgid "Active"
+msgstr "Actif"
+
+#: .\templates\frontend\dependants.html:49
+msgid "Inactive"
+msgstr "Inactif"
+
+#: .\templates\frontend\dependants.html:59
+#: .\templates\frontend\expert_list.html:56
+msgid "Passport Expiry"
+msgstr "Expiration du passeport"
+
+#: .\templates\frontend\dependants.html:70
+msgid "No family members recorded"
+msgstr "Aucun membre de la famille enregistré"
+
+#: .\templates\frontend\dependants.html:71
+msgid ""
+"Add spouse and dependants to ensure they are included in visa applications "
+"and flight manifests."
+msgstr ""
+"Ajoutez un conjoint et des personnes à charge pour vous assurer qu'ils sont "
+"inclus dans les demandes de visa et les manifestes de vol."
+
+#: .\templates\frontend\document_list.html:14
+msgid "Document Vault"
+msgstr "Coffre-fort de documents"
+
+#: .\templates\frontend\document_list.html:20
+#: .\templates\frontend\expert_list.html:20
+#: .\templates\frontend\penalty_list.html:20
+#: .\templates\frontend\travel_dashboard.html:20
+#: .\templates\frontend\travel_list.html:19
+#: .\templates\frontend\visa_list.html:20
+msgid "Scope:"
+msgstr "Périmètre :"
+
+#: .\templates\frontend\document_list.html:30
+msgid "Search by file name or uploader..."
+msgstr "Rechercher par nom de fichier ou téléchargeur..."
+
+#: .\templates\frontend\document_list.html:32
+msgid "Search"
+msgstr "Rechercher"
+
+#: .\templates\frontend\document_list.html:42
+msgid "File Name"
+msgstr "Nom du fichier"
+
+#: .\templates\frontend\document_list.html:43
+msgid "Attached To"
+msgstr "Attaché à"
+
+#: .\templates\frontend\document_list.html:44
+msgid "Document Type"
+msgstr "Type de document"
+
+#: .\templates\frontend\document_list.html:45
+msgid "Uploaded At"
+msgstr "Téléchargé le"
+
+#: .\templates\frontend\document_list.html:46
+msgid "Uploaded By"
+msgstr "Téléchargé par"
+
+#: .\templates\frontend\document_list.html:47
+msgid "Action"
+msgstr "Action"
+
+#: .\templates\frontend\document_list.html:96
+msgid "Download"
+msgstr "Télécharger"
+
+#: .\templates\frontend\document_list.html:104
+msgid "No documents found."
+msgstr "Aucun document trouvé."
+
+#: .\templates\frontend\executive_dashboard.html:4
+msgid "Executive Dashboard"
+msgstr "Tableau de bord exécutif"
+
+#: .\templates\frontend\executive_dashboard.html:14
+msgid "Compliance Command Center"
+msgstr "Centre de commande de conformité"
+
+#: .\templates\frontend\executive_dashboard.html:37
+msgid "Add Snapshot →"
+msgstr "Ajouter un instantané →"
+
+#: .\templates\frontend\executive_dashboard.html:43
+#: .\templates\frontend\quota_simulator.html:4
+msgid "Quota Simulator"
+msgstr "Simulateur de quota"
+
+#: .\templates\frontend\executive_dashboard.html:46
+#, fuzzy
+#| msgid "DGM Inspector"
+msgid "DGM Inspection Mode"
+msgstr "Inspecteur DGM"
+
+#: .\templates\frontend\executive_dashboard.html:66
+msgid "PENDING DATA"
+msgstr "DONNÉES EN ATTENTE"
+
+#: .\templates\frontend\executive_dashboard.html:77
+msgid "The score reflects the deductions and hard caps listed on the right."
+msgstr "Le score reflète les déductions et plafonds stricts listés à droite."
+
+#: .\templates\frontend\executive_dashboard.html:79
+msgid ""
+"Please record a Workforce Snapshot using the 'Add Snapshot' button above to "
+"calculate your true compliance score."
+msgstr ""
+"Veuillez enregistrer un instantané des effectifs à l'aide du bouton "
+"« Ajouter un instantané » ci-dessus pour calculer votre véritable score de "
+"conformité."
+
+#: .\templates\frontend\executive_dashboard.html:92
+msgid "Score is pending due to incomplete workforce data."
+msgstr ""
+"Le score est en attente en raison de données sur les effectifs incomplètes."
+
+#: .\templates\frontend\executive_dashboard.html:96
+msgid "Hard Caps"
+msgstr "Plafonds stricts"
+
+#: .\templates\frontend\executive_dashboard.html:110
+msgid "Soft Deductions"
+msgstr "Déductions douces"
+
+#: .\templates\frontend\executive_dashboard.html:128
+msgid "Final Score"
+msgstr "Score final"
+
+#: .\templates\frontend\executive_dashboard.html:143
+msgid "expats"
+msgstr "expatriés"
+
+#: .\templates\frontend\executive_dashboard.html:159
+msgid "of"
+msgstr "sur"
+
+#: .\templates\frontend\executive_dashboard.html:161
+msgid "Data Incomplete"
+msgstr "Données incomplètes"
+
+#: .\templates\frontend\executive_dashboard.html:168
+msgid "Expiring (90 days)"
+msgstr "Expirant (90 jours)"
+
+#: .\templates\frontend\executive_dashboard.html:171
+msgid "passports"
+msgstr "passeports"
+
+#: .\templates\frontend\executive_dashboard.html:172
+msgid "cartes"
+msgstr "cartes"
+
+#: .\templates\frontend\executive_dashboard.html:182
+msgid "active accruals"
+msgstr "accumulations actives"
+
+#: .\templates\frontend\executive_dashboard.html:188
+#: .\templates\travel\cost_dashboard.html:41
+#: .\templates\travel\cost_dashboard.html:100
+#: .\templates\travel\manifest_print.html:63
+#: .\templates\travel\medevac_dashboard.html:86
+#: .\templates\travel\medevac_dashboard.html:109
+msgid "Flights"
+msgstr "Vols"
+
+#: .\templates\frontend\executive_dashboard.html:192
+msgid "Upcoming Charters"
+msgstr "Vols charter à venir"
+
+#: .\templates\frontend\executive_dashboard.html:202
+msgid "Upcoming Expirations"
+msgstr "Expirations à venir"
+
+#: .\templates\frontend\executive_dashboard.html:227
+msgid "No upcoming expirations."
+msgstr "Aucune expiration à venir."
+
+#: .\templates\frontend\executive_dashboard.html:246
+#: .\templates\frontend\prolongation_form.html:186
+msgid "days"
+msgstr "jours"
+
+#: .\templates\frontend\expert_form.html:4
+#: .\templates\frontend\expert_form.html:15
+msgid "Edit Expert"
+msgstr "Modifier l'expert"
+
+#: .\templates\frontend\expert_form.html:4
+#: .\templates\frontend\expert_form.html:15
+#: .\templates\frontend\expert_list.html:26
+msgid "Add Expert"
+msgstr "Ajouter un expert"
+
+#: .\templates\frontend\expert_form.html:20
+msgid "Edit Expert Profile"
+msgstr "Modifier le profil de l'expert"
+
+#: .\templates\frontend\expert_form.html:20
+msgid "Onboard New Expert"
+msgstr "Intégrer un nouvel expert"
+
+#: .\templates\frontend\expert_form.html:24
+msgid "Update the details for"
+msgstr "Mettre à jour les détails pour"
+
+#: .\templates\frontend\expert_form.html:26
+msgid "Register a new expatriate into the compliance system for"
+msgstr "Enregistrer un nouvel expatrié dans le système de conformité pour"
+
+#: .\templates\frontend\expert_form.html:41
+msgid "Personal Identity"
+msgstr "Identité personnelle"
+
+#: .\templates\frontend\expert_form.html:76
+msgid "Passport Details (Encrypted)"
+msgstr "Détails du passeport (chiffré)"
+
+#: .\templates\frontend\expert_form.html:101
+msgid "Employment Details"
+msgstr "Détails de l'emploi"
+
+#: .\templates\frontend\expert_form.html:135
+msgid "Save Changes"
+msgstr "Enregistrer les modifications"
+
+#: .\templates\frontend\expert_form.html:135
+msgid "Save Expert Profile"
+msgstr "Enregistrer le profil de l'expert"
+
+#: .\templates\frontend\expert_list.html:14
+msgid "Personnel Management"
+msgstr "Gestion du personnel"
+
+#: .\templates\frontend\expert_list.html:36
+msgid "Search by name, passport, or email..."
+msgstr "Rechercher par nom, passeport ou e-mail..."
+
+#: .\templates\frontend\expert_list.html:39
+#: .\templates\frontend\visa_list.html:38
+msgid "All Statuses"
+msgstr "Tous les statuts"
+
+#: .\templates\frontend\expert_list.html:40
+msgid "Active Only"
+msgstr "Actifs uniquement"
+
+#: .\templates\frontend\expert_list.html:41
+msgid "Inactive Only"
+msgstr "Inactifs uniquement"
+
+#: .\templates\frontend\expert_list.html:53
+#: .\templates\frontend\settings.html:79
+msgid "Name"
+msgstr "Nom"
+
+#: .\templates\frontend\expert_list.html:55
+msgid "Job Title"
+msgstr "Titre du poste"
+
+#: .\templates\frontend\expert_list.html:96
+msgid "No experts found."
+msgstr "Aucun expert trouvé."
+
+#: .\templates\frontend\expert_portal.html:4
+#: .\templates\frontend\expert_portal.html:14
 msgid "My Portal"
 msgstr "Mon portail"
 
+#: .\templates\frontend\expert_portal.html:29
 msgid "My Status"
 msgstr "Mon statut"
 
+#: .\templates\frontend\expert_portal.html:48
+#: .\templates\frontend\expert_portal.html:172
+#: .\templates\frontend\expert_profile.html:45
+#: .\templates\travel\manifest_print.html:79
 msgid "Passport"
 msgstr "Passeport"
 
-msgid "Yellow Fever"
-msgstr "Fièvre jaune"
-
-msgid "Carte de Travail"
-msgstr "Carte de Travail"
-
+#: .\templates\frontend\expert_portal.html:54
+#: .\templates\frontend\expert_portal.html:77
+#: .\templates\frontend\expert_portal.html:100
 msgid "EXPIRED"
 msgstr "EXPIRÉ"
 
+#: .\templates\frontend\expert_portal.html:63
+#: .\templates\frontend\expert_portal.html:86
+#: .\templates\frontend\expert_portal.html:109
+#: .\templates\frontend\expert_profile.html:55
 msgid "Not on file"
 msgstr "Non enregistré"
 
+#: .\templates\frontend\expert_portal.html:71
+#: .\templates\frontend\expert_profile.html:51
+msgid "Yellow Fever"
+msgstr "Fièvre jaune"
+
+#: .\templates\frontend\expert_portal.html:94
+msgid "Carte de Travail"
+msgstr "Carte de Travail"
+
+#: .\templates\frontend\expert_portal.html:120
 msgid "My Upcoming Flights"
 msgstr "Mes vols à venir"
 
-msgid "My Family"
-msgstr "Ma famille"
-
+#: .\templates\frontend\expert_portal.html:143
+#: .\templates\travel\manifest_print.html:75
 msgid "Seat"
 msgstr "Siège"
 
+#: .\templates\frontend\expert_portal.html:158
+msgid "My Family"
+msgstr "Ma famille"
+
+#: .\templates\frontend\expert_portal.html:185
 msgid "Need Help?"
 msgstr "Besoin d'aide ?"
 
+#: .\templates\frontend\expert_portal.html:188
 msgid ""
 "Contact your HR / Compliance Manager for document renewals, extensions, or "
 "any questions about your status."
@@ -584,12 +1718,15 @@ msgstr ""
 "Contactez votre responsable RH / Conformité pour les renouvellements de "
 "documents, les prolongations ou toute question sur votre statut."
 
+#: .\templates\frontend\expert_portal.html:192
 msgid "Email Compliance"
 msgstr "Contacter la conformité"
 
+#: .\templates\frontend\expert_portal_no_profile.html:9
 msgid "No Expert Profile Linked"
 msgstr "Aucun profil d'expert lié"
 
+#: .\templates\frontend\expert_portal_no_profile.html:12
 msgid ""
 "Your account is not linked to an expert profile. Please contact your HR / "
 "Compliance Manager."
@@ -597,230 +1734,90 @@ msgstr ""
 "Votre compte n'est pas lié à un profil d'expert. Veuillez contacter votre "
 "responsable RH / Conformité."
 
+#: .\templates\frontend\expert_portal_no_profile.html:15
 msgid "Back to Home"
 msgstr "Retour à l'accueil"
 
-msgid "COMPLIANT"
-msgstr "CONFORME"
+#: .\templates\frontend\expert_profile.html:4
+#: .\templates\frontend\expert_profile.html:19
+msgid "Profile"
+msgstr "Profil"
 
-msgid "ATTENTION"
-msgstr "ATTENTION"
+#: .\templates\frontend\expert_profile.html:33
+msgid "Edit Profile"
+msgstr "Modifier le profil"
 
-msgid "CRITICAL"
-msgstr "CRITIQUE"
+#: .\templates\frontend\expert_profile.html:36
+msgid "Manage Family"
+msgstr "Gérer la famille"
 
-msgid "INCOMPLETE"
-msgstr "INCOMPLET"
+#: .\templates\frontend\expert_profile.html:60
+msgid "Latest Carte de Travail"
+msgstr "Dernière Carte de Travail"
 
-msgid "Welcome back"
-msgstr "Bon retour"
+#: .\templates\frontend\expert_profile.html:66
+msgid "No active permit"
+msgstr "Aucun permis actif"
 
-msgid "Sign in to your compliance dashboard"
-msgstr "Connectez-vous à votre tableau de bord de conformité"
+#: .\templates\frontend\expert_profile.html:77
+msgid "Visa History"
+msgstr "Historique des visas"
 
-msgid "Username"
-msgstr "Nom d'utilisateur"
+#: .\templates\frontend\expert_profile.html:82
+#: .\templates\frontend\visa_list.html:55
+#: .\templates\travel\manifest_print.html:76
+msgid "Type"
+msgstr "Type"
 
-msgid "Password"
-msgstr "Mot de passe"
+#: .\templates\frontend\expert_profile.html:83
+msgid "Number"
+msgstr "Numéro"
 
-msgid "Sign In"
-msgstr "Se connecter"
+#: .\templates\frontend\expert_profile.html:84
+#: .\templates\frontend\visa_list.html:56
+msgid "Issue Date"
+msgstr "Date d'émission"
 
-msgid "Staff admin access?"
-msgstr "Accès administrateur ?"
+#: .\templates\frontend\expert_profile.html:85
+#: .\templates\frontend\visa_list.html:57
+msgid "Expiry Date"
+msgstr "Date d'expiration"
 
-msgid "Login here"
-msgstr "Se connecter ici"
+#: .\templates\frontend\expert_profile.html:106
+msgid "No visas recorded."
+msgstr "Aucun visa enregistré."
 
-msgid "Need help? Contact your HR / Compliance Manager."
-msgstr "Besoin d'aide ? Contactez votre responsable RH / Conformité."
+#: .\templates\frontend\expert_profile.html:117
+msgid "View All"
+msgstr "Voir tout"
 
-msgid "Invalid username or password."
-msgstr "Nom d'utilisateur ou mot de passe invalide."
+#: .\templates\frontend\expert_profile.html:131
+msgid "No family members recorded."
+msgstr "Aucun membre de la famille enregistré."
 
-msgid "Sign in to your account"
-msgstr "Connectez-vous à votre compte"
-
-msgid "Enter your credentials to access the compliance platform."
-msgstr "Entrez vos identifiants pour accéder à la plateforme de conformité."
-
-msgid "your.username"
-msgstr "votre.nom_utilisateur"
-
-msgid "Remember me"
-msgstr "Se souvenir de moi"
-
-msgid "Forgot password?"
-msgstr "Mot de passe oublié ?"
-
-msgid "or"
-msgstr "ou"
-
-msgid "Staff Admin Login"
-msgstr "Connexion administrateur"
-
-msgid "First time here? Contact your HR / Compliance Manager for credentials."
-msgstr ""
-"Première visite ? Contactez votre responsable RH / Conformité pour vos "
-"identifiants."
-
-msgid "Enterprise Grade"
-msgstr "Qualité entreprise"
-
-msgid "The compliance platform built for"
-msgstr "La plateforme de conformité conçue pour"
-
-msgid "DRC mining operations"
-msgstr "les opérations minières en RDC"
-
-msgid ""
-"Visa tracking, expatriate quota, charter manifests, and Ministry of Labour "
-"permits — all in one auditable system."
-msgstr ""
-"Suivi des visas, quota d'expatriés, manifestes de vol et permis du Ministère"
-" du Travail — dans un seul système auditable."
-
-msgid "T-90 / T-60 / T-30 Auto-Alerts"
-msgstr "Alertes automatiques T-90 / T-60 / T-30"
-
-msgid "Never miss a DGM or Labour deadline again"
-msgstr "Ne manquez plus jamais une échéance DGM ou Travail"
-
-msgid "6.5% Expat Quota Enforced"
-msgstr "Quota d'expatriés de 6,5 % appliqué"
-
-msgid "Ministerial Order 33 (2025) compliance in real time"
-msgstr "Conformité à l'Arrêté ministériel 33 (2025) en temps réel"
-
-msgid "One-Click DGM Manifests"
-msgstr "Manifestes DGM en un clic"
-
-msgid "Government-ready PDFs for every charter flight"
-msgstr "PDF conformes pour chaque vol charter"
-
-msgid "SHA-256 hash-chained, tamper-evident"
-msgstr "Chaîné par hash SHA-256, inviolable"
-
-msgid "AES-256"
-msgstr "AES-256"
-
-msgid "SOC 2 Ready"
-msgstr "Prêt SOC 2"
-
-msgid "DRC Hosted"
-msgstr "Hébergé en RDC"
-
-# ─── Login page (final batch) ────────────────────────────
-msgid "Sign in to your account"
-msgstr "Connectez-vous à votre compte"
-
-msgid "Enter your credentials to access the compliance platform."
-msgstr "Entrez vos identifiants pour accéder à la plateforme de conformité."
-
-msgid "Remember me"
-msgstr "Se souvenir de moi"
-
-msgid "Forgot password?"
-msgstr "Mot de passe oublié ?"
-
-msgid "or"
-msgstr "ou"
-
-msgid "Staff Admin Login"
-msgstr "Connexion administrateur"
-
-msgid "First time here? Contact your HR / Compliance Manager for credentials."
-msgstr ""
-"Première visite ? Contactez votre responsable RH / Conformité pour vos "
-"identifiants."
-
-msgid "Enterprise Grade"
-msgstr "Qualité entreprise"
-
-msgid "The compliance platform built for"
-msgstr "La plateforme de conformité conçue pour"
-
-msgid "DRC mining operations"
-msgstr "les opérations minières en RDC"
-
-msgid ""
-"Visa tracking, expatriate quota, charter manifests, and Ministry of Labour "
-"permits — all in one auditable system."
-msgstr ""
-"Suivi des visas, quota d'expatriés, manifestes de vol et permis du Ministère"
-" du Travail — dans un seul système auditable."
-
-msgid "T-90 / T-60 / T-30 Auto-Alerts"
-msgstr "Alertes automatiques T-90 / T-60 / T-30"
-
-msgid "Never miss a DGM or Labour deadline again"
-msgstr "Ne manquez plus jamais une échéance DGM ou Travail"
-
-msgid "6.5% Expat Quota Enforced"
-msgstr "Quota d'expatriés de 6,5 % appliqué"
-
-msgid "Ministerial Order 33 (2025) compliance in real time"
-msgstr "Conformité à l'Arrêté ministériel 33 (2025) en temps réel"
-
-msgid "One-Click DGM Manifests"
-msgstr "Manifestes DGM en un clic"
-
-msgid "Government-ready PDFs for every charter flight"
-msgstr "PDF conformes pour chaque vol charter"
-
-msgid "SOC 2 Audit Chain"
-msgstr "Chaîne d'audit SOC 2"
-
-msgid "SHA-256 hash-chained, tamper-evident"
-msgstr "Chaîné par hash SHA-256, inviolable"
-
-msgid "DRC Hosted"
-msgstr "Hébergé en RDC"
-
-msgid "Username"
-msgstr "Nom d'utilisateur"
-
-msgid "Password"
-msgstr "Mot de passe"
-
-msgid "Sign In"
-msgstr "Se connecter"
-
-# ─── Marketing pages ────────────────────────────────────
-msgid "Home"
-msgstr "Accueil"
-
-msgid "Features"
-msgstr "Fonctionnalités"
-
-msgid "Modules"
-msgstr "Modules"
-
-msgid "Pricing"
-msgstr "Tarifs"
-
-msgid "Contact"
-msgstr "Contact"
-
+#: .\templates\frontend\features.html:14
 msgid "Platform Features"
 msgstr "Fonctionnalités de la plateforme"
 
+#: .\templates\frontend\features.html:17
 msgid "Every feature exists because a DRC mining HR team needed it."
 msgstr ""
 "Chaque fonctionnalité existe parce qu'une équipe RH minière en RDC en avait "
 "besoin."
 
+#: .\templates\frontend\features.html:20
 msgid ""
-"No filler. No bloat. Just the compliance primitives that keep you out of DGM"
-" fines and Ministry of Labour investigations."
+"No filler. No bloat. Just the compliance primitives that keep you out of DGM "
+"fines and Ministry of Labour investigations."
 msgstr ""
 "Pas de remplissage. Pas de superflu. Juste les primitives de conformité qui "
 "vous évitent les amendes DGM et les enquêtes du Ministère du Travail."
 
+#: .\templates\frontend\features.html:35
 msgid "All 13 DRC visa codes. Every prolongation chain."
 msgstr "Les 13 codes de visa RDC. Chaque chaîne de prolongation."
 
+#: .\templates\frontend\features.html:38
 msgid ""
 "VV, VV2+, PVV3+, VV6, VSR+, VA, VVD, VET, VEO, DT, E-VVL, E-VETS, HOL-EX — "
 "validated against their legal validity windows. Prolongations tracked as a "
@@ -830,54 +1827,71 @@ msgstr ""
 "validés selon leurs fenêtres de validité légales. Prolongations suivies "
 "comme une chaîne formelle, pas perdues dans des fils d'e-mails."
 
+#: .\templates\frontend\features.html:41
 msgid "Configurable catalog — add new codes without code changes"
 msgstr ""
-"Catalogue configurable — ajoutez de nouveaux codes sans modifications de "
-"code"
+"Catalogue configurable — ajoutez de nouveaux codes sans modifications de code"
 
+#: .\templates\frontend\features.html:42
 msgid "Automatic validity-window validation per code"
 msgstr "Validation automatique de la fenêtre de validité par code"
 
+#: .\templates\frontend\features.html:43
 msgid "Full prolongation history with parent-visa linkage"
 msgstr "Historique complet des prolongations avec lien au visa parent"
 
+#: .\templates\frontend\features.html:47
 msgid "Visa codes supported"
 msgstr "Codes de visa pris en charge"
 
+#: .\templates\frontend\features.html:70
 msgid "Live quota"
 msgstr "Quota en direct"
 
-msgid "OF 6.5% CAP"
-msgstr "SUR 6,5 % DE PLAFOND"
+#: .\templates\frontend\features.html:72
+#, python-format
+msgid "OF 6.5%% CAP"
+msgstr "SUR 6,5 %% DE PLAFOND"
 
+#: .\templates\frontend\features.html:76
 msgid "Headroom: 335 additional expats"
 msgstr "Marge disponible : 335 expatriés supplémentaires"
 
-msgid "The 6.5% expatriate cap — enforced in real time."
-msgstr "Le plafond d'expatriés de 6,5 % — appliqué en temps réel."
+#: .\templates\frontend\features.html:81
+#, python-format
+msgid "The 6.5%% expatriate cap — enforced in real time."
+msgstr "Le plafond d'expatriés de 6,5 %% — appliqué en temps réel."
 
+#: .\templates\frontend\features.html:84
+#, python-format
 msgid ""
-"Ministerial Order No 33 (2025) caps expatriate staff at 6.5% of the total "
+"Ministerial Order No 33 (2025) caps expatriate staff at 6.5%% of the total "
 "workforce in the extractive sector. We calculate this live, per company and "
 "per site, with per-category caps."
 msgstr ""
-"L'Arrêté ministériel n° 33 (2025) plafonne le personnel expatrié à 6,5 % de "
-"l'effectif total dans le secteur extractif. Nous le calculons en direct, par"
-" entreprise et par site, avec des plafonds par catégorie."
+"L'Arrêté ministériel n° 33 (2025) plafonne le personnel expatrié à 6,5 %% de "
+"l'effectif total dans le secteur extractif. Nous le calculons en direct, par "
+"entreprise et par site, avec des plafonds par catégorie."
 
+#: .\templates\frontend\features.html:87
 msgid "Per-company and per-site headroom visibility"
 msgstr "Visibilité de la marge disponible par entreprise et par site"
 
-msgid "Category caps: 2% Class I-V, 2.5% Supervisor, 2% Management"
+#: .\templates\frontend\features.html:88
+#, python-format
+msgid "Category caps: 2%% Class I-V, 2.5%% Supervisor, 2%% Management"
 msgstr ""
-"Plafonds par catégorie : 2 % Classe I-V, 2,5 % Superviseur, 2 % Direction"
+"Plafonds par catégorie : 2 %% Classe I-V, 2,5 %% Superviseur, 2 %% Direction"
 
+#: .\templates\frontend\features.html:89
 msgid "Monthly Ministry-ready reports in one click"
 msgstr "Rapports mensuels prêts pour le Ministère en un clic"
 
+#: .\templates\frontend\features.html:99
 msgid "DGM and Ministry of Labour — interdependent by law."
 msgstr "DGM et Ministère du Travail — interdépendants par la loi."
 
+#: .\templates\frontend\features.html:102
 msgid ""
 "A Work Visa cannot be marked Active without a valid Carte de Travail. The "
 "system enforces this at the database level, not the UI."
@@ -886,36 +1900,47 @@ msgstr ""
 "valide. Le système l'applique au niveau de la base de données, pas de "
 "l'interface."
 
+#: .\templates\frontend\features.html:105
 msgid "Work Visa + no Carte = validation error"
 msgstr "Visa de travail + pas de Carte = erreur de validation"
 
+#: .\templates\frontend\features.html:106
 msgid "Carte expiring before visa = compliance warning"
 msgstr "Carte expirant avant le visa = avertissement de conformité"
 
+#: .\templates\frontend\features.html:107
 msgid "ONEM registration linked per expert"
 msgstr "Enregistrement ONEM lié par expert"
 
+#: .\templates\frontend\features.html:111
 msgid "Example validation"
 msgstr "Exemple de validation"
 
+#: .\templates\frontend\features.html:115
 msgid "Passport valid"
 msgstr "Passeport valide"
 
+#: .\templates\frontend\features.html:119
 msgid "Carte de Travail valid until 2027-06-15"
 msgstr "Carte de Travail valide jusqu'au 15/06/2027"
 
+#: .\templates\frontend\features.html:123
 msgid "Work Visa expires 2027-03-30"
 msgstr "Le visa de travail expire le 30/03/2027"
 
+#: .\templates\frontend\features.html:127
 msgid "Status: ACTIVE — compliant"
 msgstr "Statut : ACTIF — conforme"
 
+#: .\templates\frontend\features.html:136
 msgid "Audit chain sample"
 msgstr "Exemple de chaîne d'audit"
 
+#: .\templates\frontend\features.html:149
 msgid "Every action. Hash-chained. Tamper-evident."
 msgstr "Chaque action. Chaînée par hash. Inviolable."
 
+#: .\templates\frontend\features.html:152
 msgid ""
 "SHA-256 hash chains link each audit entry to the previous one. If anyone "
 "modifies a past record, the chain breaks — mathematically, provably. One "
@@ -926,48 +1951,82 @@ msgstr ""
 "mathématiquement, prouvablement. Une commande vérifie l'intégrité en "
 "quelques secondes."
 
+#: .\templates\frontend\features.html:155
 msgid "Append-only log — no edits, no deletes"
 msgstr ""
 "Journal en ajout uniquement — pas de modifications, pas de suppressions"
 
+#: .\templates\frontend\features.html:156
 msgid "IP address, user, timestamp per entry"
 msgstr "Adresse IP, utilisateur, horodatage par entrée"
 
+#: .\templates\frontend\features.html:157
 msgid "One-command verification for auditors"
 msgstr "Vérification en une commande pour les auditeurs"
 
+#: .\templates\frontend\features.html:167
 msgid "T-90, T-60, T-30 — before it becomes a problem."
 msgstr "T-90, T-60, T-30 — avant que cela ne devienne un problème."
 
+#: .\templates\frontend\features.html:170
 msgid ""
 "Configurable alert tiers fire bilingual email and SMS. Daily Celery scan "
 "runs at midnight. Idempotent — no duplicate alerts, no missed deadlines."
 msgstr ""
-"Des niveaux d'alerte configurables déclenchent des e-mails et SMS bilingues."
-" Un scan Celery quotidien s'exécute à minuit. Idempotent — aucune alerte en "
+"Des niveaux d'alerte configurables déclenchent des e-mails et SMS bilingues. "
+"Un scan Celery quotidien s'exécute à minuit. Idempotent — aucune alerte en "
 "double, aucune échéance manquée."
 
+#: .\templates\frontend\features.html:173
 msgid "Email + SMS bilingual EN/FR"
 msgstr "E-mail + SMS bilingue EN/FR"
 
+#: .\templates\frontend\features.html:174
 msgid "Customizable tiers per document type"
 msgstr "Niveaux personnalisables par type de document"
 
+#: .\templates\frontend\features.html:175
 msgid "Alert log with delivery status"
 msgstr "Journal des alertes avec statut de livraison"
 
+#: .\templates\frontend\features.html:179
 msgid "Alert schedule"
 msgstr "Calendrier des alertes"
 
-msgid "Email"
-msgstr "E-mail"
+#: .\templates\frontend\features.html:208
+msgid "DGM Manifest — PDF"
+msgstr "Manifeste DGM — PDF"
 
-msgid "Email + SMS"
-msgstr "E-mail + SMS"
+#: .\templates\frontend\features.html:213
+msgid "Direction Générale de Migration — Flight Manifest"
+msgstr "Direction Générale de Migration — Manifeste de vol"
 
+#: .\templates\frontend\features.html:215
+msgid "Flight"
+msgstr "Vol"
+
+#: .\templates\frontend\features.html:219
+#: .\templates\travel\cost_dashboard.html:42
+#: .\templates\travel\cost_dashboard.html:78
+#: .\templates\travel\cost_dashboard.html:124
+msgid "Passengers"
+msgstr "Passagers"
+
+#: .\templates\frontend\features.html:223
+#: .\templates\travel\manifest_print.html:65
+#: .\templates\travel\medevac_dashboard.html:86
+msgid "Aircraft"
+msgstr "Appareil"
+
+#: .\templates\frontend\features.html:227
+msgid "Signed by pilot, HR, and DGM officer"
+msgstr "Signé par le pilote, les RH et l'agent DGM"
+
+#: .\templates\frontend\features.html:234
 msgid "Charter manifests in one click."
 msgstr "Manifestes de vol en un clic."
 
+#: .\templates\frontend\features.html:237
 msgid ""
 "Every flight carries a DGM-compliant passenger manifest — expats, family, "
 "crew. Printable checklists for the departure desk. Cost tracking per route "
@@ -977,30 +2036,411 @@ msgstr ""
 "famille, équipage. Listes imprimables pour le bureau de départ. Suivi des "
 "coûts par itinéraire et par expert."
 
+#: .\templates\frontend\features.html:240
 msgid "Government-ready PDF with 3 signature blocks"
 msgstr "PDF conforme pour le gouvernement avec 3 blocs de signature"
 
+#: .\templates\frontend\features.html:241
 msgid "Rotation calendar — 4/4, 6/3, 8/4 patterns"
 msgstr "Calendrier de rotation — cycles 4/4, 6/3, 8/4"
 
+#: .\templates\frontend\features.html:242
 msgid "Medevac readiness dashboard"
 msgstr "Tableau de bord de préparation médicale"
 
+#: .\templates\frontend\features.html:254
 msgid "Ready to eliminate DGM fines?"
 msgstr "Prêt à éliminer les amendes DGM ?"
 
+#: .\templates\frontend\features.html:257
+msgid ""
+"Start with a 30-day pilot on up to 30 experts. Full access, no long-term "
+"commitment."
+msgstr ""
+"Commencez par un pilote de 30 jours sur un maximum de 30 experts. Accès "
+"complet, sans engagement à long terme."
+
+#: .\templates\frontend\features.html:261
 msgid "Request a Demo"
 msgstr "Demander une démo"
 
+#: .\templates\frontend\features.html:264 .\templates\frontend\modules.html:114
 msgid "See Pricing"
 msgstr "Voir les tarifs"
 
+#: .\templates\frontend\flight_manifest.html:30
+msgid "Share Link"
+msgstr ""
+
+#: .\templates\frontend\flight_manifest.html:32
+msgid "Print / Download PDF"
+msgstr ""
+
+#: .\templates\frontend\invite_user.html:4
+#: .\templates\frontend\invite_user.html:13
+#: .\templates\frontend\settings.html:72
+msgid "Invite User"
+msgstr "Inviter un utilisateur"
+
+#: .\templates\frontend\invite_user.html:16
+msgid "Invite Team Member"
+msgstr "Inviter un membre de l'équipe"
+
+#: .\templates\frontend\invite_user.html:19
+msgid "Send an invitation to join"
+msgstr "Envoyer une invitation à rejoindre"
+
+#: .\templates\frontend\invite_user.html:47
+msgid "This determines what the user can see and do."
+msgstr "Cela détermine ce que l'utilisateur peut voir et faire."
+
+#: .\templates\frontend\invite_user.html:54
+msgid "Send Invitation"
+msgstr "Envoyer l'invitation"
+
+#: .\templates\frontend\landing.html:20
+msgid "Built for DRC Mining Operations"
+msgstr "Conçu pour les opérations minières en RDC"
+
+#: .\templates\frontend\landing.html:23
+msgid "Compliance without the chaos."
+msgstr "La conformité sans le chaos."
+
+#: .\templates\frontend\landing.html:24
+msgid "Visa, permit, and charter tracking built for the DRC."
+msgstr "Suivi des visas, permis et vols conçu pour la RDC."
+
+#: .\templates\frontend\landing.html:27
+msgid ""
+"A unified platform that tracks the expatriate quota, DGM and Ministry of "
+"Labour deadlines, and generates government-ready flight manifests — all in "
+"one auditable system."
+msgstr ""
+"Une plateforme unifiée qui suit le quota d'expatriés, les échéances du DGM "
+"et du Ministère du Travail, et génère des manifestes de vol conformes — le "
+"tout dans un système auditable."
+
+#: .\templates\frontend\landing.html:31
+msgid "Login to Platform"
+msgstr "Accéder à la plateforme"
+
+#: .\templates\frontend\landing.html:34
+msgid "See Features"
+msgstr "Voir les fonctionnalités"
+
+#: .\templates\frontend\landing.html:40
+msgid "EN / FR Bilingual"
+msgstr "Bilingue EN / FR"
+
+#: .\templates\frontend\landing.html:44 .\templates\frontend\landing.html:113
+msgid "DRC Visa Codes Supported"
+msgstr "Codes de visa RDC pris en charge"
+
+#: .\templates\frontend\landing.html:48
+msgid "Government-Ready Exports"
+msgstr "Exports conformes pour le gouvernement"
+
+#: .\templates\frontend\landing.html:52
+msgid "Hash-Chained Audit Trail"
+msgstr "Piste d'audit chaînée par hash"
+
+#: .\templates\frontend\landing.html:117
+msgid "Bilingual Interface"
+msgstr "Interface bilingue"
+
+#: .\templates\frontend\landing.html:121
+msgid "Configurable Alert Tiers"
+msgstr "Niveaux d'alerte configurables"
+
+#: .\templates\frontend\landing.html:125
+msgid "Tamper-Evident Audit Log"
+msgstr "Journal d'audit inviolable"
+
+#: .\templates\frontend\landing.html:139
+msgid "Built around DRC regulations, not generic HR workflows."
+msgstr ""
+"Conçu autour de la réglementation de la RDC, et non des workflows RH "
+"génériques."
+
+#: .\templates\frontend\landing.html:142
+msgid ""
+"Every feature exists because a mining HR team in Haut-Uélé needed it. No "
+"filler, no bloat."
+msgstr ""
+"Chaque fonctionnalité existe parce qu'une équipe RH minière du Haut-Uélé en "
+"avait besoin. Pas de remplissage, pas de superflu."
+
+#: .\templates\frontend\landing.html:152
+msgid "All"
+msgstr "Tout"
+
+#: .\templates\frontend\landing.html:152
+msgid "DRC Visa Codes"
+msgstr "Codes de visa RDC"
+
+#: .\templates\frontend\landing.html:153
+msgid ""
+"VV, VV2+, PVV3+, VV6, VSR+, VA, VVD, VET, VEO, DT, E-VVL, E-VETS, HOL-EX, "
+"VES — plus the full prolongation chain. Every code validated against its "
+"legal window."
+msgstr ""
+"VV, VV2+, PVV3+, VV6, VSR+, VA, VVD, VET, VEO, DT, E-VVL, E-VETS, HOL-EX, "
+"VES — ainsi que la chaîne de prolongation complète. Chaque code validé selon "
+"sa fenêtre légale."
+
+#: .\templates\frontend\landing.html:161
+msgid "Expat Quota Tracking"
+msgstr "Suivi du quota d'expatriés"
+
+#: .\templates\frontend\landing.html:162
+msgid ""
+"Real-time expat percentage against configurable caps. Per-category tracking "
+"for Class I-V, Supervisor, and Management. Headroom calculated live."
+msgstr ""
+"Pourcentage d'expatriés en temps réel par rapport aux plafonds "
+"configurables. Suivi par catégorie pour la Classe I-V, les Superviseurs et "
+"la Direction. Marge disponible calculée en direct."
+
+#: .\templates\frontend\landing.html:170
+msgid "Cross-Ministry Validation"
+msgstr "Validation interministérielle"
+
+#: .\templates\frontend\landing.html:171
+msgid ""
+"A Work Visa cannot be marked Active without a valid Carte de Travail. The "
+"exact dependency DGM and Ministry of Labour enforce — built into the "
+"database."
+msgstr ""
+"Un visa de travail ne peut pas être marqué Actif sans une Carte de Travail "
+"valide. La dépendance exacte appliquée par le DGM et le Ministère du Travail "
+"— intégrée à la base de données."
+
+#: .\templates\frontend\landing.html:179
+msgid "DGM Manifest Generation"
+msgstr "Génération de manifeste DGM"
+
+#: .\templates\frontend\landing.html:180
+msgid ""
+"One-click government-ready PDF for every charter flight. Passenger roster, "
+"passports, nationalities, signature blocks — signed by pilot, HR, and DGM "
+"officer."
+msgstr ""
+"PDF conforme pour le gouvernement en un clic pour chaque vol charter. Liste "
+"des passagers, passeports, nationalités, blocs de signature — signé par le "
+"pilote, les RH et l'agent DGM."
+
+#: .\templates\frontend\landing.html:188
+msgid "Hash-Chained Audit Log"
+msgstr "Journal d'audit chaîné par hash"
+
+#: .\templates\frontend\landing.html:189
+msgid ""
+"Every action SHA-256 hash-chained. Tamper-evident. When an inspector asks "
+"'who uploaded this visa?', you have the answer in seconds."
+msgstr ""
+"Chaque action est chaînée par hash SHA-256. Inviolable. Lorsqu'un inspecteur "
+"demande « qui a téléchargé ce visa ? », vous avez la réponse en quelques "
+"secondes."
+
+#: .\templates\frontend\landing.html:197
+msgid "Rotation & Medevac Ready"
+msgstr "Prêt pour la rotation et la médicalisation"
+
+#: .\templates\frontend\landing.html:198
+msgid ""
+"4/4, 6/3, 8/4 rotation tracking with month-view calendar. Medevac dashboard "
+"shows everyone on site with evacuation routes in one click."
+msgstr ""
+"Suivi des rotations 4/4, 6/3, 8/4 avec calendrier mensuel. Le tableau de "
+"bord de médicalisation montre toutes les personnes sur site avec les "
+"itinéraires d'évacuation en un clic."
+
+#: .\templates\frontend\landing.html:210
+msgid "Built For"
+msgstr "Conçu pour"
+
+#: .\templates\frontend\landing.html:212
+msgid "Every role, one platform."
+msgstr "Chaque rôle, une seule plateforme."
+
+#: .\templates\frontend\landing.html:215
+msgid ""
+"Role-based access ensures everyone sees exactly what they need — and nothing "
+"else."
+msgstr ""
+"L'accès basé sur les rôles garantit que chacun voit exactement ce dont il a "
+"besoin — et rien d'autre."
+
+#: .\templates\frontend\landing.html:224
+msgid "HR & Compliance"
+msgstr "RH & Conformité"
+
+#: .\templates\frontend\landing.html:225
+msgid ""
+"Full company visibility. Track every expat, every document, every ministry "
+"deadline. Alerts fire before penalties accrue."
+msgstr ""
+"Visibilité totale de l'entreprise. Suivez chaque expatrié, chaque document, "
+"chaque échéance ministérielle. Les alertes se déclenchent avant que les "
+"pénalités ne s'accumulent."
+
+#: .\templates\frontend\landing.html:232
+msgid "Department Managers"
+msgstr "Responsables de département"
+
+#: .\templates\frontend\landing.html:233
+msgid ""
+"See only your team. Track rotation, approve travel, view documents — without "
+"exposure to other departments."
+msgstr ""
+"Ne voyez que votre équipe. Suivez les rotations, approuvez les voyages, "
+"consultez les documents — sans exposition aux autres départements."
+
+#: .\templates\frontend\landing.html:240
+msgid "General Manager"
+msgstr "Directeur Général"
+
+#: .\templates\frontend\landing.html:241
+msgid ""
+"Executive dashboard. Compliance score, quota, penalty exposure — the four "
+"numbers that matter, updated live."
+msgstr ""
+"Tableau de bord exécutif. Score de conformité, quota, exposition aux "
+"pénalités — les quatre chiffres qui comptent, mis à jour en direct."
+
+#: .\templates\frontend\landing.html:248
+msgid "Operations & Logistics"
+msgstr "Opérations & Logistique"
+
+#: .\templates\frontend\landing.html:249
+msgid ""
+"Charter flights, manifests, medevac readiness. Know who's where, when — "
+"critical for remote operations."
+msgstr ""
+"Vols charter, manifestes, préparation médicale. Sachez qui est où et quand — "
+"essentiel pour les opérations à distance."
+
+#: .\templates\frontend\landing.html:256
+msgid "IT & Security"
+msgstr "IT & Sécurité"
+
+#: .\templates\frontend\landing.html:258
+msgid "REST API access"
+msgstr "Accès à l'API REST"
+
+#: .\templates\frontend\landing.html:259
+msgid "SSO-ready"
+msgstr "Compatible SSO"
+
+#: .\templates\frontend\landing.html:260
+msgid "on-premise option"
+msgstr "option sur site"
+
+#: .\templates\frontend\landing.html:261
+msgid "Hash-chained audit log available today."
+msgstr "Journal d'audit chaîné par hash disponible aujourd'hui."
+
+#: .\templates\frontend\landing.html:269
+#: .\templates\travel\manifest_print.html:106
+msgid "Expatriates"
+msgstr "Expatriés"
+
+#: .\templates\frontend\landing.html:270
+msgid ""
+"Personal dashboard. Visa countdown, passport expiry, yellow fever status — "
+"self-service, bilingual."
+msgstr ""
+"Tableau de bord personnel. Compte à rebours du visa, expiration du "
+"passeport, statut de la fièvre jaune — en libre-service, bilingue."
+
+#: .\templates\frontend\landing.html:285
+msgid "Ready to eliminate DGM fines and compliance surprises?"
+msgstr "Prêt à éliminer les amendes du DGM et les surprises de conformité ?"
+
+#: .\templates\frontend\landing.html:288
+msgid ""
+"Request a pilot call. We'll scope a 30-day pilot on up to 30 experts. Full "
+"access, no long-term commitment."
+msgstr ""
+"Demandez un appel pilote. Nous cadrerons un pilote de 30 jours sur un "
+"maximum de 30 experts. Accès complet, sans engagement à long terme."
+
+#: .\templates\frontend\landing.html:292
+msgid "Access Platform"
+msgstr "Accéder à la plateforme"
+
+#: .\templates\frontend\landing.html:295
+msgid "Request a Pilot Call"
+msgstr "Demander un appel pilote"
+
+#: .\templates\frontend\landing.html:299
+msgid ""
+"Regulatory framework references are pending final confirmation. Cap values "
+"are configurable in the platform settings."
+msgstr ""
+"Les références du cadre réglementaire sont en attente de confirmation "
+"finale. Les valeurs des plafonds sont configurables dans les paramètres de "
+"la plateforme."
+
+#: .\templates\frontend\login.html:123
+msgid "Welcome back"
+msgstr "Bon retour"
+
+#: .\templates\frontend\login.html:126
+msgid "Sign in to your account"
+msgstr "Connectez-vous à votre compte"
+
+#: .\templates\frontend\login.html:129
+msgid "Enter your credentials to access the compliance platform."
+msgstr "Entrez vos identifiants pour accéder à la plateforme de conformité."
+
+#: .\templates\frontend\login.html:154
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: .\templates\frontend\login.html:158
+msgid "your.username"
+msgstr "votre.nom_utilisateur"
+
+#: .\templates\frontend\login.html:169
+msgid "Password"
+msgstr "Mot de passe"
+
+#: .\templates\frontend\login.html:190
+msgid "Remember me"
+msgstr "Se souvenir de moi"
+
+#: .\templates\frontend\login.html:193
+msgid "Forgot password?"
+msgstr "Mot de passe oublié ?"
+
+#: .\templates\frontend\login.html:219
+msgid "Sign In"
+msgstr "Se connecter"
+
+#: .\templates\frontend\login.html:228
+msgid "or"
+msgstr "ou"
+
+#: .\templates\frontend\login.html:238
+msgid "Staff Admin Login"
+msgstr "Connexion administrateur"
+
+#: .\templates\frontend\login.html:243
+msgid "First time here? Contact your HR / Compliance Manager for credentials."
+msgstr ""
+"Première visite ? Contactez votre responsable RH / Conformité pour vos "
+"identifiants."
+
+#: .\templates\frontend\modules.html:12
 msgid "11 Production Modules"
 msgstr "11 modules en production"
 
+#: .\templates\frontend\modules.html:14
 msgid "Everything works on day one."
 msgstr "Tout fonctionne dès le premier jour."
 
+#: .\templates\frontend\modules.html:17
 msgid ""
 "No premium tiers. No modules behind paywalls. Every feature ships in every "
 "plan."
@@ -1008,227 +2448,1095 @@ msgstr ""
 "Aucun niveau premium. Aucun module derrière un paywall. Chaque "
 "fonctionnalité est incluse dans chaque forfait."
 
+#: .\templates\frontend\modules.html:111
 msgid "Every module. Every plan. No exceptions."
 msgstr "Chaque module. Chaque forfait. Sans exception."
 
+#: .\templates\frontend\partials\landing_card.html:12
+msgid "Compliance Overview"
+msgstr "Aperçu de la conformité"
+
+#: .\templates\frontend\partials\landing_card.html:14
+msgid "Sample Data"
+msgstr "Données d'exemple"
+
+#: .\templates\frontend\partials\landing_card.html:48
+msgid "Cap"
+msgstr "Plafond"
+
+#: .\templates\frontend\partials\landing_card.html:55
+msgid "90-Day Expiry Timeline"
+msgstr "Chronologie d'expiration de 90 jours"
+
+#: .\templates\frontend\partials\landing_card.html:84
+msgid "Passport expires in 32 days"
+msgstr "Le passeport expire dans 32 jours"
+
+#: .\templates\frontend\partials\landing_card.html:85
+msgid "John Doe · 2 hours ago"
+msgstr "John Doe · il y a 2 heures"
+
+#: .\templates\frontend\partials\landing_card.html:94
+msgid "Prolongation approved"
+msgstr "Prolongation approuvée"
+
+#: .\templates\frontend\partials\landing_card.html:95
+msgid "Jane Smith · 5 hours ago"
+msgstr "Jane Smith · il y a 5 heures"
+
+#: .\templates\frontend\partials\landing_card.html:104
+msgid "Audit log verified"
+msgstr "Journal d'audit vérifié"
+
+#: .\templates\frontend\partials\landing_card.html:105
+msgid "System · Yesterday"
+msgstr "Système · Hier"
+
+#: .\templates\frontend\penalty_list.html:14
+msgid "Financial Compliance"
+msgstr "Conformité financière"
+
+#: .\templates\frontend\penalty_list.html:30
+msgid "Search by expert name..."
+msgstr "Rechercher par nom d'expert..."
+
+#: .\templates\frontend\penalty_list.html:33
+msgid "All Penalties"
+msgstr "Toutes les pénalités"
+
+#: .\templates\frontend\penalty_list.html:34
+msgid "Unresolved Only"
+msgstr "Non résolues uniquement"
+
+#: .\templates\frontend\penalty_list.html:35
+msgid "Resolved Only"
+msgstr "Résolues uniquement"
+
+#: .\templates\frontend\penalty_list.html:49
+msgid "Days Overdue"
+msgstr "Jours de retard"
+
+#: .\templates\frontend\penalty_list.html:50
+msgid "Total Amount"
+msgstr "Montant total"
+
+#: .\templates\frontend\penalty_list.html:94
+msgid "No penalties found. Excellent compliance!"
+msgstr "Aucune pénalité trouvée. Excellente conformité !"
+
+#: .\templates\frontend\pricing.html:14
 msgid "Transparent. Scalable. No surprises."
 msgstr "Transparent. Évolutif. Sans surprises."
 
+#: .\templates\frontend\pricing.html:17
 msgid ""
-"Pricing scales with active experts under management. All modules included in"
-" every tier."
+"Pricing scales with active experts under management. All modules included in "
+"every tier."
 msgstr ""
 "Les tarifs évoluent avec les experts actifs gérés. Tous les modules inclus "
 "dans chaque niveau."
 
+#: .\templates\frontend\pricing.html:30
 msgid "Pilot"
 msgstr "Pilote"
 
-msgid "Standard"
-msgstr "Standard"
-
-msgid "Professional"
-msgstr "Professionnel"
-
-msgid "Enterprise"
-msgstr "Entreprise"
-
+#: .\templates\frontend\pricing.html:33 .\templates\frontend\pricing.html:50
+#: .\templates\frontend\pricing.html:68 .\templates\frontend\pricing.html:85
 msgid "month"
 msgstr "mois"
 
+#: .\templates\frontend\pricing.html:35
 msgid "Up to 30 experts"
 msgstr "Jusqu'à 30 experts"
 
-msgid "31 – 100 experts"
-msgstr "31 à 100 experts"
-
-msgid "101 – 250 experts"
-msgstr "101 à 250 experts"
-
-msgid "251 – 500 experts"
-msgstr "251 à 500 experts"
-
+#: .\templates\frontend\pricing.html:37
 msgid "All 11 modules"
 msgstr "Les 11 modules"
 
+#: .\templates\frontend\pricing.html:38
 msgid "30-day evaluation"
 msgstr "Évaluation de 30 jours"
 
+#: .\templates\frontend\pricing.html:39
 msgid "Full data export"
 msgstr "Export complet des données"
 
+#: .\templates\frontend\pricing.html:40
 msgid "Email support"
 msgstr "Support par e-mail"
 
-msgid "Everything in Pilot"
-msgstr "Tout du forfait Pilote"
-
-msgid "SMS notifications"
-msgstr "Notifications SMS"
-
-msgid "Monthly invoicing"
-msgstr "Facturation mensuelle"
-
-msgid "Priority support"
-msgstr "Support prioritaire"
-
-msgid "MOST POPULAR"
-msgstr "LE PLUS POPULAIRE"
-
-msgid "Everything in Standard"
-msgstr "Tout du forfait Standard"
-
-msgid "SSO ready"
-msgstr "Compatible SSO"
-
-msgid "Dedicated onboarding"
-msgstr "Intégration dédiée"
-
-msgid "24hr support SLA"
-msgstr "SLA de support 24h"
-
-msgid "Everything in Professional"
-msgstr "Tout du forfait Professionnel"
-
-msgid "Dedicated tenant"
-msgstr "Tenant dédié"
-
-msgid "Custom integrations"
-msgstr "Intégrations personnalisées"
-
-msgid "On-premise option"
-msgstr "Option sur site"
-
+#: .\templates\frontend\pricing.html:42
 msgid "Start Pilot"
 msgstr "Démarrer le pilote"
 
+#: .\templates\frontend\pricing.html:47
+msgid "Standard"
+msgstr "Standard"
+
+#: .\templates\frontend\pricing.html:52
+msgid "31 – 100 experts"
+msgstr "31 à 100 experts"
+
+#: .\templates\frontend\pricing.html:54
+msgid "Everything in Pilot"
+msgstr "Tout du forfait Pilote"
+
+#: .\templates\frontend\pricing.html:55
+msgid "SMS notifications"
+msgstr "Notifications SMS"
+
+#: .\templates\frontend\pricing.html:56
+msgid "Monthly invoicing"
+msgstr "Facturation mensuelle"
+
+#: .\templates\frontend\pricing.html:57
+msgid "Priority support"
+msgstr "Support prioritaire"
+
+#: .\templates\frontend\pricing.html:59 .\templates\frontend\pricing.html:77
 msgid "Get Started"
 msgstr "Commencer"
 
+#: .\templates\frontend\pricing.html:64
+msgid "MOST POPULAR"
+msgstr "LE PLUS POPULAIRE"
+
+#: .\templates\frontend\pricing.html:65
+msgid "Professional"
+msgstr "Professionnel"
+
+#: .\templates\frontend\pricing.html:70
+msgid "101 – 250 experts"
+msgstr "101 à 250 experts"
+
+#: .\templates\frontend\pricing.html:72
+msgid "Everything in Standard"
+msgstr "Tout du forfait Standard"
+
+#: .\templates\frontend\pricing.html:73
+msgid "SSO ready"
+msgstr "Compatible SSO"
+
+#: .\templates\frontend\pricing.html:74
+msgid "Dedicated onboarding"
+msgstr "Intégration dédiée"
+
+#: .\templates\frontend\pricing.html:75
+msgid "24hr support SLA"
+msgstr "SLA de support 24h"
+
+#: .\templates\frontend\pricing.html:82
+msgid "Enterprise"
+msgstr "Entreprise"
+
+#: .\templates\frontend\pricing.html:87
+msgid "251 – 500 experts"
+msgstr "251 à 500 experts"
+
+#: .\templates\frontend\pricing.html:89
+msgid "Everything in Professional"
+msgstr "Tout du forfait Professionnel"
+
+#: .\templates\frontend\pricing.html:90
+msgid "Dedicated tenant"
+msgstr "Tenant dédié"
+
+#: .\templates\frontend\pricing.html:91
+msgid "Custom integrations"
+msgstr "Intégrations personnalisées"
+
+#: .\templates\frontend\pricing.html:92
+msgid "On-premise option"
+msgstr "Option sur site"
+
+#: .\templates\frontend\pricing.html:94
 msgid "Contact Sales"
 msgstr "Contacter les ventes"
 
+#: .\templates\frontend\pricing.html:101
 msgid "One-Time Fees"
 msgstr "Frais uniques"
 
+#: .\templates\frontend\pricing.html:105
 msgid "Implementation & data migration (up to 300 experts)"
 msgstr "Mise en œuvre et migration des données (jusqu'à 300 experts)"
 
+#: .\templates\frontend\pricing.html:109
 msgid "Additional experts beyond 300"
 msgstr "Experts supplémentaires au-delà de 300"
 
+#: .\templates\frontend\pricing.html:110
 msgid "expert"
 msgstr "expert"
 
+#: .\templates\frontend\pricing.html:113
 msgid "Custom integrations (SAP, Workday, custom HRMS)"
 msgstr "Intégrations personnalisées (SAP, Workday, HRMS sur mesure)"
 
+#: .\templates\frontend\pricing.html:117
 msgid "On-site training (Kinshasa or Doko)"
 msgstr "Formation sur site (Kinshasa ou Doko)"
 
+#: .\templates\frontend\pricing.html:118
 msgid "travel"
 msgstr "déplacement"
 
+#: .\templates\frontend\pricing.html:126
 msgid "• All prices exclusive of VAT and applicable DRC taxes."
 msgstr "• Tous les prix hors TVA et taxes applicables en RDC."
 
-msgid "• Annual payment attracts a 15% discount."
-msgstr "• Le paiement annuel bénéficie d'une réduction de 15 %."
+#: .\templates\frontend\pricing.html:127
+#, python-format
+msgid "• Annual payment attracts a 15%% discount."
+msgstr "• Le paiement annuel bénéficie d'une réduction de 15 %%."
 
+#: .\templates\frontend\pricing.html:128
 msgid "• Source code escrow and full data export included at no cost."
 msgstr ""
 "• Séquestre du code source et export complet des données inclus sans frais."
 
-msgid "• Dedicated single-tenant instances priced separately (~40% uplift)."
+#: .\templates\frontend\pricing.html:129
+#, python-format
+msgid "• Dedicated single-tenant instances priced separately (~40%% uplift)."
 msgstr ""
-"• Instances dédiées mono-tenant tarifées séparément (~40 % de majoration)."
+"• Instances dédiées mono-tenant tarifées séparément (~40 %% de majoration)."
 
+#: .\templates\frontend\pricing.html:137
 msgid "Questions before the pilot?"
 msgstr "Des questions avant le pilote ?"
 
+#: .\templates\frontend\pricing.html:138
 msgid "Talk to our team. We'll scope it in 30 minutes."
 msgstr "Parlez à notre équipe. Nous cadrerons en 30 minutes."
 
+#: .\templates\frontend\pricing.html:139
 msgid "Book a Call"
 msgstr "Réserver un appel"
 
-msgid "Let's scope your pilot."
-msgstr "Cadrons votre pilote."
+#: .\templates\frontend\privacy.html:14
+msgid "How we handle, protect, and process your data."
+msgstr "Comment nous traitons, protégeons et traitons vos données."
 
-msgid "Tell us about your operation. We'll respond within 24 hours."
-msgstr "Parlez-nous de votre opération. Nous répondrons sous 24 heures."
+#: .\templates\frontend\privacy.html:18 .\templates\frontend\terms.html:18
+msgid "Last updated: October 2026"
+msgstr "Dernière mise à jour : Octobre 2026"
 
-msgid "Full Name"
-msgstr "Nom complet"
+#: .\templates\frontend\privacy.html:29 .\templates\frontend\terms.html:29
+msgid "Contents"
+msgstr "Sommaire"
 
-msgid "Company"
-msgstr "Entreprise"
-
-msgid "Phone"
-msgstr "Téléphone"
-
-msgid "Your Role"
-msgstr "Votre rôle"
-
-msgid "Select..."
-msgstr "Sélectionnez..."
-
-msgid "HR / Compliance"
-msgstr "RH / Conformité"
-
-msgid "Operations"
-msgstr "Opérations"
-
-msgid "Executive / GM"
-msgstr "Direction / DG"
-
-msgid "Other"
-msgstr "Autre"
-
-msgid "Message"
-msgstr "Message"
-
-msgid "Tell us about your expat workforce and current compliance process..."
-msgstr ""
-"Parlez-nous de votre main-d'œuvre expatriée et de votre processus de "
-"conformité actuel..."
-
-msgid "Send Message"
-msgstr "Envoyer le message"
-
-msgid "Direct Contact"
-msgstr "Contact direct"
-
-msgid "Office"
-msgstr "Bureau"
-
-msgid "What Happens Next"
-msgstr "Ce qui se passe ensuite"
-
-msgid "We respond within 24 hours"
-msgstr "Nous répondons sous 24 heures"
-
-msgid "30-minute scoping call"
-msgstr "Appel de cadrage de 30 minutes"
-
-msgid "Pilot proposal within 3 days"
-msgstr "Proposition pilote sous 3 jours"
-
-msgid "Environment live in 2 weeks"
-msgstr "Environnement en production dans 2 semaines"
-
-msgid "Prefer a call?"
-msgstr "Vous préférez un appel ?"
-
-msgid "Book a 30-minute scoping session directly with our team."
-msgstr ""
-"Réservez une session de cadrage de 30 minutes directement avec notre équipe."
-
-msgid "Email Us"
-msgstr "Nous envoyer un e-mail"
-
+#: .\templates\frontend\privacy.html:42
 msgid ""
-"Thank you. Your message has been received. Our team will respond within 24 "
-"hours."
+"This Privacy Policy explains how the DRC Expat Compliance Platform collects, "
+"uses, and protects your information."
 msgstr ""
-"Merci. Votre message a été reçu. Notre équipe vous répondra sous 24 heures."
+"Cette politique de confidentialité explique comment la plateforme de "
+"conformité DRC Expat collecte, utilise et protège vos informations."
+
+#: .\templates\frontend\privacy.html:46
+msgid "1. Information We Collect"
+msgstr "1. Informations que nous collectons"
+
+#: .\templates\frontend\privacy.html:48
+msgid ""
+"We collect personal data necessary for immigration compliance, including "
+"names, passport details, visa records, and health information (Yellow Fever "
+"status) strictly as required by DRC law."
+msgstr ""
+"Nous collectons les données personnelles nécessaires à la conformité en "
+"matière d'immigration, y compris les noms, les détails du passeport, les "
+"dossiers de visa et les informations de santé (statut de la fièvre jaune) "
+"strictement conformément à la loi de la RDC."
+
+#: .\templates\frontend\privacy.html:53
+msgid "2. How We Use Information"
+msgstr "2. Comment nous utilisons les informations"
+
+#: .\templates\frontend\privacy.html:55
+msgid ""
+"Data is used exclusively to track compliance, generate government manifests, "
+"and alert HR teams to upcoming expirations. We do not sell or share your "
+"data with third parties for marketing purposes."
+msgstr ""
+"Les données sont utilisées exclusivement pour suivre la conformité, générer "
+"des manifestes gouvernementaux et alerter les équipes RH des expirations à "
+"venir. Nous ne vendons ni ne partageons vos données avec des tiers à des "
+"fins de marketing."
+
+#: .\templates\frontend\privacy.html:60
+msgid "3. Data Security"
+msgstr "3. Sécurité des données"
+
+#: .\templates\frontend\privacy.html:62
+msgid ""
+"As outlined on our Security page, all sensitive fields are encrypted at "
+"rest, and all access is logged immutably."
+msgstr ""
+"Comme indiqué sur notre page Sécurité, tous les champs sensibles sont "
+"chiffrés au repos et tous les accès sont enregistrés de manière immuable."
+
+#: .\templates\frontend\privacy.html:67
+msgid "4. Your Rights"
+msgstr "4. Vos droits"
+
+#: .\templates\frontend\privacy.html:69
+msgid ""
+"Under applicable DRC data protection laws, you have the right to access, "
+"correct, or request the deletion of your personal data, subject to statutory "
+"retention periods required by the Ministry of Labour."
+msgstr ""
+"En vertu des lois applicables sur la protection des données en RDC, vous "
+"avez le droit d'accéder à vos données personnelles, de les corriger ou d'en "
+"demander la suppression, sous réserve des périodes de conservation légales "
+"exigées par le Ministère du Travail."
+
+#: .\templates\frontend\profile.html:4 .\templates\frontend\profile.html:11
+msgid "My Profile"
+msgstr "Mon profil"
+
+#: .\templates\frontend\profile.html:14
+msgid "Manage your personal information and account security."
+msgstr "Gérez vos informations personnelles et la sécurité de votre compte."
+
+#: .\templates\frontend\profile.html:37
+msgid "Email Address (Read-only)"
+msgstr "Adresse e-mail (lecture seule)"
+
+#: .\templates\frontend\profile.html:46
+msgid "Update Profile"
+msgstr "Mettre à jour le profil"
+
+#: .\templates\frontend\profile.html:69
+msgid "Change Password"
+msgstr "Changer le mot de passe"
+
+#: .\templates\frontend\prolongation_form.html:12
+msgid "Visa Prolongation Request"
+msgstr "Demande de prolongation de visa"
+
+#: .\templates\frontend\prolongation_form.html:15
+msgid ""
+"Submit a formal request to extend an existing visa. All prolongations are "
+"subject to DGM review."
+msgstr ""
+"Soumettez une demande formelle pour prolonger un visa existant. Toutes les "
+"prolongations sont soumises à l'examen du DGM."
+
+#: .\templates\frontend\prolongation_form.html:27
+msgid "Visa Details"
+msgstr "Détails du visa"
+
+#: .\templates\frontend\prolongation_form.html:31
+msgid "Timeline & Docs"
+msgstr "Chronologie & Documents"
+
+#: .\templates\frontend\prolongation_form.html:35
+msgid "Review & Submit"
+msgstr "Réviser & Soumettre"
+
+#: .\templates\frontend\prolongation_form.html:51
+msgid "1. Select Visa & Prolongation Type"
+msgstr "1. Sélectionner le visa et le type de prolongation"
+
+#: .\templates\frontend\prolongation_form.html:74
+#: .\templates\frontend\prolongation_form.html:305
+#: .\templates\frontend\prolongation_form.html:368
+msgid "Select visa and type to auto-calculate."
+msgstr "Sélectionnez le visa et le type pour calculer automatiquement."
+
+#: .\templates\frontend\prolongation_form.html:82
+msgid "2. Timeline & Documents"
+msgstr "2. Chronologie & Documents"
+
+#: .\templates\frontend\prolongation_form.html:95
+msgid "Ensure this matches the physical DGM authorization letter."
+msgstr ""
+"Assurez-vous que cela correspond à la lettre d'autorisation physique du DGM."
+
+#: .\templates\frontend\prolongation_form.html:106
+#: .\templates\frontend\prolongation_form.html:382
+msgid "Click to upload or drag and drop"
+msgstr "Cliquez pour télécharger ou glissez-déposez"
+
+#: .\templates\frontend\prolongation_form.html:107
+msgid "PDF, JPG, or PNG (max. 10MB)"
+msgstr "PDF, JPG ou PNG (max. 10 Mo)"
+
+#: .\templates\frontend\prolongation_form.html:121
+msgid "3. Review Request"
+msgstr "3. Réviser la demande"
+
+#: .\templates\frontend\prolongation_form.html:130
+msgid "Parent Visa"
+msgstr "Visa parent"
+
+#: .\templates\frontend\prolongation_form.html:134
+msgid "Prolongation Type"
+msgstr "Type de prolongation"
+
+#: .\templates\frontend\prolongation_form.html:138
+msgid "New Expiry Date"
+msgstr "Nouvelle date d'expiration"
+
+#: .\templates\frontend\prolongation_form.html:142
+msgid "Attached Document"
+msgstr "Document joint"
+
+#: .\templates\frontend\prolongation_form.html:143
+#: .\templates\frontend\prolongation_form.html:393
+msgid "None"
+msgstr "Aucun"
+
+#: .\templates\frontend\prolongation_form.html:149
+msgid ""
+"By clicking Submit, this request will be logged in the immutable audit trail "
+"and sent to the DGM compliance team for review."
+msgstr ""
+"En cliquant sur Soumettre, cette demande sera enregistrée dans la piste "
+"d'audit immuable et envoyée à l'équipe de conformité du DGM pour examen."
+
+#: .\templates\frontend\prolongation_form.html:159
+msgid "Back"
+msgstr "Retour"
+
+#: .\templates\frontend\prolongation_form.html:167
+msgid "Continue"
+msgstr "Continuer"
+
+#: .\templates\frontend\prolongation_form.html:170
+msgid "Submit Prolongation"
+msgstr "Soumettre la prolongation"
+
+#: .\templates\frontend\prolongation_form.html:182
+msgid "Notice"
+msgstr "Avis"
+
+#: .\templates\frontend\prolongation_form.html:185
+msgid "Ensure the parent visa is"
+msgstr "Assurez-vous que le visa parent est"
+
+#: .\templates\frontend\prolongation_form.html:185
+msgid "ACTIVE"
+msgstr "ACTIF"
+
+#: .\templates\frontend\prolongation_form.html:185
+msgid "and has remaining validity. Requests must be filed at least"
+msgstr ""
+"et a une validité restante. Les demandes doivent être déposées au moins"
+
+#: .\templates\frontend\prolongation_form.html:188
+msgid "before expiry."
+msgstr "avant l'expiration."
+
+#: .\templates\frontend\prolongation_form.html:192
+msgid "Pending legal confirmation."
+msgstr "En attente de confirmation légale."
+
+#: .\templates\frontend\prolongation_form.html:276
+msgid "Please select an Expert and a Parent Visa before continuing."
+msgstr "Veuillez sélectionner un expert et un visa parent avant de continuer."
+
+#: .\templates\frontend\prolongation_form.html:294
+msgid "Select an Expert..."
+msgstr "Sélectionnez un expert..."
+
+#: .\templates\frontend\prolongation_form.html:295
+msgid "Select Parent Visa..."
+msgstr "Sélectionnez le visa parent..."
+
+#: .\templates\frontend\prolongation_form.html:296
+msgid "Select Prolongation Type..."
+msgstr "Sélectionnez le type de prolongation..."
+
+#: .\templates\frontend\prolongation_form.html:361
+msgid "Calculated:"
+msgstr "Calculé :"
+
+#: .\templates\frontend\prolongation_form.html:364
+msgid ""
+"Selected prolongation type has no fixed duration. Please enter manually."
+msgstr ""
+"Le type de prolongation sélectionné n'a pas de durée fixe. Veuillez saisir "
+"manuellement."
+
+#: .\templates\frontend\prolongation_form.html:380
+msgid "Selected:"
+msgstr "Sélectionné :"
+
+#: .\templates\frontend\reports.html:4 .\templates\frontend\reports.html:16
+msgid "Reports & Exports"
+msgstr "Rapports & Exports"
+
+#: .\templates\frontend\reports.html:13
+msgid "Data Center"
+msgstr "Centre de données"
+
+#: .\templates\frontend\reports.html:19
+msgid ""
+"Generate government-ready PDFs and analytical Excel sheets for your "
+"compliance records."
+msgstr ""
+"Générez des PDF conformes pour le gouvernement et des feuilles Excel "
+"analytiques pour vos dossiers de conformité."
+
+#: .\templates\frontend\reports.html:33
+msgid "Monthly Compliance Report"
+msgstr "Rapport de conformité mensuel"
+
+#: .\templates\frontend\reports.html:35
+msgid ""
+"A comprehensive summary of active experts, quota status, and expiring "
+"documents for the current month."
+msgstr ""
+"Un résumé complet des experts actifs, de l'état des quotas et des documents "
+"expirant pour le mois en cours."
+
+#: .\templates\frontend\reports.html:58
+msgid "Penalty Ledger Export"
+msgstr "Export du registre des pénalités"
+
+#: .\templates\frontend\reports.html:60
+msgid ""
+"Detailed breakdown of all accrued DGM penalties, overstay days, and "
+"financial liabilities."
+msgstr ""
+"Détail de toutes les pénalités DGM accumulées, des jours de dépassement et "
+"des passifs financiers."
+
+#: .\templates\frontend\reports.html:79
+msgid "Visa Expiry Forecast"
+msgstr "Prévisions d'expiration des visas"
+
+#: .\templates\frontend\reports.html:81
+msgid ""
+"A 12-month lookahead of all upcoming visa and permit expirations to help HR "
+"plan renewals."
+msgstr ""
+"Une projection sur 12 mois de toutes les expirations de visas et de permis à "
+"venir pour aider les RH à planifier les renouvellements."
+
+#: .\templates\frontend\reports.html:100
+msgid "Charter Flight Manifests"
+msgstr "Manifestes de vol charter"
+
+#: .\templates\frontend\reports.html:102
+msgid ""
+"Access and print the official DGM flight manifests for your upcoming charter "
+"rotations."
+msgstr ""
+"Accédez et imprimez les manifestes de vol officiels du DGM pour vos "
+"prochaines rotations charter."
+
+#: .\templates\frontend\reports.html:108
+msgid "View Flights"
+msgstr "Voir les vols"
+
+#: .\templates\frontend\security.html:4 .\templates\frontend\security.html:15
+msgid "Security & Data Protection"
+msgstr "Sécurité & Protection des données"
+
+#: .\templates\frontend\security.html:18
+msgid "Enterprise-grade security for sensitive expatriate data in the DRC."
+msgstr ""
+"Sécurité de niveau entreprise pour les données sensibles des expatriés en "
+"RDC."
+
+#: .\templates\frontend\security.html:36
+msgid "On this page"
+msgstr "Sur cette page"
+
+#: .\templates\frontend\security.html:54
+msgid "AES-256 Encryption at Rest"
+msgstr "Chiffrement AES-256 au repos"
+
+#: .\templates\frontend\security.html:57
+msgid ""
+"All Personally Identifiable Information (PII), including passport numbers, "
+"visa numbers, and Carte de Travail permits, is encrypted at the database "
+"level using AES-256. Even in the event of a database breach, this data "
+"remains unreadable without the encryption key."
+msgstr ""
+"Toutes les informations personnelles identifiables (PII), y compris les "
+"numéros de passeport, les numéros de visa et les permis de Carte de Travail, "
+"sont chiffrées au niveau de la base de données à l'aide d'AES-256. Même en "
+"cas de violation de la base de données, ces données restent illisibles sans "
+"la clé de chiffrement."
+
+#: .\templates\frontend\security.html:65
+msgid "Tamper-Evident Audit Chain"
+msgstr "Chaîne d'audit inviolable"
+
+#: .\templates\frontend\security.html:68
+msgid ""
+"Every action (create, update, delete) is recorded in an immutable audit log. "
+"Each entry is cryptographically hashed (SHA-256) and chained to the previous "
+"entry."
+msgstr ""
+"Chaque action (création, mise à jour, suppression) est enregistrée dans un "
+"journal d'audit immuable. Chaque entrée est hachée cryptographiquement "
+"(SHA-256) et chaînée à l'entrée précédente."
+
+#: .\templates\frontend\security.html:72
+msgid ""
+"If any historical record is altered directly in the database, the chain "
+"breaks and the system flags the integrity failure immediately."
+msgstr ""
+"Si un enregistrement historique est modifié directement dans la base de "
+"données, la chaîne se rompt et le système signale immédiatement la "
+"défaillance de l'intégrité."
+
+#: .\templates\frontend\security.html:81
+msgid "Role-Based Access Control (RBAC)"
+msgstr "Contrôle d'accès basé sur les rôles (RBAC)"
+
+#: .\templates\frontend\security.html:84
+msgid ""
+"Data is strictly siloed by company. A user from Company A cannot view, edit, "
+"or query data belonging to Company B. Within a company, roles (Admin, HR, "
+"Manager, Expert) dictate exactly what data and actions are accessible."
+msgstr ""
+"Les données sont strictement cloisonnées par entreprise. Un utilisateur de "
+"l'entreprise A ne peut pas voir, modifier ou interroger les données "
+"appartenant à l'entreprise B. Au sein d'une entreprise, les rôles (Admin, "
+"RH, Manager, Expert) dictent exactement quelles données et actions sont "
+"accessibles."
+
+#: .\templates\frontend\security.html:92
+msgid "Data Residency"
+msgstr "Résidence des données"
+
+#: .\templates\frontend\security.html:95
+msgid ""
+"We offer deployment options that ensure data remains within the borders of "
+"the DRC, compliant with local data sovereignty regulations and Ministry of "
+"Labour requirements."
+msgstr ""
+"Nous proposons des options de déploiement garantissant que les données "
+"restent à l'intérieur des frontières de la RDC, conformément aux "
+"réglementations locales sur la souveraineté des données et aux exigences du "
+"Ministère du Travail."
+
+#: .\templates\frontend\settings.html:15
+msgid "Manage your company profile, team access, and platform preferences."
+msgstr ""
+"Gérez le profil de votre entreprise, l'accès de l'équipe et les préférences "
+"de la plateforme."
+
+#: .\templates\frontend\settings.html:26 .\templates\frontend\settings.html:45
+msgid "Company Profile"
+msgstr "Profil de l'entreprise"
+
+#: .\templates\frontend\settings.html:30 .\templates\frontend\settings.html:68
+msgid "Team Members"
+msgstr "Membres de l'équipe"
+
+#: .\templates\frontend\settings.html:34
+msgid "Data Import"
+msgstr "Importation de données"
+
+#: .\templates\frontend\settings.html:50
+msgid "Company Name"
+msgstr "Nom de l'entreprise"
+
+#: .\templates\frontend\settings.html:54
+msgid "Platform Scope"
+msgstr "Portée de la plateforme"
+
+#: .\templates\frontend\settings.html:60
+msgid ""
+"To change your company name or DRC registration details, please contact "
+"platform support."
+msgstr ""
+"Pour modifier le nom de votre entreprise ou les détails d'enregistrement en "
+"RDC, veuillez contacter le support de la plateforme."
+
+#: .\templates\frontend\settings.html:103
+msgid "No team members found."
+msgstr "Aucun membre de l'équipe trouvé."
+
+#: .\templates\frontend\settings.html:114
+msgid "Bulk Data Import"
+msgstr "Importation de données en masse"
+
+#: .\templates\frontend\settings.html:118
+msgid ""
+"Upload a CSV file to import multiple experts at once. Ensure your CSV has "
+"the following headers:"
+msgstr ""
+"Téléchargez un fichier CSV pour importer plusieurs experts à la fois. "
+"Assurez-vous que votre CSV contient les en-têtes suivants :"
+
+#: .\templates\frontend\settings.html:129
+msgid "Upload & Import"
+msgstr "Télécharger et importer"
+
+#: .\templates\frontend\terms.html:14
+msgid "The rules and agreements for using the platform."
+msgstr "Les règles et accords d'utilisation de la plateforme."
+
+#: .\templates\frontend\terms.html:43
+msgid "1. Acceptance of Terms"
+msgstr "1. Acceptation des conditions"
+
+#: .\templates\frontend\terms.html:45
+msgid ""
+"By accessing the DRC Expat Compliance Platform, you agree to these Terms of "
+"Service and our Privacy Policy."
+msgstr ""
+"En accédant à la plateforme de conformité DRC Expat, vous acceptez les "
+"présentes conditions d'utilisation et notre politique de confidentialité."
+
+#: .\templates\frontend\terms.html:50
+msgid "2. Authorized Use"
+msgstr "2. Utilisation autorisée"
+
+#: .\templates\frontend\terms.html:52
+msgid ""
+"Access is granted strictly to authorized employees, HR managers, and "
+"contractors of the licensed corporate entity. You are responsible for "
+"maintaining the confidentiality of your login credentials."
+msgstr ""
+"L'accès est accordé strictement aux employés autorisés, aux responsables RH "
+"et aux sous-traitants de l'entité corporative agréée. Vous êtes responsable "
+"du maintien de la confidentialité de vos identifiants de connexion."
+
+#: .\templates\frontend\terms.html:57
+msgid "3. Accuracy of Data"
+msgstr "3. Exactitude des données"
+
+#: .\templates\frontend\terms.html:59
+msgid ""
+"You agree to input accurate and up-to-date information. The platform "
+"provides compliance alerts and calculations based on the data you provide "
+"and current interpretations of DRC law. It does not replace official legal "
+"advice."
+msgstr ""
+"Vous acceptez de saisir des informations exactes et à jour. La plateforme "
+"fournit des alertes de conformité et des calculs basés sur les données que "
+"vous fournissez et les interprétations actuelles du droit de la RDC. Elle ne "
+"remplace pas un avis juridique officiel."
+
+#: .\templates\frontend\terms.html:64
+msgid "4. Limitation of Liability"
+msgstr "4. Limitation de responsabilité"
+
+#: .\templates\frontend\terms.html:66
+msgid ""
+"The platform is provided 'as is'. We are not liable for DGM fines or "
+"penalties resulting from inaccurate data entry or failure to act on system "
+"alerts."
+msgstr ""
+"La plateforme est fournie « en l'état ». Nous ne sommes pas responsables des "
+"amendes ou pénalités du DGM résultant d'une saisie de données inexacte ou du "
+"non-respect des alertes du système."
+
+#: .\templates\frontend\travel_dashboard.html:14
+msgid "Logistics Command Center"
+msgstr "Centre de commandement logistique"
+
+#: .\templates\frontend\travel_dashboard.html:17
+#: .\templates\frontend\travel_list.html:4
+#: .\templates\frontend\travel_list.html:16
+msgid "Charter Flights"
+msgstr "Vols charter"
+
+#: .\templates\frontend\travel_dashboard.html:29
+msgid "Upcoming Flights"
+msgstr "Vols à venir"
+
+#: .\templates\frontend\travel_dashboard.html:31
+msgid "Scheduled rotations"
+msgstr "Rotations programmées"
+
+#: .\templates\frontend\travel_dashboard.html:35
+msgid "Passengers (Upcoming)"
+msgstr "Passagers (à venir)"
+
+#: .\templates\frontend\travel_dashboard.html:37
+msgid "Total manifests pending"
+msgstr "Total des manifestes en attente"
+
+#: .\templates\frontend\travel_dashboard.html:45
+msgid "Upcoming Departures"
+msgstr "Départs à venir"
+
+#: .\templates\frontend\travel_dashboard.html:46
+msgid "Next 10 scheduled charter flights"
+msgstr "10 prochains vols charter programmés"
+
+#: .\templates\frontend\travel_dashboard.html:95
+msgid "Manifest"
+msgstr "Manifeste"
+
+#: .\templates\frontend\travel_dashboard.html:102
+msgid "No upcoming flights scheduled."
+msgstr "Aucun vol à venir programmé."
+
+#: .\templates\frontend\travel_list.html:13
+msgid "Logistics"
+msgstr "Logistique"
+
+#: .\templates\frontend\travel_list.html:29
+msgid "Flight Number"
+msgstr "Numéro de vol"
+
+#: .\templates\frontend\travel_list.html:30
+#: .\templates\travel\manifest_print.html:67
+#: .\templates\travel\medevac_dashboard.html:86
+#: .\templates\travel\medevac_dashboard.html:109
+msgid "Departure"
+msgstr "Départ"
+
+#: .\templates\frontend\travel_list.html:31
+#: .\templates\travel\cost_dashboard.html:124
+#: .\templates\travel\manifest_print.html:66
+#: .\templates\travel\medevac_dashboard.html:86
+#: .\templates\travel\medevac_dashboard.html:109
+msgid "Route"
+msgstr "Itinéraire"
+
+#: .\templates\frontend\travel_list.html:57
+msgid "No flights scheduled."
+msgstr "Aucun vol programmé."
+
+#: .\templates\frontend\visa_list.html:14
+msgid "Visa Management"
+msgstr "Gestion des visas"
+
+#: .\templates\frontend\visa_list.html:35
+msgid "Search by name or visa number..."
+msgstr "Rechercher par nom ou numéro de visa..."
+
+#: .\templates\frontend\visa_list.html:54
+msgid "Visa Number"
+msgstr "Numéro de visa"
+
+#: .\templates\frontend\visa_list.html:105
+msgid "No visa records found."
+msgstr "Aucun dossier de visa trouvé."
+
+#: .\templates\travel\cost_dashboard.html:35
+#: .\templates\travel\medevac_dashboard.html:37
+#: .\templates\travel\rotation_calendar.html:46
+msgid "Back to Admin"
+msgstr "Retour à l'administration"
+
+#: .\templates\travel\cost_dashboard.html:37
+msgid "Charter Cost Dashboard"
+msgstr "Tableau de bord des coûts des vols charter"
+
+#: .\templates\travel\cost_dashboard.html:49
+msgid "This Month"
+msgstr "Ce mois-ci"
+
+#: .\templates\travel\cost_dashboard.html:53
+msgid "Year to Date"
+msgstr "Année en cours"
+
+#: .\templates\travel\cost_dashboard.html:57
+msgid "All Time"
+msgstr "Depuis toujours"
+
+#: .\templates\travel\cost_dashboard.html:63
+msgid "Monthly Spend — Last 12 Months"
+msgstr "Dépenses mensuelles — 12 derniers mois"
+
+#: .\templates\travel\cost_dashboard.html:67
+msgid "Spend by Route"
+msgstr "Dépenses par itinéraire"
+
+#: .\templates\travel\cost_dashboard.html:74
+msgid "Spend by Operator"
+msgstr "Dépenses par opérateur"
+
+#: .\templates\travel\cost_dashboard.html:78
+#: .\templates\travel\manifest_print.html:64
+#: .\templates\travel\medevac_dashboard.html:109
+msgid "Operator"
+msgstr "Opérateur"
+
+#: .\templates\travel\cost_dashboard.html:91
+#: .\templates\travel\cost_dashboard.html:114
+#: .\templates\travel\cost_dashboard.html:138
+msgid "No cost data yet."
+msgstr "Aucune donnée de coût pour le moment."
+
+#: .\templates\travel\cost_dashboard.html:96
+msgid "Top 15 Experts by Cost"
+msgstr "Top 15 des experts par coût"
+
+#: .\templates\travel\cost_dashboard.html:120
+msgid "Route Detail (Top 15)"
+msgstr "Détail des itinéraires (Top 15)"
+
+#: .\templates\travel\cost_dashboard.html:124
+msgid "From → To"
+msgstr "De → À"
+
+#: .\templates\travel\manifest_print.html:5
+#: .\templates\travel\manifest_print.html:55
+msgid "Flight Manifest"
+msgstr "Manifeste de vol"
+
+#: .\templates\travel\manifest_print.html:48
+msgid "Print"
+msgstr "Imprimer"
+
+#: .\templates\travel\manifest_print.html:58
+#: .\templates\travel\manifest_print.html:118
+#: .\templates\travel\manifest_print.html:125
+msgid "Date"
+msgstr "Date"
+
+#: .\templates\travel\manifest_print.html:68
+msgid "Arrival"
+msgstr "Arrivée"
+
+#: .\templates\travel\manifest_print.html:80
+msgid "DOB"
+msgstr "Date de naissance"
+
+#: .\templates\travel\manifest_print.html:89
+msgid "EXPAT"
+msgstr "EXPATRIÉ"
+
+#: .\templates\travel\manifest_print.html:90
+msgid "FAMILY"
+msgstr "FAMILLE"
+
+#: .\templates\travel\manifest_print.html:91
+msgid "CREW"
+msgstr "ÉQUIPAGE"
+
+#: .\templates\travel\manifest_print.html:100
+msgid "No passengers booked on this flight."
+msgstr "Aucun passager réservé sur ce vol."
+
+#: .\templates\travel\manifest_print.html:107
+msgid "Family"
+msgstr "Famille"
+
+#: .\templates\travel\manifest_print.html:108
+msgid "Crew"
+msgstr "Équipage"
+
+#: .\templates\travel\manifest_print.html:114
+msgid "Pilot in Command"
+msgstr "Commandant de bord"
+
+#: .\templates\travel\manifest_print.html:116
+#: .\templates\travel\manifest_print.html:123
+msgid "Signature"
+msgstr "Signature"
+
+#: .\templates\travel\manifest_print.html:117
+#: .\templates\travel\manifest_print.html:124
+msgid "Printed Name"
+msgstr "Nom imprimé"
+
+#: .\templates\travel\manifest_print.html:121
+msgid "HR / DGM Officer"
+msgstr "Responsable RH / DGM"
+
+#: .\templates\travel\manifest_print.html:130
+msgid "This manifest is generated by the DRC Expat Compliance Platform."
+msgstr "Ce manifeste est généré par la Plateforme de Conformité DRC Expat."
+
+#: .\templates\travel\medevac_dashboard.html:39
+msgid "Medevac Readiness Dashboard"
+msgstr "Tableau de bord de préparation médicale"
+
+#: .\templates\travel\medevac_dashboard.html:46
+msgid "Personnel On Site"
+msgstr "Personnel sur site"
+
+#: .\templates\travel\medevac_dashboard.html:49
+#: .\templates\travel\medevac_dashboard.html:83
+msgid "Medevac-Ready Flights"
+msgstr "Vols prêts pour médicalisation"
+
+#: .\templates\travel\medevac_dashboard.html:53
+msgid "Flights Next 7 Days"
+msgstr "Vols des 7 prochains jours"
+
+#: .\templates\travel\medevac_dashboard.html:60
+msgid "Personnel Currently On Site"
+msgstr "Personnel actuellement sur site"
+
+#: .\templates\travel\medevac_dashboard.html:77
+msgid "No personnel currently flagged as on-site."
+msgstr "Aucun personnel actuellement signalé comme étant sur site."
+
+#: .\templates\travel\medevac_dashboard.html:100
+msgid "No flights currently flagged as medevac-ready."
+msgstr "Aucun vol actuellement signalé comme prêt pour la médicalisation."
+
+#: .\templates\travel\medevac_dashboard.html:106
+msgid "Upcoming Flights (Next 7 Days)"
+msgstr "Vols à venir (7 prochains jours)"
+
+#: .\templates\travel\medevac_dashboard.html:128
+msgid "No flights scheduled in the next 7 days."
+msgstr "Aucun vol programmé dans les 7 prochains jours."
+
+#: .\templates\travel\rotation_calendar.html:51
+msgid "Previous"
+msgstr "Précédent"
+
+#: .\templates\travel\rotation_calendar.html:53
+msgid "Next"
+msgstr "Suivant"
+
+#: .\templates\travel\rotation_calendar.html:58
+msgid "On Site Today"
+msgstr "Sur site aujourd'hui"
+
+#: .\templates\travel\rotation_calendar.html:59
+msgid "Off Rotation Today"
+msgstr "En rotation aujourd'hui"
+
+#: .\templates\travel\rotation_calendar.html:60
+msgid "Active Schedules"
+msgstr "Plannings actifs"
+
+#: .\templates\travel\rotation_calendar.html:67
+msgid "Monday"
+msgstr "Lundi"
+
+#: .\templates\travel\rotation_calendar.html:68
+msgid "Tuesday"
+msgstr "Mardi"
+
+#: .\templates\travel\rotation_calendar.html:69
+msgid "Wednesday"
+msgstr "Mercredi"
+
+#: .\templates\travel\rotation_calendar.html:70
+msgid "Thursday"
+msgstr "Jeudi"
+
+#: .\templates\travel\rotation_calendar.html:71
+msgid "Friday"
+msgstr "Vendredi"
+
+#: .\templates\travel\rotation_calendar.html:72
+msgid "Saturday"
+msgstr "Samedi"
+
+#: .\templates\travel\rotation_calendar.html:73
+msgid "Sunday"
+msgstr "Dimanche"
+
+#~ msgid "Print Manifest"
+#~ msgstr "Imprimer le manifeste"
+
+#, fuzzy
+#~| msgid "Direction Générale de Migration — Flight Manifest"
+#~ msgid "Direction Générale de Migration"
+#~ msgstr "Direction Générale de Migration — Manifeste de vol"
+
+#~ msgid "No passengers currently booked on this flight."
+#~ msgstr "Aucun passager actuellement réservé sur ce vol."
+
+#~ msgid "DGM Inspector"
+#~ msgstr "Inspecteur DGM"

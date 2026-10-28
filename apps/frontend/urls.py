@@ -43,4 +43,12 @@ urlpatterns = [
     path("settings/invite/", views.invite_user, name="invite_user"),
     path("travel/", views.travel_dashboard, name="travel_dashboard"),
     path("travel/<uuid:flight_id>/manifest/", views.flight_manifest, name="flight_manifest"),
+    path("profile/", views.profile_view, name="profile"),
+    path("inspection/", views.inspection_mode, name="inspection_mode"),
+    path("quota-simulator/", views.quota_simulator, name="quota_simulator"),
+    path("inspection/", views.inspection_mode, name="inspection_mode"),
+    path("inspection/reveal/<uuid:expert_id>/", views.reveal_passport, name="reveal_passport"), # ADD THIS
+    path("inspection/logout/", views.inspection_logout, name="inspection_logout"), # Ensure this exists
+    path("travel/<uuid:flight_id>/manifest/submit/", views.submit_manifest, name="submit_manifest"),
+    path("verify/<str:manifest_hash>/", views.verify_manifest, name="verify_manifest"),
 ]

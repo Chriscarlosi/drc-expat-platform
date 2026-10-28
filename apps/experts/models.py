@@ -14,6 +14,7 @@ from encrypted_model_fields.fields import EncryptedCharField
 
 from apps.organization.models import Company, Site, Department
 from apps.organization.managers import TenantManager
+from apps.documents.encrypted_storage import EncryptedFileSystemStorage
 
 
 class ExpertProfile(models.Model):

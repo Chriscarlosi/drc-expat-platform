@@ -1,16 +1,9 @@
 """
 Charter & Travel Management — flights, rotations, dependants, authorizations.
-
-Built for DRC mining operations:
-  • Internal fleets (Kibali B1900) + external operators (MAF, Serve Air, etc.)
-  • Rotation scheduling (4/4, 6/3, 8/4)
-  • Family/dependant manifests
-  • DGM-compliant flight manifests
-  • Medevac readiness tracking
-  • Dual approval workflow (Manager → HR)
 """
 
 import uuid
+import hashlib
 from decimal import Decimal
 
 from django.db import models
@@ -132,6 +125,12 @@ class CharterFlight(models.Model):
         DIVERTED = "DIVERTED", _("Diverted")
         MEDEVAC = "MEDEVAC", _("Medevac")
 
+    class ManifestStatus(models.TextChoices):
+        DRAFT = "DRAFT", _("Draft")
+        SUBMITTED = "SUBMITTED", _("Submitted to DGM")
+        APPROVED = "APPROVED", _("Approved by DGM")
+        REJECTED = "REJECTED", _("Rejected by DGM")
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     flight_number = models.CharField(max_length=40, unique=True)
     operator = models.ForeignKey(
@@ -152,6 +151,14 @@ class CharterFlight(models.Model):
     )
     seats_available = models.PositiveIntegerField(default=0)
     notes = models.TextField(blank=True)
+
+    # PREMIUM MANIFEST FIELDS
+    pilot_in_command = models.CharField(max_length=100, blank=True, null=True, help_text="Name of the Pilot in Command")
+    manifest_status = models.CharField(max_length=20, choices=ManifestStatus.choices, default=ManifestStatus.DRAFT)
+    manifest_hash = models.CharField(max_length=64, blank=True, null=True,
+                                     help_text="SHA-256 hash of the finalized manifest")
+    version = models.PositiveIntegerField(default=1)
+    locked_at = models.DateTimeField(null=True, blank=True, help_text="Set when submitted to DGM to prevent edits")
 
     # DGM / regulatory
     dgm_manifest_submitted = models.BooleanField(default=False, db_index=True)
@@ -175,6 +182,18 @@ class CharterFlight(models.Model):
     def __str__(self):
         return f"{self.flight_number} · {self.route} · {self.departure_datetime:%Y-%m-%d %H:%M}"
 
+    def save(self, *args, **kwargs):
+        # Generate a SHA-256 hash when the manifest is submitted to DGM
+        if self.manifest_status == self.ManifestStatus.SUBMITTED and not self.manifest_hash:
+            raw_string = f"{self.id}-{self.flight_number}-{self.version}-{timezone.now().isoformat()}"
+            self.manifest_hash = hashlib.sha256(raw_string.encode()).hexdigest()
+        super().save(*args, **kwargs)
+
+    @property
+    def is_locked(self):
+        """Prevents edits if the manifest has been submitted to DGM."""
+        return self.manifest_status in [self.ManifestStatus.SUBMITTED, self.ManifestStatus.APPROVED]
+
     @property
     def is_past(self):
         return self.departure_datetime < timezone.now()
@@ -182,6 +201,24 @@ class CharterFlight(models.Model):
     @property
     def passenger_count(self):
         return self.passengers.count()
+
+    @property
+    def total_bag_weight(self):
+        """Calculates total checked baggage weight for the flight."""
+        total = sum((p.bag_weight_kg or 0) for p in self.passengers.all())
+        return total
+
+    @property
+    def has_missing_weights(self):
+        """Returns True if any passenger is missing weight data."""
+        return self.passengers.filter(bag_weight_kg__isnull=True).exists() or self.passengers.filter(
+            bag_count=0).exists()
+
+    @property
+    def display_total_weight(self):
+        if self.has_missing_weights:
+            return "Incomplet / Incomplete"
+        return f"{self.total_bag_weight} kg"
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -281,6 +318,14 @@ class CharterPassenger(models.Model):
     is_company_paid = models.BooleanField(default=True)
 
     special_requests = models.TextField(blank=True)
+
+    # PREMIUM MANIFEST FIELDS
+    weight_kg = models.DecimalField(max_digits=5, decimal_places=1, null=True, blank=True,
+                                    help_text="Passenger weight in kg")
+    bag_count = models.PositiveIntegerField(default=0, help_text="Number of checked bags")
+    bag_weight_kg = models.DecimalField(max_digits=6, decimal_places=1, null=True, blank=True,
+                                        help_text="Total baggage weight in kg")
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -293,7 +338,6 @@ class CharterPassenger(models.Model):
 
     def clean(self):
         from django.core.exceptions import ValidationError
-        # Rule: exactly one of expert/dependant must be set (unless crew)
         if self.passenger_type in (self.PassengerType.CREW, self.PassengerType.VIP):
             return
         if bool(self.expert) == bool(self.dependant):
@@ -330,6 +374,22 @@ class CharterPassenger(models.Model):
         if self.dependant:
             return self.dependant.nationality
         return ""
+
+    @property
+    def company_name(self):
+        if self.expert:
+            return self.expert.company.name
+        if self.dependant and self.dependant.expert:
+            return self.dependant.expert.company.name
+        return "—"
+
+    @property
+    def department_name(self):
+        if self.expert:
+            return self.expert.department.name if self.expert.department else "—"
+        if self.dependant and self.dependant.expert and self.dependant.expert.department:
+            return self.dependant.expert.department.name
+        return "—"
 
 
 # ═══════════════════════════════════════════════════════════════

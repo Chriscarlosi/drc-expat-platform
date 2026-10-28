@@ -1,8 +1,16 @@
-"""Frontend models — contact form submissions."""
+"""Frontend models — contact form submissions + DGM inspection security."""
 
+from datetime import timedelta
 from django.db import models
 from django.utils import timezone
 
+from apps.organization.models import Company
+from apps.experts.models import ExpertProfile
+
+
+# ═══════════════════════════════════════════════════════════════
+# CONTACT MESSAGES
+# ═══════════════════════════════════════════════════════════════
 
 class ContactMessage(models.Model):
     """Submitted via /contact/ form."""
@@ -33,3 +41,38 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"{self.name} <{self.email}> — {self.created_at:%Y-%m-%d %H:%M}"
+
+
+# ═══════════════════════════════════════════════════════════════
+# DGM INSPECTION SECURITY
+# ═══════════════════════════════════════════════════════════════
+
+class InspectionSession(models.Model):
+    """Tracks a time-limited DGM inspection session."""
+    inspector_name = models.CharField(max_length=150)
+    inspector_id = models.CharField(max_length=50, help_text="DGM Badge Number")
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    started_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField()
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.inspector_name} ({self.inspector_id}) - {self.started_at:%Y-%m-%d}"
+
+    @property
+    def is_active(self):
+        return timezone.now() < self.expires_at
+
+
+class InspectionAuditLog(models.Model):
+    """Logs PII reveals during an inspection."""
+    session = models.ForeignKey(InspectionSession, on_delete=models.CASCADE)
+    expert = models.ForeignKey(ExpertProfile, on_delete=models.CASCADE)
+    action = models.CharField(max_length=50, default="REVEAL_PASSPORT")
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-timestamp"]
+
+    def __str__(self):
+        return f"{self.session.inspector_name} revealed {self.expert.last_name} at {self.timestamp}"

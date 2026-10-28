@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from apps.organization.views import mfa_setup, set_language_view
+from apps.organization.views import mfa_setup
 from apps.organization.admin import download_procurement_pdf
 
 
@@ -13,8 +13,10 @@ urlpatterns = [
 
     path('rosetta/', include('rosetta.urls')),
 
-    # Language switcher
-    path("i18n/setlang/", set_language_view, name="set_language"),
+    # ─── FIXED LANGUAGE SWITCHER ───
+    # Use Django's built-in i18n URLs instead of a custom view.
+    # This automatically handles setting the django_language cookie.
+    path("i18n/", include("django.conf.urls.i18n")),
 
     # Admin + MFA
     path("admin/mfa-setup/", mfa_setup, name="mfa_setup"),

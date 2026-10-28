@@ -1,0 +1,134 @@
+{% extends "frontend/base.html" %}
+{% load i18n humanize %}
+
+{% block title %}{% trans "Quota Simulator" %}{% endblock %}
+
+{% block content %}
+<div class="bg-slate-50 min-h-screen py-12">
+  <div class="max-w-4xl mx-auto px-6">
+
+    <div class="text-center mb-10">
+      <div class="text-xs uppercase tracking-widest text-brand-600 font-black mb-2">Strategic Planning</div>
+      <h1 class="text-4xl font-black text-navy-900 tracking-tight">Workforce Quota Simulator</h1>
+      <p class="text-slate-500 mt-2">Simulate hiring plans to ensure you never breach the 6.5% DRC expatriate quota.</p>
+    </div>
+
+    <!-- BASELINE -->
+    <div class="grid md:grid-cols-2 gap-6 mb-8">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200">
+        <div class="text-xs uppercase font-black text-slate-500 mb-1">Current Congolese Staff</div>
+        <div class="text-3xl font-black text-navy-900">{{ current_congolese_count|intcomma }}</div>
+      </div>
+      <div class="bg-white p-6 rounded-2xl border border-slate-200">
+        <div class="text-xs uppercase font-black text-slate-500 mb-1">Current Expat Staff</div>
+        <div class="text-3xl font-black text-navy-900">{{ current_expat_count|intcomma }}</div>
+      </div>
+    </div>
+
+    <!-- SLIDERS -->
+    <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-8">
+
+      <div>
+        <div class="flex justify-between items-end mb-2">
+          <label class="text-sm font-bold text-navy-900">Add New Congolese Hires</label>
+          <span id="out-congo" class="text-2xl font-black text-brand-600">0</span>
+        </div>
+        <input type="range" id="slider-congo" min="0" max="500" value="0" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+      </div>
+
+      <div>
+        <div class="flex justify-between items-end mb-2">
+          <label class="text-sm font-bold text-navy-900">Add New Expat Hires</label>
+          <span id="out-expat-add" class="text-2xl font-black text-orange-500">0</span>
+        </div>
+        <input type="range" id="slider-expat-add" min="0" max="50" value="0" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+      </div>
+
+      <div>
+        <div class="flex justify-between items-end mb-2">
+          <label class="text-sm font-bold text-navy-900">Remove Expats (Terminations)</label>
+          <span id="out-expat-remove" class="text-2xl font-black text-red-500">0</span>
+        </div>
+        <input type="range" id="slider-expat-remove" min="0" max="{{ current_expat_count }}" value="0" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+      </div>
+
+    </div>
+
+    <!-- RESULT BOX -->
+    <div class="mt-8 p-8 rounded-2xl border-2 transition-colors duration-300 flex items-center justify-between" id="result-box">
+      <div>
+        <div class="text-xs uppercase font-black tracking-widest mb-1" id="result-label">Projected Compliance</div>
+        <div class="text-5xl font-black text-navy-900" id="result-pct">0.00%</div>
+        <div class="mt-2 text-sm font-bold" id="result-status">of 6.5% cap</div>
+      </div>
+      <div class="text-right">
+        <div class="text-xs uppercase font-black tracking-widest text-slate-500 mb-1">Available Headroom</div>
+        <div class="text-3xl font-black text-brand-600" id="result-headroom">0</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const currentCongo = {{ current_congolese_count }};
+  const currentExpat = {{ current_expat_count }};
+  const cap = 6.5;
+
+  const elCongo = document.getElementById('slider-congo');
+  const elExpatAdd = document.getElementById('slider-expat-add');
+  const elExpatRem = document.getElementById('slider-expat-remove');
+
+  const outCongo = document.getElementById('out-congo');
+  const outExpatAdd = document.getElementById('out-expat-add');
+  const outExpatRem = document.getElementById('out-expat-remove');
+
+  const resBox = document.getElementById('result-box');
+  const resPct = document.getElementById('result-pct');
+  const resStatus = document.getElementById('result-status');
+  const resHeadroom = document.getElementById('result-headroom');
+
+  function calculate() {
+    const addCongo = parseInt(elCongo.value);
+    const addExpat = parseInt(elExpatAdd.value);
+    const remExpat = parseInt(elExpatRem.value);
+
+    outCongo.innerText = "+" + addCongo;
+    outExpatAdd.innerText = "+" + addExpat;
+    outExpatRem.innerText = "-" + remExpat;
+
+    // Math
+    const totalCongo = currentCongo + addCongo;
+    const totalExpat = currentExpat + addExpat - remExpat;
+    const totalWorkforce = totalCongo + totalExpat;
+
+    if (totalWorkforce === 0) return;
+
+    const pct = (totalExpat / totalWorkforce) * 100;
+    const maxAllowedExpat = Math.floor(totalCongo * (cap / (100 - cap)));
+    const headroom = Math.max(0, maxAllowedExpat - totalExpat);
+
+    // UI Update
+    resPct.innerText = pct.toFixed(2) + "%";
+    resHeadroom.innerText = headroom;
+
+    if (pct > cap) {
+      resBox.className = 'mt-8 p-8 rounded-2xl border-2 border-red-500 bg-red-50 flex items-center justify-between';
+      resPct.className = 'text-5xl font-black text-red-600';
+      resStatus.innerText = "⚠ BREACH: You will exceed the 6.5% legal limit!";
+      resStatus.className = "mt-2 text-sm font-bold text-red-600";
+    } else {
+      resBox.className = 'mt-8 p-8 rounded-2xl border-2 border-green-500 bg-green-50 flex items-center justify-between';
+      resPct.className = 'text-5xl font-black text-green-600';
+      resStatus.innerText = "✓ COMPLIANT: You are within the legal limit.";
+      resStatus.className = "mt-2 text-sm font-bold text-green-600";
+    }
+  }
+
+  elCongo.addEventListener('input', calculate);
+  elExpatAdd.addEventListener('input', calculate);
+  elExpatRem.addEventListener('input', calculate);
+
+  calculate(); // Run once on load
+</script>
+{% endblock %}
