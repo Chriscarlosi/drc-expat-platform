@@ -104,19 +104,27 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-# -------------------------------------------------------------------
-# DATABASE — PostgreSQL
-# -------------------------------------------------------------------
+import dj_database_url
+
+# ─────────────────────────────────────────────────────────────
+# DATABASE — Supports Render's DATABASE_URL and Local Postgres
+# ─────────────────────────────────────────────────────────────
 DATABASES = {
-    'default': {
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL', default='sqlite:///db.sqlite3')
+    )
+}
+
+# If DATABASE_URL is not set locally, fall back to your local .env variables
+if not config('DATABASE_URL', default=None):
+    DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('POSTGRES_DB'),
-        'USER': config('POSTGRES_USER'),
-        'PASSWORD': config('POSTGRES_PASSWORD'),
+        'NAME': config('POSTGRES_DB', default='drc_expat_db'),
+        'USER': config('POSTGRES_USER', default='drc_admin'),
+        'PASSWORD': config('POSTGRES_PASSWORD', default='drc_secure_password_change_me'),
         'HOST': config('POSTGRES_HOST', default='127.0.0.1'),
         'PORT': config('POSTGRES_PORT', default='5432'),
     }
-}
 
 
 # -------------------------------------------------------------------
