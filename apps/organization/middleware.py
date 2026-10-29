@@ -179,11 +179,11 @@ class MFAEnforcementMiddleware:
             return self.get_response(request)
 
         # Whitelist paths that don't need MFA
-        setup_url = "/admin/mfa-setup/"
+        setup_url = "/control-tower-x9/mfa-setup/"
         exempt_paths = (
-            "/admin/mfa-setup/",
-            "/admin/login/",
-            "/admin/logout/",
+            "/control-tower-x9/mfa-setup/",
+            "/control-tower-x9/login/",
+            "/control-tower-x9/logout/",
             "/login/",
             "/logout/",
             "/static/",

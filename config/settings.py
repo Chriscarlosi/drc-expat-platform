@@ -417,3 +417,32 @@ DRC_CATEGORY_CAPS = {  # Unverified
     "MANAGEMENT": 2.0,
 }
 DRC_REGULATORY_VERIFIED = False  # Set to True once confirmed by user
+
+# ═══════════════════════════════════════════════════════════════
+# AWS S3 STORAGE CONFIGURATION (Sprint 1)
+# ═══════════════════════════════════════════════════════════════
+import os
+from decouple import config
+
+# ═══════════════════════════════════════════════════════════════
+# AWS S3 STORAGE CONFIGURATION (Sprint 1)
+# ═══════════════════════════════════════════════════════════════
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = 'af-south-1' # Cape Town
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_QUERYSTRING_AUTH = True
+AWS_QUERYSTRING_EXPIRE = 900
+AWS_DEFAULT_ACL = 'private'
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/'

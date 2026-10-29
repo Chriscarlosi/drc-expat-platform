@@ -18,9 +18,9 @@ urlpatterns = [
     # This automatically handles setting the django_language cookie.
     path("i18n/", include("django.conf.urls.i18n")),
 
-    # Admin + MFA
-    path("admin/mfa-setup/", mfa_setup, name="mfa_setup"),
-    path("admin/", admin.site.urls),
+# Admin + MFA
+    path("control-tower-x9/mfa-setup/", mfa_setup, name="mfa_setup"),
+    path("control-tower-x9/", admin.site.urls),
 
     # Apps
     path("compliance/", include("apps.compliance.urls")),
