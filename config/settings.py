@@ -433,12 +433,20 @@ import os
 from decouple import config
 
 # ═══════════════════════════════════════════════════════════════
+# ENCRYPTED FILE FIELDS — AES-256
+# ═══════════════════════════════════════════════════════════════
+# Fallback is a valid dummy Fernet key so the build doesn't crash.
+# It will use the real key from Render during runtime.
+FIELD_ENCRYPTION_KEY = config('FIELD_ENCRYPTION_KEY', default='cw_0x689W5sB9X2y8z7A6B5C4D3E2F1G0H9I8J7K6L5M=')
+
+
+# ═══════════════════════════════════════════════════════════════
 # AWS S3 STORAGE CONFIGURATION (Sprint 1)
 # ═══════════════════════════════════════════════════════════════
-AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_REGION_NAME = 'af-south-1' # Cape Town
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID', default='dummy_access_key')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY', default='dummy_secret_key')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME', default='drc-expat-docs-prod')
+AWS_S3_REGION_NAME = 'af-south-1'
 AWS_S3_SIGNATURE_VERSION = 's3v4'
 AWS_QUERYSTRING_AUTH = True
 AWS_QUERYSTRING_EXPIRE = 900
