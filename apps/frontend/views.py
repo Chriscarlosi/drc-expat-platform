@@ -290,7 +290,11 @@ def expert_portal(request):
 
 
 def login_view(request):
+    """Handle login and route staff to the hidden backend, others to frontend."""
     if request.user.is_authenticated:
+        # If already logged in, route staff to admin, others to dashboard
+        if request.user.is_staff or request.user.is_superuser:
+            return redirect("/control-tower-x9/")
         return redirect("/dashboard/")
 
     if request.method == "POST":
@@ -300,6 +304,11 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             auth_login(request, user)
+
+            # Route staff to the hidden admin URL
+            if user.is_staff or user.is_superuser:
+                return redirect("/control-tower-x9/")
+
             next_url = request.GET.get("next") or "/dashboard/"
             return redirect(next_url)
         else:
