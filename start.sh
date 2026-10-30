@@ -4,9 +4,9 @@
 echo "Running database migrations..."
 python manage.py migrate
 
-# Create superuser automatically if it doesn't exist
+# Create or reset superuser safely
 echo "Creating superuser..."
-DJANGO_SUPERUSER_PASSWORD=KibaliMine2026! python manage.py createsuperuser --noinput --username admin --email admin@kibali.cd || true
+python manage.py reset_admin
 
 # Start the web server
 echo "Starting Gunicorn..."
